@@ -1,6 +1,6 @@
 # Licensing, Windows acceptance and signing
 
-**Documentation reviewed: 9 October 2026; current app: 0.2.10.** Current notice/source and exact host installer gates pass. The unsigned 0.2.10 build is a review asset; trusted signing and fresh hash-bound live acceptance remain public-binary gates.
+**Documentation reviewed: 9 October 2026; current app: 0.2.10.** Current notice/source and exact host installer gates pass. The GitHub-built unsigned 0.2.10 installer passed exact-host lifecycle checks. Trusted signing and fresh hash-bound live acceptance remain strict signed-production gates. A maintainer-approved unsigned prerelease is now permitted by the separate [Code signing policy](../CODE_SIGNING_POLICY.md); it must disclose those missing checks. See [SignPath and preview preparation](signpath-and-public-preview.md).
 
 Start with the [complete installation and user guide](../README.md). See [current verification](scope-and-lifecycle-0.2.10.md) and [documentation/cleanup record](documentation-and-cleanup-0.2.10.md) for current evidence and retained historical boundaries.
 

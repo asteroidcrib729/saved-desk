@@ -1,5 +1,7 @@
 # Implementation progress
 
+**SignPath/unsigned-preview follow-up (9 October 2026):** The [Code signing policy](../CODE_SIGNING_POLICY.md) permits a separately reviewed unsigned public prerelease. The exact GitHub-built 0.2.10 installer passed eleven host lifecycle checks and digest/source review. Strict signed-production gates remain unchanged; SignPath approval/integration and fresh hash-bound live acceptance are not claimed. See [current preparation and owner actions](signpath-and-public-preview.md). Existing release assets and tag remain immutable.
+
 **Documentation reviewed: 9 October 2026; current app: 0.2.10.** Current runtime/installer evidence is 0.2.10. The README now documents installation and every user workflow/control. This follow-up changes documentation and removes inactive test payloads only.
 
 Start with the [complete installation and user guide](../README.md). See [current verification](scope-and-lifecycle-0.2.10.md) and [documentation/cleanup record](documentation-and-cleanup-0.2.10.md) for current evidence and retained historical boundaries.

@@ -53,6 +53,8 @@ Approved credentials may be used in account checks and download requests to the 
 
 SavedDesk connects to Google for requested authorization, identity checks, token refresh and revocation. It connects to the platform or media hosts involved in a requested account check or download, including content delivery networks. Those services receive information needed for the request, which can include your IP address, user-agent information, content URL and applicable authentication credentials. Their own policies govern their handling of requests.
 
+Relevant external privacy policies are available from [Google/YouTube](https://policies.google.com/privacy), [Meta/Facebook/Instagram](https://www.facebook.com/privacy/policy/), [TikTok](https://www.tiktok.com/legal/page/row/privacy-policy/en), [Pinterest](https://policy.pinterest.com/en/privacy-policy), [Discord](https://discord.com/privacy), [X](https://x.com/en/privacy), [Microsoft/Windows/WebView2](https://www.microsoft.com/en-us/privacy/privacystatement) and [GitHub](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). These apply when you use the respective platform, runtime, browser or hosted project page. Consult the applicable policy for your region; these links do not expand SavedDesk's permissions or add a new data-sharing feature.
+
 The native Google sign-in callback listens temporarily on your computer's loopback interface. It is not a SavedDesk cloud service.
 
 The current application has no maintainer-operated cloud account database, cloud library synchronization, advertising tracking or analytics service, and it does not automatically transmit your library or crash reports to the maintainers. We do not sell your personal information. Microsoft Windows/WebView2, your browser and external tools have their own services, settings and privacy practices.
@@ -93,6 +95,8 @@ For questions or requests concerning information you have supplied directly to t
 SavedDesk is a general-purpose utility and is not directed at children under 13. Do not use Google sign-in if you are under the minimum age required for the relevant Google account or local law. If you believe a child has supplied personal information directly to the maintainers, contact us so the report can be addressed.
 
 ## 10. Third-party hosting and changes
+
+The [Code signing policy](CODE_SIGNING_POLICY.md) documents the pending SignPath application. Signing, if approved, concerns maintainer-submitted build artifacts and build-origin records. SavedDesk does not send user libraries, account sessions or downloaded content to that service. It is not currently integrated into the application or release workflow.
 
 The project repository and published policy pages may be hosted by GitHub or another provider. Visiting those pages is separate from using the desktop app and is subject to the hosting provider's privacy practices.
 

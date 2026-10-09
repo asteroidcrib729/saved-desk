@@ -60,7 +60,8 @@ try {
       'The Python worker, Node extraction runtime and browser connector are bundled. Gallery downloads require a separately installed Python environment; video preparation requires separately selected FFmpeg. See Settings > Download tools.',
       'The connector ZIP is for the documented unpacked/temporary browser setup; browser-store delivery remains pending.',
       'Original SavedDesk code is MIT licensed; bundled dependencies retain their own terms. Full notices and reviewed dependency source archives accompany this preview.',
-      'This build remains a review preview until acceptance-review.json clears all gates. The acceptance report records payload licensing, signing and installation evidence; do not publish an incomplete bundle.',
+      'This build is a review candidate. Signed-production publication requires all acceptance-review.json gates. Unsigned prerelease publication requires the separate Code signing policy and preview validation; disclose missing signing/live checks and keep the complete source/notice bundle.',
+      'Code signing policy: https://github.com/asteroidcrib729/saved-desk/blob/main/CODE_SIGNING_POLICY.md. SignPath Foundation approval and integration are pending; no current sponsorship is claimed.',
       'The catalog is not encrypted. Account sessions are separately Windows-user protected. No automatic updater is configured.',
       'See development-plans/repository-and-releases.md in the source repository.') | Set-Content -LiteralPath (Join-Path $output 'release-notes.txt') -Encoding UTF8
     $checksumLines = @(Get-ChildItem -LiteralPath $output -File | Where-Object { $_.Name -ne 'SHA256SUMS.txt' } | Sort-Object Name | ForEach-Object {

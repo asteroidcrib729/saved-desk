@@ -2,7 +2,7 @@
 
 I built SavedDesk to keep supported social-media saves in one local Windows library. You can download posts and collections, search your saved content, view images, play videos and audio, and manage the files on your computer.
 
-**Current application: 0.2.10. User guide reviewed: 9 October 2026.** The Windows installer has passed installation, upgrade and uninstall checks on this system. The current review build is unsigned and has not been published on GitHub. [Build verification](development-plans/scope-and-lifecycle-0.2.10.md) records the exact artifacts and test boundaries.
+**Current application: 0.2.10. User guide reviewed: 9 October 2026.** The GitHub-built Windows installer has passed installation, upgrade and uninstall checks on this system. It remains an unsigned draft until the maintainer publishes the prepared prerelease. [Current GitHub-build verification and preview policy](development-plans/signpath-and-public-preview.md) records its exact hash and limitations; [earlier local-build verification](development-plans/scope-and-lifecycle-0.2.10.md) retains its own evidence.
 
 ## Contents
 
@@ -22,6 +22,7 @@ I built SavedDesk to keep supported social-media saves in one local Windows libr
 - [Troubleshooting](#troubleshooting)
 - [Development and project layout](#development-and-project-layout)
 - [Verification, releases and planned work](#verification-releases-and-planned-work)
+- [Code signing policy](#code-signing-policy)
 - [License, policies and support](#license-policies-and-support)
 
 ## Download and install
@@ -33,10 +34,10 @@ Open the [SavedDesk Releases page](https://github.com/asteroidcrib729/saved-desk
 The [source repository](https://github.com/asteroidcrib729/saved-desk) is public. No packaged release has been published yet. In this checkout, the tested installer is:
 
 ~~~text
-desktop/src-tauri/target/release/bundle/nsis/SavedDesk_0.2.10_x64-setup.exe
+release-artifacts/github-v0.2.10-37960062238/SavedDesk_0.2.10_x64-setup.exe
 ~~~
 
-The matching local review assets are in release-artifacts/v0.2.10: installer, connector ZIP, original source, dependency sources, notices, release manifest and SHA256SUMS.txt. These are review assets, not a signed public release. Previews through 0.2.3 must not be distributed.
+The GitHub-built 0.2.10 asset set is currently a draft. Its exact installer passed host installation, upgrade and uninstall checks after download and checksum verification. A documented unsigned-preview exception permits maintainer-approved publication as a prerelease; it does not claim signing or complete production acceptance. See the [Code signing policy](CODE_SIGNING_POLICY.md) and [preview evidence and publication instructions](development-plans/signpath-and-public-preview.md). Previews through 0.2.3 must not be distributed.
 
 If a release supplies checksums, compare the downloaded installer with its entry in SHA256SUMS.txt:
 
@@ -44,10 +45,10 @@ If a release supplies checksums, compare the downloaded installer with its entry
 Get-FileHash -LiteralPath ".\SavedDesk_0.2.10_x64-setup.exe" -Algorithm SHA256
 ~~~
 
-The tested 0.2.10 installer SHA-256 is:
+The GitHub-built 0.2.10 installer SHA-256 is:
 
 ~~~text
-a19c4f90b2fddec46a2d504d69fdd7fd9e4cf8aeb8e7cf262de816ca65e65790
+19e8b9d810888d686843f80dd72c7e0467bc6912ca38e603e1f6951f701f4dc6
 ~~~
 
 ### Requirements
@@ -72,7 +73,7 @@ Linux, macOS and native ARM64 installers are not supplied by this project. The p
 4. Open SavedDesk from the installed shortcut. The window starts maximized.
 5. Complete [first-run setup](#first-run-setup) before connecting Instagram/X or downloading videos.
 
-The current review installer has no trusted publisher signature; Windows may display an unknown-publisher or reputation prompt. Check the intended source and checksum before deciding whether to run it. Signing is scheduled after source publication.
+The current preview installer has no trusted publisher signature; Windows may display an unknown-publisher or reputation prompt. Check the intended source and checksum before deciding whether to run it. SignPath Foundation approval and integration are pending; see the [Code signing policy](CODE_SIGNING_POLICY.md).
 
 For an upgrade, run the newer installer with the same Windows account and retain the current installation location. Your catalog, settings, volume preference, history and downloaded media are kept. A future updated connector may need to be reloaded in the browser.
 
@@ -545,7 +546,7 @@ Normal installed users do not need to build the project. The source uses Next.js
 | oauth-clients/ | Ignored machine-local provider registration files; never publish |
 | release-artifacts/ | Permanently ignored generated assets; upload approved files through GitHub Releases |
 
-README.md, PRIVACY_POLICY.md and TERMS_OF_SERVICE.md stay at root. All other authored project Markdown lives in development-plans. Dependency-provided documentation is not moved or edited.
+README.md, PRIVACY_POLICY.md, TERMS_OF_SERVICE.md and CODE_SIGNING_POLICY.md stay at root. All other authored project Markdown lives in development-plans. Dependency-provided documentation is not moved or edited.
 
 For a browser sample preview, run from the project root:
 
@@ -575,7 +576,13 @@ For 0.2.10, 272 automated cases plus native-app and exact-installer checks passe
 - [Development Plan 02: future features](development-plans/development-plan-02.md)
 - [Development Plan 04: revised account scope](development-plans/development-plan-04.md)
 
-Source publication is complete. Trusted signing and browser-store connector delivery follow the owner's agreed schedule. A public-binary collection also requires fresh live-platform evidence bound to the final installer hash. Further Windows/GPU/VM coverage is outside this cycle. Encrypted SQLite, portable recovery and automatic updates remain planned; no current button silently enables them.
+Source publication is complete. Trusted signing and browser-store connector delivery remain pending. Strict signed-production collection requires fresh live-platform evidence bound to the final installer hash. A separately reviewed unsigned prerelease is allowed under the [Code signing policy](CODE_SIGNING_POLICY.md), with missing checks disclosed rather than marked passed. Further Windows/GPU/VM coverage is outside this cycle. Encrypted SQLite, portable recovery and automatic updates remain planned; no current button silently enables them.
+
+## Code signing policy
+
+I am applying to SignPath Foundation; approval and signing integration are pending. The current Windows preview is unsigned. I maintain, review and approve releases as SavedDesk's sole maintainer. The [full Code signing policy](CODE_SIGNING_POLICY.md) explains roles, privacy, unsigned prereleases and the intended signing process. It must also be linked from each download/release page.
+
+If approved and operational: **Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org)**. This is a conditional acknowledgement, not a claim that the current preview is signed or sponsored.
 
 ## License, policies and support
 
@@ -585,6 +592,7 @@ Downloaded content retains its owner's rights. Use supported routes only for con
 
 - [Privacy Policy](PRIVACY_POLICY.md)
 - [Terms of Service](TERMS_OF_SERVICE.md)
+- [Code signing policy](CODE_SIGNING_POLICY.md)
 - [Policy publication and Google branding](development-plans/policy-publication.md)
 
 **Maintainer:** Faraz Hussain  

@@ -1,5 +1,7 @@
 # Publication scope and residual cleanup
 
+**SignPath/unsigned-preview follow-up (9 October 2026):** The [Code signing policy](../CODE_SIGNING_POLICY.md) permits a separately reviewed unsigned public prerelease. The exact GitHub-built 0.2.10 installer passed eleven host lifecycle checks and digest/source review. Strict signed-production gates remain unchanged; SignPath approval/integration and fresh hash-bound live acceptance are not claimed. See [current preparation and owner actions](signpath-and-public-preview.md). Existing release assets and tag remain immutable.
+
 **Documentation reviewed: 9 October 2026; current app: 0.2.10.** A guarded follow-up removed inactive synthetic test payloads. The complete user guide and cleanup evidence are linked below; owner media/accounts and immutable release sets were retained.
 
 Start with the [complete installation and user guide](../README.md). See [current verification](scope-and-lifecycle-0.2.10.md) and [documentation/cleanup record](documentation-and-cleanup-0.2.10.md) for current evidence and retained historical boundaries.
@@ -23,9 +25,9 @@ Gallery-dl and FFmpeg remain separately selected external tools, excluded from t
 | Public-platform UI/native/preview scope cleanup | Implemented in 0.2.10; verification recorded separately |
 | Google expiry/refresh/cancel/disconnect/revoke | Controlled acceptance chosen by owner; real grant preserved; live-account refresh/revoke optional |
 | Exact current installer lifecycle | Passed for exact 0.2.10 hash; profile/credentials restored; see report |
-| Git initialization/source publication | Separate owner-held next action; no repository or remote created |
+| Git initialization/source publication | Completed; public main branch at asteroidcrib729/saved-desk |
 | Public policies/Google production branding | Policies created; hosting, domain verification and provider review follow publication |
-| Trusted signing | Deferred until after publication; installer remains unsigned review preview |
+| Trusted signing | SignPath application/integration pending; unsigned prerelease exception documented in the [Code signing policy](../CODE_SIGNING_POLICY.md) |
 | Facebook/TikTok identity | Optional future work only if a useful feature is selected; no private/media export implementation |
 | Pinterest OAuth/private access | Cancelled, not pending |
 | Discord identity | Deferred; attachments need no sign-in |
