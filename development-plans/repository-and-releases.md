@@ -115,3 +115,9 @@ Previews through 0.2.3 are not release candidates. Their checksum-verified origi
 The owner requested local commits grouped by completed development work on 9 October 2026. Earlier file snapshots were not retained, so these commits import current files by workstream rather than fabricate earlier build versions. Shared native/worker/UI files retain their final integrated implementation. Intermediate import commits are not individually accepted historical release builds.
 
 The nine batches cover project foundation; multi-platform worker; native catalog/queue/account/media services; interface and viewer; browser connector; regression harnesses; external-tool packaging, licensing and installer; GitHub automation; and the complete documentation/policies. All 992 source candidates are included, with credentials, downloaded media, test payloads, generated binaries and release-artifacts still excluded. The import itself created no tags, remote or push. The subsequent owner-authorized publication renamed master to main and added origin for the public repository; no release tag or binary upload was created.
+
+## Fresh-checkout CI worker prerequisite
+
+The initial hosted source check passed all 155 worker cases (13 packaged-worker cases skipped) but failed two packaging cases because the ignored worker executable had not been built. The committed licensing/BUNDLE-REVIEW.json is evidence for its recorded payload; its presence does not supply that payload in a fresh checkout.
+
+Both source CI and the Windows release workflow now build and exclusion-audit the worker immediately after the source audit and before Python/packaging checks. This generates matching payload evidence in the runner workspace and enables the packaged-worker regressions. The release workflow reuses that worker for native checks rather than building it twice. Generated binaries remain ignored; no test or redistribution gate is disabled.

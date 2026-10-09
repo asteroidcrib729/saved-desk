@@ -36,6 +36,9 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Audit source and ignore rules
         run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build and audit worker package
+        shell: pwsh
+        run: ./packaging/build-worker.ps1
       - name: Python worker checks
         shell: pwsh
         run: |

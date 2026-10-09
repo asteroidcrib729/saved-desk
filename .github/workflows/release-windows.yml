@@ -65,6 +65,9 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Audit source and ignore rules
         run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build and audit worker package
+        shell: pwsh
+        run: ./packaging/build-worker.ps1
       - name: Python worker checks
         shell: pwsh
         run: |
@@ -85,8 +88,6 @@ jobs:
         run: npm.cmd --prefix desktop test
       - name: Install the tested Rust toolchain
         run: rustup default 1.99.0
-      - name: Package worker for native checks
-        run: ./packaging/build-worker.ps1
       - name: Native unit checks
         run: ./packaging/build-desktop.ps1 -Check
       - name: Authenticate to signing service using OIDC
