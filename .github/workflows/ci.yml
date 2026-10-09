@@ -1,0 +1,56 @@
+name: Source checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.21.0'
+          package-manager-cache: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.7'
+          architecture: x64
+      - name: Install locked dependencies
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          ./.venv/Scripts/python.exe -m pip install -r packaging/requirements-lock.txt
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m pip install --no-build-isolation -e "backend[development]"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m pip check
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          npm.cmd --prefix desktop ci
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Audit source and ignore rules
+        run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Python worker checks
+        shell: pwsh
+        run: |
+          $env:PYTHONPATH = Join-Path $PWD 'backend/src'
+          ./.venv/Scripts/python.exe -m unittest discover -s backend/tests -v
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m unittest discover -s packaging/tests -v
+      - name: Browser connector checks
+        run: npm.cmd --prefix desktop run test:connector
+      - name: Static frontend
+        run: npm.cmd --prefix desktop run build
+      - name: TypeScript checks
+        run: npm.cmd --prefix desktop run typecheck
+      - name: Install Edge for UI checks
+        working-directory: desktop
+        run: npx.cmd playwright install msedge
+      - name: UI checks
+        run: npm.cmd --prefix desktop test
