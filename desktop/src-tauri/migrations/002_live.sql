@@ -1,0 +1,15 @@
+CREATE TABLE accounts(source TEXT PRIMARY KEY, account_id TEXT NOT NULL, username TEXT NOT NULL, browser TEXT NOT NULL, state TEXT NOT NULL, message TEXT NOT NULL DEFAULT '', verified_at TEXT);
+ALTER TABLE download_jobs ADD COLUMN source TEXT;
+ALTER TABLE download_jobs ADD COLUMN account_id TEXT;
+ALTER TABLE download_jobs ADD COLUMN target TEXT;
+ALTER TABLE download_jobs ADD COLUMN quality TEXT NOT NULL DEFAULT 'original';
+ALTER TABLE download_jobs ADD COLUMN profile TEXT NOT NULL DEFAULT 'original';
+ALTER TABLE download_jobs ADD COLUMN error TEXT NOT NULL DEFAULT '';
+ALTER TABLE media_files ADD COLUMN file_key TEXT NOT NULL DEFAULT '';
+ALTER TABLE media_files ADD COLUMN quality TEXT NOT NULL DEFAULT 'original';
+ALTER TABLE media_files ADD COLUMN profile TEXT NOT NULL DEFAULT 'original';
+ALTER TABLE posts ADD COLUMN url TEXT NOT NULL DEFAULT '';
+CREATE INDEX media_identity ON media_files(file_key,quality,profile,post_id);
+CREATE INDEX job_target ON download_jobs(source,account_id,target);
+CREATE UNIQUE INDEX live_job_active ON download_jobs(source,account_id,target) WHERE state IN ('queued','running');
+INSERT INTO schema_versions VALUES(2,strftime('%Y-%m-%dT%H:%M:%fZ','now'));
