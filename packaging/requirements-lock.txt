@@ -1,0 +1,16 @@
+# Windows x64 packaging dependency closure verified on Python 3.14.7.
+# Update together with backend/pyproject.toml and requirements-build.txt.
+altgraph==0.17.5
+certifi==2026.7.22
+charset-normalizer==3.5.2
+idna==3.20
+packaging==26.3
+pefile==2024.8.26
+pyinstaller==6.20.0
+pyinstaller-hooks-contrib==2026.8
+pywin32-ctypes==0.2.3
+requests==2.34.2
+setuptools==84.0.0
+urllib3==2.8.0
+yt-dlp==2026.8.19
+yt-dlp-ejs==0.8.0

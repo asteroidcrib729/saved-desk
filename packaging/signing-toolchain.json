@@ -1,0 +1,6 @@
+{
+  "sdk_version": "1.0.95",
+  "package_url": "https://api.nuget.org/v3-flatcontainer/microsoft.trusted.signing.client/1.0.95/microsoft.trusted.signing.client.1.0.95.nupkg",
+  "package_sha256": "3bfcf1e0a3cb42af1692f0a8ed45c15de070c2de86f28a59b2795d904d8a920f",
+  "azure_login_sha": "a641126d1b8aa4d1fa005f4f92df94a3a4c4c906"
+}

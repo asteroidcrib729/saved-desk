@@ -1,0 +1,29 @@
+HISTORICAL REVIEW REQUESTS - SavedDesk previews through 0.2.3
+The 0.2.4 payload excludes gallery-dl, imageio-ffmpeg and FFmpeg executables.
+These unresolved requests do not certify the old binaries. No permission was received and no request was sent.
+Current distribution evidence: DEPENDENCIES.json and BUNDLE-REVIEW.json.
+
+Outstanding redistribution review requests - NOT SENT
+
+FFmpeg binary supplier: GyanD/codexffmpeg 7.1 essentials (imageio-ffmpeg 0.6.0)
+Binary SHA-256: 2ce797a0f88d7f067180338fb227f7b1928ea727bd9a4d7a1d022f7c52af71a3
+Recorded configuration and license output: FFMPEG-BUILD.txt
+Base source: FFmpeg n7.1 is already collected.
+Required material: all exact statically linked dependency revisions, source archives,
+patches, configure/build scripts, and notices corresponding to this exact binary.
+Please identify the complete corresponding-source/build bundle and its checksums.
+A current FFmpeg version or an archive of only the base FFmpeg source cannot
+establish correspondence for the linked external libraries.
+If those materials cannot be supplied, a controlled source rebuild and complete
+media regression testing are required before replacing the current executable.
+
+Upstream combination: gallery-dl 1.32.14 and Requests 2.34.2
+Gallery-dl declares GPL-2.0-only; Requests declares Apache-2.0.
+SavedDesk imports gallery_dl in a packaged PyInstaller Python worker that also
+contains Requests. Original SavedDesk contributions are MIT; dependency terms
+are preserved and exact Python source distributions are collected.
+Please clarify the intended redistribution permission/exception for this
+combination or identify a reviewed compatible distribution architecture.
+This request does not assert that Python imports necessarily create a derivative
+work. Changing SavedDesk's own license cannot relicense third-party code.
+No upstream messages have been sent and no exception is presumed.

@@ -1,0 +1,199 @@
+{
+  "python": "3.14.7",
+  "runtime_dlls": [
+    {
+      "name": "libcrypto-3.dll",
+      "sha256": "53c529145339fb042a3dcd3a09c2d7753204f8b4fc79d99e0d31e69a33985958",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "libffi-8.dll",
+      "sha256": "eff52743773eb550fcc6ce3efc37c85724502233b6b002a35496d828bd7b280a",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "libssl-3.dll",
+      "sha256": "b17a87979862d19241edc4318f967e24c3ec356ed6c2368f561179fab2311001",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "python314.dll",
+      "sha256": "0f9857ffdfe010fe6b99328d58c2e3c7472ce75f336bf9c2ad9bd5bca3bce700",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "sqlite3.dll",
+      "sha256": "d3e60dd22e62c9fbdb64b31b1b8c48782e1d4958d04d0bf830cffd31ace3275f",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "VCRUNTIME140.dll",
+      "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    },
+    {
+      "name": "VCRUNTIME140_1.dll",
+      "sha256": "a7146c08f89fe5b04541ab507cdb59ff7b44534d4ba3c668a426c6450a03434e",
+      "cpython_distribution_match": true,
+      "origin": "installed CPython Windows distribution"
+    }
+  ],
+  "external_sources": [
+    {
+      "file": "cpython-external/sqlite-3.50.4.0-ef547e549b49.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/ef547e549b49a2822214ef7880c0ca212b32929e",
+      "sha256": "e8d069c4d94cca67809f2d38c299ecc596f93b00061db197c0562cdd042a3418",
+      "bytes": 2845160,
+      "component": "sqlite3",
+      "tag": "sqlite-3.50.4.0",
+      "commit": "ef547e549b49a2822214ef7880c0ca212b32929e",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": []
+    },
+    {
+      "file": "cpython-external/bzip2-1.0.8-05301997b2f9.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/05301997b2f9590f49c672cf3dfd3d3dfa7ad521",
+      "sha256": "ab14accac86cdd92021d50465deeb221b476d6675bd1383d3c7fb83751c2e0a3",
+      "bytes": 819016,
+      "component": "bz2",
+      "tag": "bzip2-1.0.8",
+      "commit": "05301997b2f9590f49c672cf3dfd3d3dfa7ad521",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/bzip2-1.0.8/9bfa893330-LICENSE.txt",
+          "original": "cpython-source-deps-05301997b2f9590f49c672cf3dfd3d3dfa7ad521/LICENSE",
+          "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+        }
+      ]
+    },
+    {
+      "file": "cpython-external/xz-5.2.5-c6bc0c612605.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/c6bc0c612605622aaef101a33a751f9de2ecc193",
+      "sha256": "115433c946ee069e857fd04cf41b38a4a74ed45d868a3b2e08ccd4a1f04f39d0",
+      "bytes": 1745919,
+      "component": "lzma",
+      "tag": "xz-5.2.5",
+      "commit": "c6bc0c612605622aaef101a33a751f9de2ecc193",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/xz-5.2.5/74d94b9c67-COPYING.txt",
+          "original": "cpython-source-deps-c6bc0c612605622aaef101a33a751f9de2ecc193/COPYING",
+          "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c"
+        },
+        {
+          "path": "runtime/xz-5.2.5/f0af47f649-COPYING.GPLv2.txt",
+          "original": "cpython-source-deps-c6bc0c612605622aaef101a33a751f9de2ecc193/COPYING.GPLv2",
+          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+        },
+        {
+          "path": "runtime/xz-5.2.5/3e76fc45ec-COPYING.GPLv3.txt",
+          "original": "cpython-source-deps-c6bc0c612605622aaef101a33a751f9de2ecc193/COPYING.GPLv3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "runtime/xz-5.2.5/635fcf99f4-COPYING.LGPLv2.1.txt",
+          "original": "cpython-source-deps-c6bc0c612605622aaef101a33a751f9de2ecc193/COPYING.LGPLv2.1",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        }
+      ]
+    },
+    {
+      "file": "cpython-external/openssl-3.5.7-6a6901fa60c6.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/6a6901fa60c604816acb50b4e167791e5339c8f8",
+      "sha256": "c65d5be08510e468823bd3689aa8e30681c3f68778b1d2ba528638c7bff11710",
+      "bytes": 53349909,
+      "component": "openssl",
+      "tag": "openssl-3.5.7",
+      "commit": "6a6901fa60c604816acb50b4e167791e5339c8f8",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/openssl-3.5.7/71c6d545b1-LICENSE.txt.txt",
+          "original": "cpython-source-deps-6a6901fa60c604816acb50b4e167791e5339c8f8/LICENSE.txt",
+          "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+        }
+      ]
+    },
+    {
+      "file": "cpython-external/libffi-3.4.4-73b247f34ef3.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/73b247f34ef3ae1859b8c2c34d321d34ebc5db15",
+      "sha256": "a9b2840c1b99a2b57746c50f1f2ab902420628111690ec420e7293ec1f502d7b",
+      "bytes": 1376474,
+      "component": "libffi",
+      "tag": "libffi-3.4.4",
+      "commit": "73b247f34ef3ae1859b8c2c34d321d34ebc5db15",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/libffi-3.4.4/03ef0f6c89-LICENSE.txt",
+          "original": "cpython-source-deps-73b247f34ef3ae1859b8c2c34d321d34ebc5db15/LICENSE",
+          "sha256": "2c9c2acb9743e6b007b91350475308aee44691d96aa20eacef8e199988c8c388"
+        },
+        {
+          "path": "runtime/libffi-3.4.4/7ffefa8c24-LICENSE-BUILDTOOLS.txt",
+          "original": "cpython-source-deps-73b247f34ef3ae1859b8c2c34d321d34ebc5db15/LICENSE-BUILDTOOLS",
+          "sha256": "e67978cd18816c0cb7d29aaaacde7b7447402c2fb321a051698890a8eaedda94"
+        }
+      ]
+    },
+    {
+      "file": "cpython-external/zstd-1.5.7-eef946ae8cf1.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/eef946ae8cf1591c0e5cc5f43486210768647c2e",
+      "sha256": "21eb6a5658925a22148703284e70aa5603ce19ad688a116a2a3f08278c1e86bc",
+      "bytes": 2442365,
+      "component": "zstd",
+      "tag": "zstd-1.5.7",
+      "commit": "eef946ae8cf1591c0e5cc5f43486210768647c2e",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/zstd-1.5.7/8575e3b84e-COPYING.txt",
+          "original": "cpython-source-deps-eef946ae8cf1591c0e5cc5f43486210768647c2e/COPYING",
+          "sha256": "f9c375a1be4a41f7b70301dd83c91cb89e41567478859b77eef375a52d782505"
+        },
+        {
+          "path": "runtime/zstd-1.5.7/c95f34847c-LICENSE.txt",
+          "original": "cpython-source-deps-eef946ae8cf1591c0e5cc5f43486210768647c2e/LICENSE",
+          "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+        },
+        {
+          "path": "runtime/zstd-1.5.7/97ad20f491-LICENSE.txt",
+          "original": "cpython-source-deps-eef946ae8cf1591c0e5cc5f43486210768647c2e/build/LICENSE",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "file": "cpython-external/zlib-ng-2.2.4-a502e047655c.tar.gz",
+      "url": "https://codeload.github.com/python/cpython-source-deps/tar.gz/a502e047655c31db29601def76ad6539acacf43d",
+      "sha256": "bdd663f25d83d29814bd903746392108b7bd5b880d101fc8a07aa3c12dd521f5",
+      "bytes": 2417691,
+      "component": "zlibNg",
+      "tag": "zlib-ng-2.2.4",
+      "commit": "a502e047655c31db29601def76ad6539acacf43d",
+      "build_record": "Python-3.14.7/PCbuild/python.props",
+      "notices": [
+        {
+          "path": "runtime/zlib-ng-2.2.4/fb3c0e591f-LICENSE.md.txt",
+          "original": "cpython-source-deps-a502e047655c31db29601def76ad6539acacf43d/LICENSE.md",
+          "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee"
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "runtime_source_records_complete": true,
+  "limits": [
+    "Source tags are read from exact CPython source; this is provenance evidence, not proof of every binary build flag.",
+    "Microsoft runtime terms are included in the installed CPython LICENSE.txt; retain its Additional Conditions for this Windows binary build.",
+    "Gallery-dl and FFmpeg are excluded from the 0.2.4 payload; historical tool findings do not affect this runtime-only record."
+  ]
+}

@@ -1,0 +1,2359 @@
+SavedDesk third-party notices
+Original SavedDesk code: MIT; third-party licenses remain unchanged.
+This inventory includes build dependencies; their presence is not a claim that every component is shipped.
+Gallery-dl and FFmpeg are external user installations and are not included in this payload. Historical notices do not certify their old bundles.
+Full verbatim notices are in texts/ beside this file. Matching dependency sources must accompany public release assets.
+
+python: altgraph 0.17.5
+Declared terms: MIT
+Source: https://pypi.org/project/altgraph/0.17.5/
+Notice: texts/python/altgraph-0.17.5/fb197afb75-LICENSE.txt
+
+python: certifi 2026.7.22
+Declared terms: MPL-2.0
+Source: https://pypi.org/project/certifi/2026.7.22/
+Notice: texts/python/certifi-2026.7.22/c1aedbaa6d-LICENSE.txt
+
+python: charset-normalizer 3.5.2
+Declared terms: MIT
+Source: https://pypi.org/project/charset-normalizer/3.5.2/
+Notice: texts/python/charset-normalizer-3.5.2/37deb54162-LICENSE.txt
+
+python: idna 3.20
+Declared terms: BSD-3-Clause
+Source: https://pypi.org/project/idna/3.20/
+Notice: texts/python/idna-3.20/d91c8e1dcc-LICENSE.md.txt
+
+python: packaging 26.3
+Declared terms: Apache-2.0 OR BSD-2-Clause
+Source: https://pypi.org/project/packaging/26.3/
+Notice: texts/python/packaging-26.3/11c854e2fe-LICENSE.txt
+Notice: texts/python/packaging-26.3/e9a5bac8b5-LICENSE.APACHE.txt
+Notice: texts/python/packaging-26.3/ef96a0844c-LICENSE.BSD.txt
+
+python: pefile 2024.8.26
+Declared terms: MIT
+Source: https://pypi.org/project/pefile/2024.8.26/
+Notice: texts/python/pefile-2024.8.26/9814bad7ec-LICENSE.txt
+
+python: pyinstaller 6.20.0
+Declared terms: GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)
+Source: https://pypi.org/project/pyinstaller/6.20.0/
+Notice: texts/python/pyinstaller-6.20.0/e81675a6e7-COPYING.txt.txt
+
+python: pyinstaller-hooks-contrib 2026.8
+Declared terms: None
+Source: https://pypi.org/project/pyinstaller-hooks-contrib/2026.8/
+Notice: texts/python/pyinstaller-hooks-contrib-2026.8/a5a70da5a4-LICENSE.txt
+
+python: pywin32-ctypes 0.2.3
+Declared terms: BSD-3-Clause
+Source: https://pypi.org/project/pywin32-ctypes/0.2.3/
+Notice: texts/python/pywin32-ctypes-0.2.3/e9fda7e83e-LICENSE.txt.txt
+
+python: requests 2.34.2
+Declared terms: Apache-2.0
+Source: https://pypi.org/project/requests/2.34.2/
+Notice: texts/python/requests-2.34.2/fb0b720c70-LICENSE.txt
+Notice: texts/python/requests-2.34.2/bd7b91afd6-NOTICE.txt
+
+python: setuptools 84.0.0
+Declared terms: MIT
+Source: https://pypi.org/project/setuptools/84.0.0/
+Notice: texts/python/setuptools-84.0.0/aeab75b4c2-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/b8b1f5f037-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/c9e41e71fb-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/4a7fd6a9c6-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/9fe05a3195-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/4d09286af1-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/63a92caf81-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/6562dd76db-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/c2780f51d1-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/123439bfbc-LICENSE.APACHE.txt
+Notice: texts/python/setuptools-84.0.0/c80865de46-LICENSE.BSD.txt
+Notice: texts/python/setuptools-84.0.0/d6b8bc4557-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/1ab641e912-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/8b28658c9e-LICENSE.txt.txt
+Notice: texts/python/setuptools-84.0.0/0e45092c30-LICENSE.txt
+Notice: texts/python/setuptools-84.0.0/4094fd3590-NOTICE.txt
+Notice: texts/python/setuptools-84.0.0/e972ee51f8-NOTICE.txt
+
+python: urllib3 2.8.0
+Declared terms: MIT
+Source: https://pypi.org/project/urllib3/2.8.0/
+Notice: texts/python/urllib3-2.8.0/3677f050c9-LICENSE.txt.txt
+
+python: yt-dlp 2026.8.19
+Declared terms: Unlicense
+Source: https://pypi.org/project/yt-dlp/2026.8.19/
+Notice: texts/python/yt-dlp-2026.8.19/9dc1caa052-LICENSE.txt
+
+python: yt-dlp-ejs 0.8.0
+Declared terms: Unlicense AND MIT AND ISC
+Source: https://pypi.org/project/yt-dlp-ejs/0.8.0/
+Notice: texts/python/yt-dlp-ejs-0.8.0/8f66c3be22-LICENSE.txt
+
+runtime: cpython 3.14.7
+Declared terms: PSF-2.0 and historical terms
+Source: https://www.python.org/downloads/source/
+Notice: texts/runtime/cpython-3.14.7/d0ed4cc3fb-LICENSE.txt.txt
+
+runtime: node v24.21.0
+Declared terms: MIT plus embedded third-party terms
+Source: https://nodejs.org/dist/v24.21.0/
+Notice: texts/runtime/node-v24.21.0/c693279643-LICENSE.txt
+
+npm: @alloc--quick-lru 5.3.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.3.0.tgz
+Notice: texts/npm/@alloc--quick-lru-5.3.0/cc1d3b0234-license.txt
+
+npm: @axe-core--playwright 4.13.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/@axe-core/playwright/-/playwright-4.13.0.tgz
+Notice: texts/npm/@axe-core--playwright-4.13.0/c693279643-LICENSE.txt
+
+npm-lock-uninstalled: @emnapi--runtime 1.11.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.11.3.tgz
+
+npm: @img--colour 1.1.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/@img/colour/-/colour-1.1.0.tgz
+Notice: texts/npm/@img--colour-1.1.0/4673a3aba0-LICENSE.md.txt
+
+npm-lock-uninstalled: @img--sharp-darwin-arm64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-darwin-arm64/-/sharp-darwin-arm64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-darwin-x64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-darwin-x64/-/sharp-darwin-x64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-freebsd-wasm32 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-freebsd-wasm32/-/sharp-freebsd-wasm32-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-darwin-arm64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-darwin-arm64/-/sharp-libvips-darwin-arm64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-darwin-x64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-darwin-x64/-/sharp-libvips-darwin-x64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-arm 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-arm/-/sharp-libvips-linux-arm-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-arm64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-arm64/-/sharp-libvips-linux-arm64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-ppc64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-ppc64/-/sharp-libvips-linux-ppc64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-riscv64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-riscv64/-/sharp-libvips-linux-riscv64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-s390x 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-s390x/-/sharp-libvips-linux-s390x-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linux-x64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linux-x64/-/sharp-libvips-linux-x64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linuxmusl-arm64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linuxmusl-arm64/-/sharp-libvips-linuxmusl-arm64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-libvips-linuxmusl-x64 1.3.4
+Declared terms: LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-libvips-linuxmusl-x64/-/sharp-libvips-linuxmusl-x64-1.3.4.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-arm 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-arm/-/sharp-linux-arm-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-arm64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-ppc64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-ppc64/-/sharp-linux-ppc64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-riscv64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-riscv64/-/sharp-linux-riscv64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-s390x 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-s390x/-/sharp-linux-s390x-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linux-x64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linux-x64/-/sharp-linux-x64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linuxmusl-arm64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linuxmusl-arm64/-/sharp-linuxmusl-arm64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-linuxmusl-x64 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-linuxmusl-x64/-/sharp-linuxmusl-x64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-wasm32 0.35.5
+Declared terms: Apache-2.0 AND LGPL-3.0-or-later AND MIT
+Source: https://registry.npmjs.org/@img/sharp-wasm32/-/sharp-wasm32-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-webcontainers-wasm32 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@img/sharp-webcontainers-wasm32/-/sharp-webcontainers-wasm32-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-win32-arm64 0.35.5
+Declared terms: Apache-2.0 AND LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-win32-arm64/-/sharp-win32-arm64-0.35.5.tgz
+
+npm-lock-uninstalled: @img--sharp-win32-ia32 0.35.5
+Declared terms: Apache-2.0 AND LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-win32-ia32/-/sharp-win32-ia32-0.35.5.tgz
+
+npm: @img--sharp-win32-x64 0.35.5
+Declared terms: Apache-2.0 AND LGPL-3.0-or-later
+Source: https://registry.npmjs.org/@img/sharp-win32-x64/-/sharp-win32-x64-0.35.5.tgz
+Notice: texts/npm/@img--sharp-win32-x64-0.35.5/c693279643-LICENSE.txt
+
+npm: @jridgewell--gen-mapping 0.3.13
+Declared terms: MIT
+Source: https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz
+Notice: texts/npm/@jridgewell--gen-mapping-0.3.13/c693279643-LICENSE.txt
+
+npm: @jridgewell--remapping 2.3.5
+Declared terms: MIT
+Source: https://registry.npmjs.org/@jridgewell/remapping/-/remapping-2.3.5.tgz
+Notice: texts/npm/@jridgewell--remapping-2.3.5/c693279643-LICENSE.txt
+
+npm: @jridgewell--resolve-uri 3.1.2
+Declared terms: MIT
+Source: https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz
+Notice: texts/npm/@jridgewell--resolve-uri-3.1.2/c693279643-LICENSE.txt
+
+npm: @jridgewell--sourcemap-codec 1.6.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.6.0.tgz
+Notice: texts/npm/@jridgewell--sourcemap-codec-1.6.0/c693279643-LICENSE.txt
+
+npm: @jridgewell--trace-mapping 0.3.31
+Declared terms: MIT
+Source: https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz
+Notice: texts/npm/@jridgewell--trace-mapping-0.3.31/c693279643-LICENSE.txt
+
+npm: @next--env 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/env/-/env-16.3.8.tgz
+Notice: upstream/npm--next--env-16.3.8/LICENSE.txt
+
+npm-lock-uninstalled: @next--swc-darwin-arm64 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-darwin-x64 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-linux-arm64-gnu 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-linux-arm64-musl 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-linux-x64-gnu 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-linux-x64-musl 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-16.3.8.tgz
+
+npm-lock-uninstalled: @next--swc-win32-arm64-msvc 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-16.3.8.tgz
+
+npm: @next--swc-win32-x64-msvc 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.3.8.tgz
+Notice: upstream/npm--next--swc-win32-x64-msvc-16.3.8/LICENSE.txt
+
+npm: @playwright--test 1.63.0
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@playwright/test/-/test-1.63.0.tgz
+Notice: texts/npm/@playwright--test-1.63.0/c693279643-LICENSE.txt
+Notice: texts/npm/@playwright--test-1.63.0/dfb14fbb9e-NOTICE.txt
+
+npm: @swc--helpers 0.5.23
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.23.tgz
+Notice: texts/npm/@swc--helpers-0.5.23/c693279643-LICENSE.txt
+
+npm: @tailwindcss--node 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/node/-/node-4.3.3.tgz
+Notice: texts/npm/@tailwindcss--node-4.3.3/c693279643-LICENSE.txt
+
+npm: @tailwindcss--oxide 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide/-/oxide-4.3.3.tgz
+Notice: texts/npm/@tailwindcss--oxide-4.3.3/c693279643-LICENSE.txt
+
+npm-lock-uninstalled: @tailwindcss--oxide-android-arm64 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-android-arm64/-/oxide-android-arm64-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-darwin-arm64 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-darwin-arm64/-/oxide-darwin-arm64-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-darwin-x64 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-darwin-x64/-/oxide-darwin-x64-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-freebsd-x64 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-freebsd-x64/-/oxide-freebsd-x64-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-linux-arm-gnueabihf 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-linux-arm-gnueabihf/-/oxide-linux-arm-gnueabihf-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-linux-arm64-gnu 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-linux-arm64-gnu/-/oxide-linux-arm64-gnu-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-linux-arm64-musl 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-linux-arm64-musl/-/oxide-linux-arm64-musl-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-linux-x64-gnu 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-linux-x64-gnu/-/oxide-linux-x64-gnu-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-linux-x64-musl 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-linux-x64-musl/-/oxide-linux-x64-musl-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-wasm32-wasi 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-wasm32-wasi/-/oxide-wasm32-wasi-4.3.3.tgz
+
+npm-lock-uninstalled: @tailwindcss--oxide-win32-arm64-msvc 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-win32-arm64-msvc/-/oxide-win32-arm64-msvc-4.3.3.tgz
+
+npm: @tailwindcss--oxide-win32-x64-msvc 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/oxide-win32-x64-msvc/-/oxide-win32-x64-msvc-4.3.3.tgz
+Notice: texts/npm/@tailwindcss--oxide-win32-x64-msvc-4.3.3/c693279643-LICENSE.txt
+
+npm: @tailwindcss--postcss 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/@tailwindcss/postcss/-/postcss-4.3.3.tgz
+Notice: texts/npm/@tailwindcss--postcss-4.3.3/c693279643-LICENSE.txt
+
+npm: @tauri-apps--api 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/api/-/api-2.12.1.tgz
+Notice: texts/npm/@tauri-apps--api-2.12.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/npm/@tauri-apps--api-2.12.1/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/npm/@tauri-apps--api-2.12.1/b61c1e30f5-LICENSE.spdx.txt
+
+npm: @tauri-apps--cli 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli/-/cli-2.12.1.tgz
+Notice: texts/npm/@tauri-apps--cli-2.12.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/npm/@tauri-apps--cli-2.12.1/421f8eecf7-LICENSE-MIT.txt
+
+npm-lock-uninstalled: @tauri-apps--cli-darwin-arm64 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-darwin-arm64/-/cli-darwin-arm64-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-darwin-x64 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-darwin-x64/-/cli-darwin-x64-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-arm-gnueabihf 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-arm-gnueabihf/-/cli-linux-arm-gnueabihf-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-arm64-gnu 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-arm64-gnu/-/cli-linux-arm64-gnu-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-arm64-musl 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-arm64-musl/-/cli-linux-arm64-musl-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-riscv64-gnu 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-riscv64-gnu/-/cli-linux-riscv64-gnu-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-x64-gnu 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-x64-gnu/-/cli-linux-x64-gnu-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-linux-x64-musl 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-linux-x64-musl/-/cli-linux-x64-musl-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-win32-arm64-msvc 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-win32-arm64-msvc/-/cli-win32-arm64-msvc-2.12.1.tgz
+
+npm-lock-uninstalled: @tauri-apps--cli-win32-ia32-msvc 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-win32-ia32-msvc/-/cli-win32-ia32-msvc-2.12.1.tgz
+
+npm: @tauri-apps--cli-win32-x64-msvc 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://registry.npmjs.org/@tauri-apps/cli-win32-x64-msvc/-/cli-win32-x64-msvc-2.12.1.tgz
+Notice: upstream/npm--tauri-apps--cli-win32-x64-msvc-2.12.1/LICENSE.txt
+
+npm: @tauri-apps--plugin-dialog 2.8.1
+Declared terms: MIT OR Apache-2.0
+Source: https://registry.npmjs.org/@tauri-apps/plugin-dialog/-/plugin-dialog-2.8.1.tgz
+Notice: texts/npm/@tauri-apps--plugin-dialog-2.8.1/b61c1e30f5-LICENSE.spdx.txt
+
+npm: @types--node 24.19.1
+Declared terms: MIT
+Source: https://registry.npmjs.org/@types/node/-/node-24.19.1.tgz
+Notice: texts/npm/@types--node-24.19.1/c693279643-LICENSE.txt
+
+npm: @types--react 19.3.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz
+Notice: texts/npm/@types--react-19.3.0/c693279643-LICENSE.txt
+
+npm: @types--react-dom 19.3.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz
+Notice: texts/npm/@types--react-dom-19.3.0/c693279643-LICENSE.txt
+
+npm: axe-core 4.13.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/axe-core/-/axe-core-4.13.0.tgz
+Notice: texts/npm/axe-core-4.13.0/c693279643-LICENSE.txt
+Notice: texts/npm/axe-core-4.13.0/45a9f42fdf-LICENSE-3RD-PARTY.txt.txt
+
+npm: baseline-browser-mapping 2.11.27
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.27.tgz
+Notice: texts/npm/baseline-browser-mapping-2.11.27/d0ed4cc3fb-LICENSE.txt.txt
+
+npm: caniuse-lite 1.0.30001814
+Declared terms: CC-BY-4.0
+Source: https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001814.tgz
+Notice: texts/npm/caniuse-lite-1.0.30001814/c693279643-LICENSE.txt
+
+npm: client-only 0.0.1
+Declared terms: MIT
+Source: https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz
+Notice: upstream/npm-client-only-0.0.1/LICENSE.txt
+
+npm: csstype 3.2.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz
+Notice: texts/npm/csstype-3.2.3/c693279643-LICENSE.txt
+
+npm: detect-libc 2.1.2
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz
+Notice: texts/npm/detect-libc-2.1.2/c693279643-LICENSE.txt
+
+npm: enhanced-resolve 5.26.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.26.0.tgz
+Notice: texts/npm/enhanced-resolve-5.26.0/c693279643-LICENSE.txt
+
+npm: graceful-fs 4.2.11
+Declared terms: ISC
+Source: https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz
+Notice: texts/npm/graceful-fs-4.2.11/c693279643-LICENSE.txt
+
+npm: jiti 2.7.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/jiti/-/jiti-2.7.0.tgz
+Notice: texts/npm/jiti-2.7.0/c693279643-LICENSE.txt
+
+npm: lightningcss 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss/-/lightningcss-1.32.0.tgz
+Notice: texts/npm/lightningcss-1.32.0/c693279643-LICENSE.txt
+
+npm-lock-uninstalled: lightningcss-android-arm64 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-android-arm64/-/lightningcss-android-arm64-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-darwin-arm64 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-darwin-x64 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-darwin-x64/-/lightningcss-darwin-x64-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-freebsd-x64 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-freebsd-x64/-/lightningcss-freebsd-x64-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-linux-arm-gnueabihf 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/-/lightningcss-linux-arm-gnueabihf-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-linux-arm64-gnu 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-linux-arm64-gnu/-/lightningcss-linux-arm64-gnu-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-linux-arm64-musl 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-linux-arm64-musl/-/lightningcss-linux-arm64-musl-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-linux-x64-gnu 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-linux-x64-musl 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.32.0.tgz
+
+npm-lock-uninstalled: lightningcss-win32-arm64-msvc 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-win32-arm64-msvc/-/lightningcss-win32-arm64-msvc-1.32.0.tgz
+
+npm: lightningcss-win32-x64-msvc 1.32.0
+Declared terms: MPL-2.0
+Source: https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.32.0.tgz
+Notice: texts/npm/lightningcss-win32-x64-msvc-1.32.0/c693279643-LICENSE.txt
+
+npm: magic-string 0.30.21
+Declared terms: MIT
+Source: https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz
+Notice: texts/npm/magic-string-0.30.21/c693279643-LICENSE.txt
+
+npm: nanoid 3.3.19
+Declared terms: MIT
+Source: https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz
+Notice: texts/npm/nanoid-3.3.19/c693279643-LICENSE.txt
+
+npm: next 16.3.8
+Declared terms: MIT
+Source: https://registry.npmjs.org/next/-/next-16.3.8.tgz
+Notice: texts/npm/next-16.3.8/cc8c0a416a-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b33c77d6c9-LICENSE.txt
+Notice: texts/npm/next-16.3.8/aa0b6617dd-LICENSE.txt
+Notice: texts/npm/next-16.3.8/867c799784-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a56111a97f-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ab02a0cadb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e76bfd72d0-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c874175115-LICENSE.txt
+Notice: texts/npm/next-16.3.8/31f3bcaebe-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e4a9c504b6-LICENSE.txt
+Notice: texts/npm/next-16.3.8/549ae560b0-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6d11cf070c-LICENSE.txt
+Notice: texts/npm/next-16.3.8/337f619018-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2ac64717b4-LICENSE.txt
+Notice: texts/npm/next-16.3.8/aa624a32b7-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ac274626b0-LICENSE.txt
+Notice: texts/npm/next-16.3.8/eac3543a85-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c4f7f01465-LICENSE.txt
+Notice: texts/npm/next-16.3.8/5f298cdc21-LICENSE.txt
+Notice: texts/npm/next-16.3.8/d43cd416bf-LICENSE.txt
+Notice: texts/npm/next-16.3.8/02c63536d2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/cba495a10d-LICENSE.txt
+Notice: texts/npm/next-16.3.8/8aff6b6b97-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f6a756a1a2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c18b0df4bb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/26471b505a-LICENSE.txt
+Notice: texts/npm/next-16.3.8/d22a25c436-LICENSE.txt
+Notice: texts/npm/next-16.3.8/14364267b5-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4164b4826b-LICENSE.txt
+Notice: texts/npm/next-16.3.8/228029caa6-LICENSE.txt
+Notice: texts/npm/next-16.3.8/718d8e3c43-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f479677adf-LICENSE.txt
+Notice: texts/npm/next-16.3.8/3fcdf08588-LICENSE.txt
+Notice: texts/npm/next-16.3.8/0aea4f38ba-LICENSE.txt
+Notice: texts/npm/next-16.3.8/fb3e38e160-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6e5d6d5877-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c956623fa3-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4c167737f7-LICENSE.txt
+Notice: texts/npm/next-16.3.8/97d5cb3869-LICENSE.txt
+Notice: texts/npm/next-16.3.8/3d5b32c260-LICENSE.txt
+Notice: texts/npm/next-16.3.8/361657abc4-LICENSE.txt
+Notice: texts/npm/next-16.3.8/d2e5c36a8b-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c99ca65953-LICENSE.txt
+Notice: texts/npm/next-16.3.8/d6cf6cbfdb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/69eda9cdee-LICENSE.txt
+Notice: texts/npm/next-16.3.8/77a5437860-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4034dd6300-LICENSE.txt
+Notice: texts/npm/next-16.3.8/45c91679f7-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f8481c8d6e-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6af3858d59-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f8003dbca9-LICENSE.txt
+Notice: texts/npm/next-16.3.8/953cb60d89-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c81c94e29d-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6654d82775-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e73ed9634e-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a583e4e13c-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a64221c21c-LICENSE.txt
+Notice: texts/npm/next-16.3.8/8960082113-LICENSE.txt
+Notice: texts/npm/next-16.3.8/3dcd55f713-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4b8e51f898-LICENSE.txt
+Notice: texts/npm/next-16.3.8/313dc68066-LICENSE.txt
+Notice: texts/npm/next-16.3.8/8c0d5f9b49-LICENSE.txt
+Notice: texts/npm/next-16.3.8/0442b88ae6-LICENSE.txt
+Notice: texts/npm/next-16.3.8/40685bc74c-LICENSE.txt
+Notice: texts/npm/next-16.3.8/88fc1daddd-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e6c57c034e-LICENSE.txt
+Notice: texts/npm/next-16.3.8/0c3ac2daec-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4d35e844b8-LICENSE.txt
+Notice: texts/npm/next-16.3.8/71e7060b72-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b8b01eb2c3-LICENSE.txt
+Notice: texts/npm/next-16.3.8/603c9167ad-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ccf8622592-LICENSE.txt
+Notice: texts/npm/next-16.3.8/1d26430eeb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/8611cca5a5-LICENSE.txt
+Notice: texts/npm/next-16.3.8/564abf4bb2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/076013e907-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2164dc0f32-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e66e0baadf-LICENSE.txt
+Notice: texts/npm/next-16.3.8/0a0b5ea40b-LICENSE.txt
+Notice: texts/npm/next-16.3.8/89084d8637-LICENSE.txt
+Notice: texts/npm/next-16.3.8/97082e3a8e-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b58829a267-LICENSE.txt
+Notice: texts/npm/next-16.3.8/599b20065e-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2c669c7052-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a042f8128d-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f8968927dd-LICENSE.txt
+Notice: texts/npm/next-16.3.8/7ac410b9bd-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f89926758f-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ff7e7142e9-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a79886f770-LICENSE.txt
+Notice: texts/npm/next-16.3.8/8a16dd0aa7-LICENSE.txt
+Notice: texts/npm/next-16.3.8/80538b5d33-LICENSE.txt
+Notice: texts/npm/next-16.3.8/aa7e86f824-LICENSE.txt
+Notice: texts/npm/next-16.3.8/aa04212fc2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/e4a4a2b303-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b7be81ee00-LICENSE.txt
+Notice: texts/npm/next-16.3.8/183ccef2be-LICENSE.txt
+Notice: texts/npm/next-16.3.8/be418a1097-LICENSE.txt
+Notice: texts/npm/next-16.3.8/28c8472bad-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c8413f2208-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b34e39132f-LICENSE.txt
+Notice: texts/npm/next-16.3.8/69f85758a4-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ebad748aa2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/77df94d3f1-LICENSE.txt
+Notice: texts/npm/next-16.3.8/fd32e46bc3-LICENSE.txt
+Notice: texts/npm/next-16.3.8/917424fcde-LICENSE.txt
+Notice: texts/npm/next-16.3.8/a735d6ced0-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c8bb7dcbf6-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f3dd70e65f-LICENSE.txt
+Notice: texts/npm/next-16.3.8/ed81a3b749-LICENSE.txt
+Notice: texts/npm/next-16.3.8/084f3566ff-LICENSE.txt
+Notice: texts/npm/next-16.3.8/c715abebf2-LICENSE.txt
+Notice: texts/npm/next-16.3.8/73d6954f87-LICENSE.txt
+Notice: texts/npm/next-16.3.8/b1724d3fea-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6dc2ec5225-LICENSE.txt
+Notice: texts/npm/next-16.3.8/6a913e8b5a-LICENSE.txt
+Notice: texts/npm/next-16.3.8/0fe63fcbc1-LICENSE.txt
+Notice: texts/npm/next-16.3.8/004ac9ff23-LICENSE.txt
+Notice: texts/npm/next-16.3.8/f8335ee8cb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/683710eb90-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2290f4afbb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/1252ef0504-LICENSE.txt
+Notice: texts/npm/next-16.3.8/3e39a4971c-LICENSE.txt
+Notice: texts/npm/next-16.3.8/59fcba4f85-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2af2c7804d-LICENSE.txt
+Notice: texts/npm/next-16.3.8/2830829070-LICENSE.txt
+Notice: texts/npm/next-16.3.8/3481bf29eb-LICENSE.txt
+Notice: texts/npm/next-16.3.8/9685853126-LICENSE.txt
+Notice: texts/npm/next-16.3.8/4a5c2294e1-LICENSE.txt
+Notice: texts/npm/next-16.3.8/365c9d656b-LICENSE.txt
+Notice: texts/npm/next-16.3.8/440066b116-LICENSE.txt
+Notice: texts/npm/next-16.3.8/734662f195-license.md.txt
+
+npm: postcss 8.5.23
+Declared terms: MIT
+Source: https://registry.npmjs.org/postcss/-/postcss-8.5.23.tgz
+Notice: texts/npm/postcss-8.5.23/c693279643-LICENSE.txt
+
+npm: picocolors 1.1.1
+Declared terms: ISC
+Source: https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz
+Notice: texts/npm/picocolors-1.1.1/c693279643-LICENSE.txt
+
+npm: playwright 1.63.0
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/playwright/-/playwright-1.63.0.tgz
+Notice: texts/npm/playwright-1.63.0/c693279643-LICENSE.txt
+Notice: texts/npm/playwright-1.63.0/dfb14fbb9e-NOTICE.txt
+
+npm: playwright-core 1.63.0
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/playwright-core/-/playwright-core-1.63.0.tgz
+Notice: texts/npm/playwright-core-1.63.0/c693279643-LICENSE.txt
+Notice: texts/npm/playwright-core-1.63.0/dfb14fbb9e-NOTICE.txt
+
+npm: postcss 8.5.28
+Declared terms: MIT
+Source: https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz
+Notice: texts/npm/postcss-8.5.28/c693279643-LICENSE.txt
+
+npm: react 19.3.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/react/-/react-19.3.0.tgz
+Notice: texts/npm/react-19.3.0/c693279643-LICENSE.txt
+
+npm: react-dom 19.3.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz
+Notice: texts/npm/react-dom-19.3.0/c693279643-LICENSE.txt
+
+npm: scheduler 0.28.0
+Declared terms: MIT
+Source: https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz
+Notice: texts/npm/scheduler-0.28.0/c693279643-LICENSE.txt
+
+npm: semver 7.8.5
+Declared terms: ISC
+Source: https://registry.npmjs.org/semver/-/semver-7.8.5.tgz
+Notice: texts/npm/semver-7.8.5/c693279643-LICENSE.txt
+
+npm: sharp 0.35.5
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/sharp/-/sharp-0.35.5.tgz
+Notice: texts/npm/sharp-0.35.5/c693279643-LICENSE.txt
+
+npm: source-map-js 1.2.2
+Declared terms: BSD-3-Clause
+Source: https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz
+Notice: texts/npm/source-map-js-1.2.2/c693279643-LICENSE.txt
+
+npm: styled-jsx 5.1.6
+Declared terms: MIT
+Source: https://registry.npmjs.org/styled-jsx/-/styled-jsx-5.1.6.tgz
+Notice: texts/npm/styled-jsx-5.1.6/734662f195-license.md.txt
+
+npm: tailwindcss 4.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.3.3.tgz
+Notice: texts/npm/tailwindcss-4.3.3/c693279643-LICENSE.txt
+
+npm: tapable 2.3.3
+Declared terms: MIT
+Source: https://registry.npmjs.org/tapable/-/tapable-2.3.3.tgz
+Notice: texts/npm/tapable-2.3.3/c693279643-LICENSE.txt
+
+npm: tslib 2.8.1
+Declared terms: 0BSD
+Source: https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz
+Notice: texts/npm/tslib-2.8.1/d0ed4cc3fb-LICENSE.txt.txt
+
+npm: typescript 5.9.3
+Declared terms: Apache-2.0
+Source: https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz
+Notice: texts/npm/typescript-5.9.3/d0ed4cc3fb-LICENSE.txt.txt
+
+npm: undici-types 7.24.6
+Declared terms: MIT
+Source: https://registry.npmjs.org/undici-types/-/undici-types-7.24.6.tgz
+Notice: texts/npm/undici-types-7.24.6/c693279643-LICENSE.txt
+
+rust: adler2 2.0.1
+Declared terms: 0BSD OR MIT OR Apache-2.0
+Source: https://crates.io/crates/adler2/2.0.1
+Notice: texts/rust/adler2-2.0.1/cfb90341d7-LICENSE-0BSD.txt
+Notice: texts/rust/adler2-2.0.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/adler2-2.0.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: aho-corasick 1.1.5
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/aho-corasick/1.1.5
+Notice: texts/rust/aho-corasick-1.1.5/400d38e5cf-COPYING.txt
+Notice: texts/rust/aho-corasick-1.1.5/421f8eecf7-LICENSE-MIT.txt
+
+rust: alloc-no-stdlib 3.0.0
+Declared terms: BSD-3-Clause
+Source: https://crates.io/crates/alloc-no-stdlib/3.0.0
+Notice: texts/rust/alloc-no-stdlib-3.0.0/c693279643-LICENSE.txt
+
+rust: alloc-stdlib 0.3.0
+Declared terms: BSD-3-Clause
+Source: https://crates.io/crates/alloc-stdlib/0.3.0
+Notice: upstream/rust-alloc-stdlib-0.3.0/c693279643-LICENSE.txt
+
+rust: anyhow 1.0.104
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/anyhow/1.0.104
+Notice: texts/rust/anyhow-1.0.104/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/anyhow-1.0.104/421f8eecf7-LICENSE-MIT.txt
+
+rust: autocfg 1.5.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/autocfg/1.5.1
+Notice: texts/rust/autocfg-1.5.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/autocfg-1.5.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: base64 0.22.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/base64/0.22.1
+Notice: texts/rust/base64-0.22.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/base64-0.22.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: base64 0.23.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/base64/0.23.1
+Notice: texts/rust/base64-0.23.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/base64-0.23.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: bit-set 0.8.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/bit-set/0.8.0
+Notice: texts/rust/bit-set-0.8.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/bit-set-0.8.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: bit-vec 0.8.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/bit-vec/0.8.0
+Notice: texts/rust/bit-vec-0.8.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/bit-vec-0.8.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: bitflags 1.3.2
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/bitflags/1.3.2
+Notice: texts/rust/bitflags-1.3.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/bitflags-1.3.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: bitflags 2.13.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/bitflags/2.13.2
+Notice: texts/rust/bitflags-2.13.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/bitflags-2.13.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: block-buffer 0.10.4
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/block-buffer/0.10.4
+Notice: texts/rust/block-buffer-0.10.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/block-buffer-0.10.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: brotli 9.0.0
+Declared terms: BSD-3-Clause AND MIT
+Source: https://crates.io/crates/brotli/9.0.0
+Notice: texts/rust/brotli-9.0.0/42fd7cb4ad-LICENSE.BSD-3-Clause.txt
+Notice: texts/rust/brotli-9.0.0/65517d19fc-LICENSE.MIT.txt
+
+rust: brotli-decompressor 6.0.1
+Declared terms: BSD-3-Clause/MIT
+Source: https://crates.io/crates/brotli-decompressor/6.0.1
+Notice: texts/rust/brotli-decompressor-6.0.1/c693279643-LICENSE.txt
+
+rust: bs58 0.5.1
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/bs58/0.5.1
+Notice: texts/rust/bs58-0.5.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/bs58-0.5.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: byteorder 1.5.0
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/byteorder/1.5.0
+Notice: texts/rust/byteorder-1.5.0/400d38e5cf-COPYING.txt
+Notice: texts/rust/byteorder-1.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: bytes 1.12.1
+Declared terms: MIT
+Source: https://crates.io/crates/bytes/1.12.1
+Notice: texts/rust/bytes-1.12.1/c693279643-LICENSE.txt
+
+rust: camino 1.2.6
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/camino/1.2.6
+Notice: texts/rust/camino-1.2.6/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/camino-1.2.6/421f8eecf7-LICENSE-MIT.txt
+
+rust: cargo-platform 0.1.9
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/cargo-platform/0.1.9
+Notice: texts/rust/cargo-platform-0.1.9/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/cargo-platform-0.1.9/421f8eecf7-LICENSE-MIT.txt
+
+rust: cargo_metadata 0.19.2
+Declared terms: MIT
+Source: https://crates.io/crates/cargo_metadata/0.19.2
+Notice: texts/rust/cargo_metadata-0.19.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: cargo_toml 1.0.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/cargo_toml/1.0.1
+Notice: texts/rust/cargo_toml-1.0.1/c693279643-LICENSE.txt
+
+rust: cc 1.6.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/cc/1.6.0
+Notice: texts/rust/cc-1.6.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/cc-1.6.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: cfb 0.14.0
+Declared terms: MIT
+Source: https://crates.io/crates/cfb/0.14.0
+Notice: texts/rust/cfb-0.14.0/c693279643-LICENSE.txt
+
+rust: cfg-if 1.0.5
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/cfg-if/1.0.5
+Notice: texts/rust/cfg-if-1.0.5/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/cfg-if-1.0.5/421f8eecf7-LICENSE-MIT.txt
+
+rust: chrono 0.4.45
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/chrono/0.4.45
+Notice: texts/rust/chrono-0.4.45/d0ed4cc3fb-LICENSE.txt.txt
+
+rust: cookie 0.18.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/cookie/0.18.2
+Notice: texts/rust/cookie-0.18.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/cookie-0.18.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: cpufeatures 0.2.17
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/cpufeatures/0.2.17
+Notice: texts/rust/cpufeatures-0.2.17/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/cpufeatures-0.2.17/421f8eecf7-LICENSE-MIT.txt
+
+rust: crc32fast 1.5.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/crc32fast/1.5.2
+Notice: texts/rust/crc32fast-1.5.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/crc32fast-1.5.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: crossbeam-channel 0.5.17
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/crossbeam-channel/0.5.17
+Notice: texts/rust/crossbeam-channel-0.5.17/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/crossbeam-channel-0.5.17/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/crossbeam-channel-0.5.17/c699903c71-LICENSE-THIRD-PARTY.txt
+
+rust: crossbeam-utils 0.8.23
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/crossbeam-utils/0.8.23
+Notice: texts/rust/crossbeam-utils-0.8.23/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/crossbeam-utils-0.8.23/421f8eecf7-LICENSE-MIT.txt
+
+rust: crypto-common 0.1.7
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/crypto-common/0.1.7
+Notice: texts/rust/crypto-common-0.1.7/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/crypto-common-0.1.7/421f8eecf7-LICENSE-MIT.txt
+
+rust: cssparser 0.37.0
+Declared terms: MPL-2.0
+Source: https://crates.io/crates/cssparser/0.37.0
+Notice: texts/rust/cssparser-0.37.0/c693279643-LICENSE.txt
+
+rust: cssparser-macros 0.7.1
+Declared terms: MPL-2.0
+Source: https://crates.io/crates/cssparser-macros/0.7.1
+Notice: texts/rust/cssparser-macros-0.7.1/c693279643-LICENSE.txt
+
+rust: ctor 1.0.13
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/ctor/1.0.13
+Notice: texts/rust/ctor-1.0.13/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/ctor-1.0.13/421f8eecf7-LICENSE-MIT.txt
+
+rust: darling 0.24.1
+Declared terms: MIT
+Source: https://crates.io/crates/darling/0.24.1
+Notice: texts/rust/darling-0.24.1/c693279643-LICENSE.txt
+
+rust: darling_core 0.24.1
+Declared terms: MIT
+Source: https://crates.io/crates/darling_core/0.24.1
+Notice: texts/rust/darling_core-0.24.1/c693279643-LICENSE.txt
+
+rust: darling_macro 0.24.1
+Declared terms: MIT
+Source: https://crates.io/crates/darling_macro/0.24.1
+Notice: texts/rust/darling_macro-0.24.1/c693279643-LICENSE.txt
+
+rust: defmt 1.1.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/defmt/1.1.1
+Notice: texts/rust/defmt-1.1.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/defmt-1.1.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: defmt-macros 1.1.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/defmt-macros/1.1.1
+Notice: texts/rust/defmt-macros-1.1.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/defmt-macros-1.1.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: defmt-parser 1.0.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/defmt-parser/1.0.0
+Notice: upstream/rust-defmt-parser-1.0.0/1b7a452802-LICENSE-APACHE.txt
+Notice: upstream/rust-defmt-parser-1.0.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: deranged 0.5.8
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/deranged/0.5.8
+Notice: texts/rust/deranged-0.5.8/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/deranged-0.5.8/421f8eecf7-LICENSE-MIT.txt
+
+rust: derive_more 2.1.1
+Declared terms: MIT
+Source: https://crates.io/crates/derive_more/2.1.1
+Notice: texts/rust/derive_more-2.1.1/c693279643-LICENSE.txt
+
+rust: derive_more-impl 2.1.1
+Declared terms: MIT
+Source: https://crates.io/crates/derive_more-impl/2.1.1
+Notice: texts/rust/derive_more-impl-2.1.1/c693279643-LICENSE.txt
+
+rust: digest 0.10.7
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/digest/0.10.7
+Notice: texts/rust/digest-0.10.7/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/digest-0.10.7/421f8eecf7-LICENSE-MIT.txt
+
+rust: dirs 7.0.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/dirs/7.0.0
+Notice: texts/rust/dirs-7.0.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/dirs-7.0.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: dirs-sys 0.5.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/dirs-sys/0.5.0
+Notice: texts/rust/dirs-sys-0.5.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/dirs-sys-0.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: displaydoc 0.2.7
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/displaydoc/0.2.7
+Notice: texts/rust/displaydoc-0.2.7/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/displaydoc-0.2.7/421f8eecf7-LICENSE-MIT.txt
+
+rust: dom_query 0.28.0
+Declared terms: MIT
+Source: https://crates.io/crates/dom_query/0.28.0
+Notice: texts/rust/dom_query-0.28.0/c693279643-LICENSE.txt
+
+rust: dpi 0.1.2
+Declared terms: Apache-2.0 AND MIT
+Source: https://crates.io/crates/dpi/0.1.2
+Notice: texts/rust/dpi-0.1.2/c693279643-LICENSE.txt
+Notice: texts/rust/dpi-0.1.2/4a98e3c5a3-LICENSE-LIBM-MIT.txt
+
+rust: dtoa 1.0.11
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/dtoa/1.0.11
+Notice: texts/rust/dtoa-1.0.11/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/dtoa-1.0.11/421f8eecf7-LICENSE-MIT.txt
+
+rust: dtoa-short 0.3.5
+Declared terms: MPL-2.0
+Source: https://crates.io/crates/dtoa-short/0.3.5
+Notice: texts/rust/dtoa-short-0.3.5/c693279643-LICENSE.txt
+
+rust: dunce 1.0.5
+Declared terms: CC0-1.0 OR MIT-0 OR Apache-2.0
+Source: https://crates.io/crates/dunce/1.0.5
+Notice: texts/rust/dunce-1.0.5/c693279643-LICENSE.txt
+
+rust: dyn-clone 1.0.20
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/dyn-clone/1.0.20
+Notice: texts/rust/dyn-clone-1.0.20/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/dyn-clone-1.0.20/421f8eecf7-LICENSE-MIT.txt
+
+rust: embed-resource 3.0.11
+Declared terms: MIT
+Source: https://crates.io/crates/embed-resource/3.0.11
+Notice: texts/rust/embed-resource-3.0.11/c693279643-LICENSE.txt
+
+rust: equivalent 1.0.2
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/equivalent/1.0.2
+Notice: texts/rust/equivalent-1.0.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/equivalent-1.0.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: erased-serde 0.4.10
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/erased-serde/0.4.10
+Notice: texts/rust/erased-serde-0.4.10/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/erased-serde-0.4.10/421f8eecf7-LICENSE-MIT.txt
+
+rust: fallible-iterator 0.3.0
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/fallible-iterator/0.3.0
+Notice: texts/rust/fallible-iterator-0.3.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/fallible-iterator-0.3.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: fallible-streaming-iterator 0.1.9
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/fallible-streaming-iterator/0.1.9
+Notice: texts/rust/fallible-streaming-iterator-0.1.9/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/fallible-streaming-iterator-0.1.9/421f8eecf7-LICENSE-MIT.txt
+
+rust: fastrand 2.5.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/fastrand/2.5.0
+Notice: texts/rust/fastrand-2.5.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/fastrand-2.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: fdeflate 0.3.7
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/fdeflate/0.3.7
+Notice: texts/rust/fdeflate-0.3.7/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/fdeflate-0.3.7/421f8eecf7-LICENSE-MIT.txt
+
+rust: find-msvc-tools 0.1.14
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/find-msvc-tools/0.1.14
+Notice: texts/rust/find-msvc-tools-0.1.14/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/find-msvc-tools-0.1.14/421f8eecf7-LICENSE-MIT.txt
+
+rust: flate2 1.1.10
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/flate2/1.1.10
+Notice: texts/rust/flate2-1.1.10/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/flate2-1.1.10/421f8eecf7-LICENSE-MIT.txt
+
+rust: fnv 1.0.7
+Declared terms: Apache-2.0 / MIT
+Source: https://crates.io/crates/fnv/1.0.7
+Notice: texts/rust/fnv-1.0.7/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/fnv-1.0.7/421f8eecf7-LICENSE-MIT.txt
+
+rust: foldhash 0.2.0
+Declared terms: Zlib
+Source: https://crates.io/crates/foldhash/0.2.0
+Notice: texts/rust/foldhash-0.2.0/c693279643-LICENSE.txt
+
+rust: form_urlencoded 1.2.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/form_urlencoded/1.2.2
+Notice: texts/rust/form_urlencoded-1.2.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/form_urlencoded-1.2.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: generic-array 0.14.7
+Declared terms: MIT
+Source: https://crates.io/crates/generic-array/0.14.7
+Notice: texts/rust/generic-array-0.14.7/c693279643-LICENSE.txt
+
+rust: getrandom 0.3.4
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/getrandom/0.3.4
+Notice: texts/rust/getrandom-0.3.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/getrandom-0.3.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: getrandom 0.4.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/getrandom/0.4.3
+Notice: texts/rust/getrandom-0.4.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/getrandom-0.4.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: glob 0.3.4
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/glob/0.3.4
+Notice: texts/rust/glob-0.3.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/glob-0.3.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: hashbrown 0.12.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/hashbrown/0.12.3
+Notice: texts/rust/hashbrown-0.12.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/hashbrown-0.12.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: hashbrown 0.16.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/hashbrown/0.16.1
+Notice: texts/rust/hashbrown-0.16.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/hashbrown-0.16.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: hashbrown 0.17.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/hashbrown/0.17.1
+Notice: texts/rust/hashbrown-0.17.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/hashbrown-0.17.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: hashlink 0.11.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/hashlink/0.11.1
+Notice: texts/rust/hashlink-0.11.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/hashlink-0.11.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: heck 0.5.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/heck/0.5.0
+Notice: texts/rust/heck-0.5.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/heck-0.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: hex 0.4.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/hex/0.4.3
+Notice: texts/rust/hex-0.4.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/hex-0.4.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: html5ever 0.39.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/html5ever/0.39.0
+Notice: texts/rust/html5ever-0.39.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/html5ever-0.39.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: http 1.5.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/http/1.5.0
+Notice: texts/rust/http-1.5.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/http-1.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: ico 0.5.0
+Declared terms: MIT
+Source: https://crates.io/crates/ico/0.5.0
+Notice: texts/rust/ico-0.5.0/c693279643-LICENSE.txt
+
+rust: icu_collections 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_collections/2.3.0
+Notice: texts/rust/icu_collections-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_locale_core 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_locale_core/2.3.0
+Notice: texts/rust/icu_locale_core-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_normalizer 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_normalizer/2.3.0
+Notice: texts/rust/icu_normalizer-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_normalizer_data 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_normalizer_data/2.3.0
+Notice: texts/rust/icu_normalizer_data-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_properties 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_properties/2.3.0
+Notice: texts/rust/icu_properties-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_properties_data 2.3.0
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_properties_data/2.3.0
+Notice: texts/rust/icu_properties_data-2.3.0/c693279643-LICENSE.txt
+
+rust: icu_provider 2.3.1
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/icu_provider/2.3.1
+Notice: texts/rust/icu_provider-2.3.1/c693279643-LICENSE.txt
+
+rust: ident_case 1.0.1
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/ident_case/1.0.1
+Notice: texts/rust/ident_case-1.0.1/c693279643-LICENSE.txt
+
+rust: idna 1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/idna/1.1.0
+Notice: texts/rust/idna-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/idna-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: idna_adapter 1.2.2
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/idna_adapter/1.2.2
+Notice: texts/rust/idna_adapter-1.2.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/idna_adapter-1.2.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: indexmap 1.9.3
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/indexmap/1.9.3
+Notice: texts/rust/indexmap-1.9.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/indexmap-1.9.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: indexmap 2.14.2
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/indexmap/2.14.2
+Notice: texts/rust/indexmap-2.14.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/indexmap-2.14.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: infer 0.22.0
+Declared terms: MIT
+Source: https://crates.io/crates/infer/0.22.0
+Notice: texts/rust/infer-0.22.0/c693279643-LICENSE.txt
+
+rust: itoa 1.0.18
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/itoa/1.0.18
+Notice: texts/rust/itoa-1.0.18/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/itoa-1.0.18/421f8eecf7-LICENSE-MIT.txt
+
+rust: jiff 0.2.37
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/jiff/0.2.37
+Notice: texts/rust/jiff-0.2.37/400d38e5cf-COPYING.txt
+Notice: texts/rust/jiff-0.2.37/421f8eecf7-LICENSE-MIT.txt
+
+rust: jiff-core 0.1.1
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/jiff-core/0.1.1
+Notice: texts/rust/jiff-core-0.1.1/400d38e5cf-COPYING.txt
+Notice: texts/rust/jiff-core-0.1.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: jiff-tzdb 0.1.8
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/jiff-tzdb/0.1.8
+Notice: texts/rust/jiff-tzdb-0.1.8/400d38e5cf-COPYING.txt
+Notice: texts/rust/jiff-tzdb-0.1.8/421f8eecf7-LICENSE-MIT.txt
+
+rust: jiff-tzdb-platform 0.1.3
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/jiff-tzdb-platform/0.1.3
+Notice: texts/rust/jiff-tzdb-platform-0.1.3/400d38e5cf-COPYING.txt
+Notice: texts/rust/jiff-tzdb-platform-0.1.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: json-patch 4.2.0
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/json-patch/4.2.0
+Notice: texts/rust/json-patch-4.2.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/json-patch-4.2.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: jsonptr 0.7.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/jsonptr/0.7.1
+Notice: texts/rust/jsonptr-0.7.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/jsonptr-0.7.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: keyboard-types 0.8.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/keyboard-types/0.8.3
+Notice: texts/rust/keyboard-types-0.8.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/keyboard-types-0.8.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: libc 0.2.190
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/libc/0.2.190
+Notice: texts/rust/libc-0.2.190/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/libc-0.2.190/421f8eecf7-LICENSE-MIT.txt
+
+rust: libsqlite3-sys 0.36.0
+Declared terms: MIT
+Source: https://crates.io/crates/libsqlite3-sys/0.36.0
+Notice: texts/rust/libsqlite3-sys-0.36.0/c693279643-LICENSE.txt
+Notice: texts/rust/libsqlite3-sys-0.36.0/70af9f37df-LICENSE.txt
+
+rust: litemap 0.8.3
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/litemap/0.8.3
+Notice: texts/rust/litemap-0.8.3/c693279643-LICENSE.txt
+
+rust: lock_api 0.4.14
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/lock_api/0.4.14
+Notice: texts/rust/lock_api-0.4.14/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/lock_api-0.4.14/421f8eecf7-LICENSE-MIT.txt
+
+rust: log 0.4.34
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/log/0.4.34
+Notice: texts/rust/log-0.4.34/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/log-0.4.34/421f8eecf7-LICENSE-MIT.txt
+
+rust: markup5ever 0.39.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/markup5ever/0.39.0
+Notice: texts/rust/markup5ever-0.39.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/markup5ever-0.39.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: memchr 2.8.3
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/memchr/2.8.3
+Notice: texts/rust/memchr-2.8.3/400d38e5cf-COPYING.txt
+Notice: texts/rust/memchr-2.8.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: mime 0.3.17
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/mime/0.3.17
+Notice: texts/rust/mime-0.3.17/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/mime-0.3.17/421f8eecf7-LICENSE-MIT.txt
+
+rust: miniz_oxide 0.8.9
+Declared terms: MIT OR Zlib OR Apache-2.0
+Source: https://crates.io/crates/miniz_oxide/0.8.9
+Notice: texts/rust/miniz_oxide-0.8.9/c693279643-LICENSE.txt
+Notice: texts/rust/miniz_oxide-0.8.9/862f1032d0-LICENSE-APACHE.md.txt
+Notice: texts/rust/miniz_oxide-0.8.9/58d2b03f92-LICENSE-MIT.md.txt
+Notice: texts/rust/miniz_oxide-0.8.9/29d612a409-LICENSE-ZLIB.md.txt
+
+rust: miniz_oxide 0.9.1
+Declared terms: MIT OR Zlib OR Apache-2.0
+Source: https://crates.io/crates/miniz_oxide/0.9.1
+Notice: texts/rust/miniz_oxide-0.9.1/c693279643-LICENSE.txt
+Notice: texts/rust/miniz_oxide-0.9.1/862f1032d0-LICENSE-APACHE.md.txt
+Notice: texts/rust/miniz_oxide-0.9.1/58d2b03f92-LICENSE-MIT.md.txt
+Notice: texts/rust/miniz_oxide-0.9.1/29d612a409-LICENSE-ZLIB.md.txt
+
+rust: mio 1.2.4
+Declared terms: MIT
+Source: https://crates.io/crates/mio/1.2.4
+Notice: texts/rust/mio-1.2.4/c693279643-LICENSE.txt
+
+rust: muda 0.20.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/muda/0.20.0
+Notice: texts/rust/muda-0.20.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/muda-0.20.0/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/muda-0.20.0/b61c1e30f5-LICENSE.spdx.txt
+
+rust: new_debug_unreachable 1.0.6
+Declared terms: MIT
+Source: https://crates.io/crates/new_debug_unreachable/1.0.6
+Notice: texts/rust/new_debug_unreachable-1.0.6/421f8eecf7-LICENSE-MIT.txt
+
+rust: num-conv 0.2.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/num-conv/0.2.2
+Notice: texts/rust/num-conv-0.2.2/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/num-conv-0.2.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: num-traits 0.2.19
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/num-traits/0.2.19
+Notice: texts/rust/num-traits-0.2.19/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/num-traits-0.2.19/421f8eecf7-LICENSE-MIT.txt
+
+rust: once_cell 1.21.4
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/once_cell/1.21.4
+Notice: texts/rust/once_cell-1.21.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/once_cell-1.21.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: open 5.4.4
+Declared terms: MIT
+Source: https://crates.io/crates/open/5.4.4
+Notice: texts/rust/open-5.4.4/4673a3aba0-LICENSE.md.txt
+
+rust: option-ext 0.2.0
+Declared terms: MPL-2.0
+Source: https://crates.io/crates/option-ext/0.2.0
+Notice: texts/rust/option-ext-0.2.0/d0ed4cc3fb-LICENSE.txt.txt
+
+rust: parking_lot 0.12.5
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/parking_lot/0.12.5
+Notice: texts/rust/parking_lot-0.12.5/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/parking_lot-0.12.5/421f8eecf7-LICENSE-MIT.txt
+
+rust: parking_lot_core 0.9.12
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/parking_lot_core/0.9.12
+Notice: texts/rust/parking_lot_core-0.9.12/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/parking_lot_core-0.9.12/421f8eecf7-LICENSE-MIT.txt
+
+rust: percent-encoding 2.3.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/percent-encoding/2.3.2
+Notice: texts/rust/percent-encoding-2.3.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/percent-encoding-2.3.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: phf 0.13.1
+Declared terms: MIT
+Source: https://crates.io/crates/phf/0.13.1
+Notice: texts/rust/phf-0.13.1/c693279643-LICENSE.txt
+
+rust: phf_codegen 0.13.1
+Declared terms: MIT
+Source: https://crates.io/crates/phf_codegen/0.13.1
+Notice: texts/rust/phf_codegen-0.13.1/c693279643-LICENSE.txt
+
+rust: phf_generator 0.13.1
+Declared terms: MIT
+Source: https://crates.io/crates/phf_generator/0.13.1
+Notice: texts/rust/phf_generator-0.13.1/c693279643-LICENSE.txt
+
+rust: phf_macros 0.13.1
+Declared terms: MIT
+Source: https://crates.io/crates/phf_macros/0.13.1
+Notice: texts/rust/phf_macros-0.13.1/c693279643-LICENSE.txt
+
+rust: phf_shared 0.13.1
+Declared terms: MIT
+Source: https://crates.io/crates/phf_shared/0.13.1
+Notice: texts/rust/phf_shared-0.13.1/c693279643-LICENSE.txt
+
+rust: pin-project-lite 0.2.17
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/pin-project-lite/0.2.17
+Notice: texts/rust/pin-project-lite-0.2.17/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/pin-project-lite-0.2.17/421f8eecf7-LICENSE-MIT.txt
+
+rust: pkg-config 0.3.34
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/pkg-config/0.3.34
+Notice: texts/rust/pkg-config-0.3.34/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/pkg-config-0.3.34/421f8eecf7-LICENSE-MIT.txt
+
+rust: plist 1.10.1
+Declared terms: MIT
+Source: https://crates.io/crates/plist/1.10.1
+Notice: texts/rust/plist-1.10.1/b4668a5268-LICENCE.txt
+
+rust: png 0.17.16
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/png/0.17.16
+Notice: texts/rust/png-0.17.16/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/png-0.17.16/421f8eecf7-LICENSE-MIT.txt
+
+rust: png 0.18.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/png/0.18.1
+Notice: texts/rust/png-0.18.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/png-0.18.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: potential_utf 0.1.6
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/potential_utf/0.1.6
+Notice: texts/rust/potential_utf-0.1.6/c693279643-LICENSE.txt
+
+rust: powerfmt 0.2.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/powerfmt/0.2.0
+Notice: texts/rust/powerfmt-0.2.0/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/powerfmt-0.2.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: precomputed-hash 0.1.1
+Declared terms: MIT
+Source: https://crates.io/crates/precomputed-hash/0.1.1
+Notice: texts/rust/precomputed-hash-0.1.1/c693279643-LICENSE.txt
+
+rust: proc-macro2 1.0.107
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/proc-macro2/1.0.107
+Notice: texts/rust/proc-macro2-1.0.107/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/proc-macro2-1.0.107/421f8eecf7-LICENSE-MIT.txt
+
+rust: quick-xml 0.42.0
+Declared terms: MIT
+Source: https://crates.io/crates/quick-xml/0.42.0
+Notice: texts/rust/quick-xml-0.42.0/58d2b03f92-LICENSE-MIT.md.txt
+
+rust: quote 1.0.47
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/quote/1.0.47
+Notice: texts/rust/quote-1.0.47/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/quote-1.0.47/421f8eecf7-LICENSE-MIT.txt
+
+rust: raw-window-handle 0.6.2
+Declared terms: MIT OR Apache-2.0 OR Zlib
+Source: https://crates.io/crates/raw-window-handle/0.6.2
+Notice: texts/rust/raw-window-handle-0.6.2/862f1032d0-LICENSE-APACHE.md.txt
+Notice: texts/rust/raw-window-handle-0.6.2/58d2b03f92-LICENSE-MIT.md.txt
+Notice: texts/rust/raw-window-handle-0.6.2/29d612a409-LICENSE-ZLIB.md.txt
+
+rust: ref-cast 1.0.27
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/ref-cast/1.0.27
+Notice: texts/rust/ref-cast-1.0.27/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/ref-cast-1.0.27/421f8eecf7-LICENSE-MIT.txt
+
+rust: ref-cast-impl 1.0.27
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/ref-cast-impl/1.0.27
+Notice: texts/rust/ref-cast-impl-1.0.27/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/ref-cast-impl-1.0.27/421f8eecf7-LICENSE-MIT.txt
+
+rust: regex 1.13.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/regex/1.13.1
+Notice: texts/rust/regex-1.13.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/regex-1.13.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: regex-automata 0.4.18
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/regex-automata/0.4.18
+Notice: texts/rust/regex-automata-0.4.18/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/regex-automata-0.4.18/421f8eecf7-LICENSE-MIT.txt
+
+rust: regex-syntax 0.8.11
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/regex-syntax/0.8.11
+Notice: texts/rust/regex-syntax-0.8.11/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/regex-syntax-0.8.11/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/regex-syntax-0.8.11/b8797b9fa4-LICENSE-UNICODE.txt
+
+rust: rfd 0.16.0
+Declared terms: MIT
+Source: https://crates.io/crates/rfd/0.16.0
+Notice: texts/rust/rfd-0.16.0/c693279643-LICENSE.txt
+
+rust: rusqlite 0.38.0
+Declared terms: MIT
+Source: https://crates.io/crates/rusqlite/0.38.0
+Notice: texts/rust/rusqlite-0.38.0/c693279643-LICENSE.txt
+
+rust: rustc-hash 2.1.3
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/rustc-hash/2.1.3
+Notice: texts/rust/rustc-hash-2.1.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/rustc-hash-2.1.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: rustc_version 0.4.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/rustc_version/0.4.1
+Notice: texts/rust/rustc_version-0.4.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/rustc_version-0.4.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: same-file 1.0.6
+Declared terms: Unlicense/MIT
+Source: https://crates.io/crates/same-file/1.0.6
+Notice: texts/rust/same-file-1.0.6/400d38e5cf-COPYING.txt
+Notice: texts/rust/same-file-1.0.6/421f8eecf7-LICENSE-MIT.txt
+
+rust: schemars 0.8.22
+Declared terms: MIT
+Source: https://crates.io/crates/schemars/0.8.22
+Notice: texts/rust/schemars-0.8.22/c693279643-LICENSE.txt
+
+rust: schemars 0.9.0
+Declared terms: MIT
+Source: https://crates.io/crates/schemars/0.9.0
+Notice: texts/rust/schemars-0.9.0/c693279643-LICENSE.txt
+
+rust: schemars 1.2.2
+Declared terms: MIT
+Source: https://crates.io/crates/schemars/1.2.2
+Notice: texts/rust/schemars-1.2.2/c693279643-LICENSE.txt
+
+rust: schemars_derive 0.8.22
+Declared terms: MIT
+Source: https://crates.io/crates/schemars_derive/0.8.22
+Notice: texts/rust/schemars_derive-0.8.22/c693279643-LICENSE.txt
+
+rust: scopeguard 1.2.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/scopeguard/1.2.0
+Notice: texts/rust/scopeguard-1.2.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/scopeguard-1.2.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: selectors 0.38.0
+Declared terms: MPL-2.0
+Source: https://crates.io/crates/selectors/0.38.0
+Notice: upstream/rust-selectors-0.38.0/LICENSE.txt
+
+rust: semver 1.0.28
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/semver/1.0.28
+Notice: texts/rust/semver-1.0.28/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/semver-1.0.28/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde 1.0.229
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde/1.0.229
+Notice: texts/rust/serde-1.0.229/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde-1.0.229/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde-untagged 0.1.9
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde-untagged/0.1.9
+Notice: texts/rust/serde-untagged-0.1.9/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde-untagged-0.1.9/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_core 1.0.229
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_core/1.0.229
+Notice: texts/rust/serde_core-1.0.229/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_core-1.0.229/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_derive 1.0.229
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_derive/1.0.229
+Notice: texts/rust/serde_derive-1.0.229/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_derive-1.0.229/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_derive_internals 0.29.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_derive_internals/0.29.1
+Notice: texts/rust/serde_derive_internals-0.29.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_derive_internals-0.29.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_json 1.0.151
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_json/1.0.151
+Notice: texts/rust/serde_json-1.0.151/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_json-1.0.151/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_repr 0.1.21
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_repr/0.1.21
+Notice: texts/rust/serde_repr-0.1.21/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_repr-0.1.21/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_spanned 1.1.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_spanned/1.1.1
+Notice: texts/rust/serde_spanned-1.1.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_spanned-1.1.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_with 3.24.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_with/3.24.0
+Notice: texts/rust/serde_with-3.24.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_with-3.24.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: serde_with_macros 3.24.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serde_with_macros/3.24.0
+Notice: texts/rust/serde_with_macros-3.24.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serde_with_macros-3.24.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: serialize-to-javascript 0.1.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serialize-to-javascript/0.1.2
+Notice: texts/rust/serialize-to-javascript-0.1.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serialize-to-javascript-0.1.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: serialize-to-javascript-impl 0.1.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/serialize-to-javascript-impl/0.1.2
+Notice: texts/rust/serialize-to-javascript-impl-0.1.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/serialize-to-javascript-impl-0.1.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: servo_arc 0.4.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/servo_arc/0.4.3
+Notice: texts/rust/servo_arc-0.4.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/servo_arc-0.4.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: sha2 0.10.9
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/sha2/0.10.9
+Notice: texts/rust/sha2-0.10.9/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/sha2-0.10.9/421f8eecf7-LICENSE-MIT.txt
+
+rust: shlex 2.0.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/shlex/2.0.1
+Notice: texts/rust/shlex-2.0.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/shlex-2.0.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: simd-adler32 0.3.10
+Declared terms: MIT
+Source: https://crates.io/crates/simd-adler32/0.3.10
+Notice: texts/rust/simd-adler32-0.3.10/4673a3aba0-LICENSE.md.txt
+
+rust: siphasher 1.0.4
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/siphasher/1.0.4
+Notice: texts/rust/siphasher-1.0.4/400d38e5cf-COPYING.txt
+Notice: texts/rust/siphasher-1.0.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/siphasher-1.0.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: smallvec 1.16.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/smallvec/1.16.2
+Notice: texts/rust/smallvec-1.16.2/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/smallvec-1.16.2/421f8eecf7-LICENSE-MIT.txt
+
+rust: socket2 0.6.5
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/socket2/0.6.5
+Notice: texts/rust/socket2-0.6.5/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/socket2-0.6.5/421f8eecf7-LICENSE-MIT.txt
+
+rust: softbuffer 0.4.8
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/softbuffer/0.4.8
+Notice: texts/rust/softbuffer-0.4.8/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/softbuffer-0.4.8/421f8eecf7-LICENSE-MIT.txt
+
+rust: stable_deref_trait 1.2.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/stable_deref_trait/1.2.1
+Notice: texts/rust/stable_deref_trait-1.2.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/stable_deref_trait-1.2.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: string_cache 0.9.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/string_cache/0.9.0
+Notice: texts/rust/string_cache-0.9.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/string_cache-0.9.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: string_cache_codegen 0.6.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/string_cache_codegen/0.6.1
+Notice: texts/rust/string_cache_codegen-0.6.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/string_cache_codegen-0.6.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: strsim 0.11.1
+Declared terms: MIT
+Source: https://crates.io/crates/strsim/0.11.1
+Notice: texts/rust/strsim-0.11.1/c693279643-LICENSE.txt
+
+rust: syn 2.0.119
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/syn/2.0.119
+Notice: texts/rust/syn-2.0.119/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/syn-2.0.119/421f8eecf7-LICENSE-MIT.txt
+
+rust: syn 3.0.6
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/syn/3.0.6
+Notice: texts/rust/syn-3.0.6/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/syn-3.0.6/421f8eecf7-LICENSE-MIT.txt
+
+rust: synstructure 0.14.0
+Declared terms: MIT
+Source: https://crates.io/crates/synstructure/0.14.0
+Notice: texts/rust/synstructure-0.14.0/c693279643-LICENSE.txt
+
+rust: tao 0.37.1
+Declared terms: Apache-2.0
+Source: https://crates.io/crates/tao/0.37.1
+Notice: texts/rust/tao-0.37.1/c693279643-LICENSE.txt
+Notice: texts/rust/tao-0.37.1/b61c1e30f5-LICENSE.spdx.txt
+
+rust: tauri 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri/2.12.1
+Notice: texts/rust/tauri-2.12.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-2.12.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-build 2.7.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-build/2.7.1
+Notice: texts/rust/tauri-build-2.7.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-build-2.7.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-codegen 2.7.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-codegen/2.7.1
+Notice: texts/rust/tauri-codegen-2.7.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-codegen-2.7.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-macros 2.7.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-macros/2.7.1
+Notice: texts/rust/tauri-macros-2.7.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-macros-2.7.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-plugin 2.7.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-plugin/2.7.1
+Notice: upstream/rust-tauri-plugin-2.7.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: upstream/rust-tauri-plugin-2.7.1/421f8eecf7-LICENSE-MIT.txt
+Notice: upstream/rust-tauri-plugin-2.7.1/b61c1e30f5-LICENSE.spdx.txt
+
+rust: tauri-plugin-dialog 2.8.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-plugin-dialog/2.8.1
+Notice: texts/rust/tauri-plugin-dialog-2.8.1/b61c1e30f5-LICENSE.spdx.txt
+Notice: texts/rust/tauri-plugin-dialog-2.8.1/eed420fabd-LICENSE_APACHE-2.0.txt
+Notice: texts/rust/tauri-plugin-dialog-2.8.1/5a8a9d851c-LICENSE_MIT.txt
+
+rust: tauri-plugin-fs 2.6.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-plugin-fs/2.6.0
+Notice: texts/rust/tauri-plugin-fs-2.6.0/b61c1e30f5-LICENSE.spdx.txt
+Notice: texts/rust/tauri-plugin-fs-2.6.0/eed420fabd-LICENSE_APACHE-2.0.txt
+Notice: texts/rust/tauri-plugin-fs-2.6.0/5a8a9d851c-LICENSE_MIT.txt
+
+rust: tauri-plugin-opener 2.7.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-plugin-opener/2.7.0
+Notice: texts/rust/tauri-plugin-opener-2.7.0/b61c1e30f5-LICENSE.spdx.txt
+Notice: texts/rust/tauri-plugin-opener-2.7.0/eed420fabd-LICENSE_APACHE-2.0.txt
+Notice: texts/rust/tauri-plugin-opener-2.7.0/5a8a9d851c-LICENSE_MIT.txt
+
+rust: tauri-plugin-single-instance 2.5.2
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-plugin-single-instance/2.5.2
+Notice: texts/rust/tauri-plugin-single-instance-2.5.2/b61c1e30f5-LICENSE.spdx.txt
+Notice: texts/rust/tauri-plugin-single-instance-2.5.2/eed420fabd-LICENSE_APACHE-2.0.txt
+Notice: texts/rust/tauri-plugin-single-instance-2.5.2/5a8a9d851c-LICENSE_MIT.txt
+
+rust: tauri-runtime 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-runtime/2.12.1
+Notice: texts/rust/tauri-runtime-2.12.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-runtime-2.12.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-runtime-wry 2.12.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-runtime-wry/2.12.1
+Notice: texts/rust/tauri-runtime-wry-2.12.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-runtime-wry-2.12.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-utils 2.10.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/tauri-utils/2.10.1
+Notice: texts/rust/tauri-utils-2.10.1/891eb53a57-LICENSE-APACHE-2.0.txt
+Notice: texts/rust/tauri-utils-2.10.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: tauri-winres 0.3.6
+Declared terms: MIT
+Source: https://crates.io/crates/tauri-winres/0.3.6
+Notice: texts/rust/tauri-winres-0.3.6/c693279643-LICENSE.txt
+
+rust: tempfile 3.27.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/tempfile/3.27.0
+Notice: texts/rust/tempfile-3.27.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/tempfile-3.27.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: tendril 0.5.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/tendril/0.5.1
+Notice: texts/rust/tendril-0.5.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/tendril-0.5.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: thiserror 2.0.21
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/thiserror/2.0.21
+Notice: texts/rust/thiserror-2.0.21/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/thiserror-2.0.21/421f8eecf7-LICENSE-MIT.txt
+
+rust: thiserror-impl 2.0.21
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/thiserror-impl/2.0.21
+Notice: texts/rust/thiserror-impl-2.0.21/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/thiserror-impl-2.0.21/421f8eecf7-LICENSE-MIT.txt
+
+rust: time 0.3.55
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/time/0.3.55
+Notice: texts/rust/time-0.3.55/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/time-0.3.55/421f8eecf7-LICENSE-MIT.txt
+
+rust: time-core 0.1.9
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/time-core/0.1.9
+Notice: texts/rust/time-core-0.1.9/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/time-core-0.1.9/421f8eecf7-LICENSE-MIT.txt
+
+rust: time-macros 0.2.32
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/time-macros/0.2.32
+Notice: texts/rust/time-macros-0.2.32/81ee71f96c-LICENSE-Apache.txt
+Notice: texts/rust/time-macros-0.2.32/421f8eecf7-LICENSE-MIT.txt
+
+rust: tinystr 0.8.4
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/tinystr/0.8.4
+Notice: texts/rust/tinystr-0.8.4/c693279643-LICENSE.txt
+
+rust: tinyvec 1.13.3
+Declared terms: Zlib OR Apache-2.0 OR MIT
+Source: https://crates.io/crates/tinyvec/1.13.3
+Notice: texts/rust/tinyvec-1.13.3/862f1032d0-LICENSE-APACHE.md.txt
+Notice: texts/rust/tinyvec-1.13.3/58d2b03f92-LICENSE-MIT.md.txt
+Notice: texts/rust/tinyvec-1.13.3/29d612a409-LICENSE-ZLIB.md.txt
+
+rust: tokio 1.53.2
+Declared terms: MIT
+Source: https://crates.io/crates/tokio/1.53.2
+Notice: texts/rust/tokio-1.53.2/c693279643-LICENSE.txt
+
+rust: toml 1.1.6+spec-1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/toml/1.1.6+spec-1.1.0
+Notice: texts/rust/toml-1.1.6+spec-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/toml-1.1.6+spec-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: toml_datetime 1.1.1+spec-1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/toml_datetime/1.1.1+spec-1.1.0
+Notice: texts/rust/toml_datetime-1.1.1+spec-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/toml_datetime-1.1.1+spec-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: toml_parser 1.1.3+spec-1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/toml_parser/1.1.3+spec-1.1.0
+Notice: texts/rust/toml_parser-1.1.3+spec-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/toml_parser-1.1.3+spec-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: toml_writer 1.1.2+spec-1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/toml_writer/1.1.2+spec-1.1.0
+Notice: texts/rust/toml_writer-1.1.2+spec-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/toml_writer-1.1.2+spec-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: tracing 0.1.44
+Declared terms: MIT
+Source: https://crates.io/crates/tracing/0.1.44
+Notice: texts/rust/tracing-0.1.44/c693279643-LICENSE.txt
+
+rust: tracing-attributes 0.1.31
+Declared terms: MIT
+Source: https://crates.io/crates/tracing-attributes/0.1.31
+Notice: texts/rust/tracing-attributes-0.1.31/c693279643-LICENSE.txt
+
+rust: tracing-core 0.1.36
+Declared terms: MIT
+Source: https://crates.io/crates/tracing-core/0.1.36
+Notice: texts/rust/tracing-core-0.1.36/c693279643-LICENSE.txt
+Notice: texts/rust/tracing-core-0.1.36/15000e5c10-LICENSE.txt
+
+rust: tray-icon 0.25.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/tray-icon/0.25.1
+Notice: texts/rust/tray-icon-0.25.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/tray-icon-0.25.1/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/tray-icon-0.25.1/b61c1e30f5-LICENSE.spdx.txt
+
+rust: typeid 1.0.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/typeid/1.0.3
+Notice: texts/rust/typeid-1.0.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/typeid-1.0.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: typenum 1.20.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/typenum/1.20.1
+Notice: texts/rust/typenum-1.20.1/c693279643-LICENSE.txt
+Notice: texts/rust/typenum-1.20.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/typenum-1.20.1/421f8eecf7-LICENSE-MIT.txt
+
+rust: unicode-ident 1.0.26
+Declared terms: (MIT OR Apache-2.0) AND Unicode-3.0
+Source: https://crates.io/crates/unicode-ident/1.0.26
+Notice: texts/rust/unicode-ident-1.0.26/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/unicode-ident-1.0.26/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/unicode-ident-1.0.26/4a061a5878-LICENSE-UNICODE.txt
+
+rust: unicode-segmentation 1.13.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/unicode-segmentation/1.13.3
+Notice: texts/rust/unicode-segmentation-1.13.3/84a6545219-COPYRIGHT.txt
+Notice: texts/rust/unicode-segmentation-1.13.3/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/unicode-segmentation-1.13.3/421f8eecf7-LICENSE-MIT.txt
+
+rust: url 2.5.8
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/url/2.5.8
+Notice: texts/rust/url-2.5.8/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/url-2.5.8/421f8eecf7-LICENSE-MIT.txt
+
+rust: urlpattern 0.6.0
+Declared terms: MIT
+Source: https://crates.io/crates/urlpattern/0.6.0
+Notice: texts/rust/urlpattern-0.6.0/c693279643-LICENSE.txt
+
+rust: utf8_iter 1.0.4
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/utf8_iter/1.0.4
+Notice: texts/rust/utf8_iter-1.0.4/84a6545219-COPYRIGHT.txt
+Notice: texts/rust/utf8_iter-1.0.4/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/utf8_iter-1.0.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: uuid 1.27.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/uuid/1.27.0
+Notice: texts/rust/uuid-1.27.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/uuid-1.27.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: vcpkg 0.2.15
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/vcpkg/0.2.15
+Notice: texts/rust/vcpkg-0.2.15/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/vcpkg-0.2.15/421f8eecf7-LICENSE-MIT.txt
+
+rust: version_check 0.9.5
+Declared terms: MIT/Apache-2.0
+Source: https://crates.io/crates/version_check/0.9.5
+Notice: texts/rust/version_check-0.9.5/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/version_check-0.9.5/421f8eecf7-LICENSE-MIT.txt
+
+rust: vswhom 0.1.0
+Declared terms: MIT
+Source: https://crates.io/crates/vswhom/0.1.0
+Notice: texts/rust/vswhom-0.1.0/c693279643-LICENSE.txt
+
+rust: vswhom-sys 0.1.3
+Declared terms: MIT
+Source: https://crates.io/crates/vswhom-sys/0.1.3
+Notice: texts/rust/vswhom-sys-0.1.3/c693279643-LICENSE.txt
+
+rust: walkdir 2.5.0
+Declared terms: Unlicense/MIT
+Source: https://crates.io/crates/walkdir/2.5.0
+Notice: texts/rust/walkdir-2.5.0/400d38e5cf-COPYING.txt
+Notice: texts/rust/walkdir-2.5.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: web-time 1.1.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/web-time/1.1.0
+Notice: texts/rust/web-time-1.1.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/web-time-1.1.0/421f8eecf7-LICENSE-MIT.txt
+
+rust: web_atoms 0.2.6
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/web_atoms/0.2.6
+Notice: texts/rust/web_atoms-0.2.6/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/web_atoms-0.2.6/421f8eecf7-LICENSE-MIT.txt
+
+rust: webview2-com 0.39.1
+Declared terms: MIT
+Source: https://crates.io/crates/webview2-com/0.39.1
+Notice: upstream/rust-webview2-com-0.39.1/c693279643-LICENSE.txt
+
+rust: webview2-com-macros 0.8.1
+Declared terms: MIT
+Source: https://crates.io/crates/webview2-com-macros/0.8.1
+Notice: upstream/rust-webview2-com-macros-0.8.1/c693279643-LICENSE.txt
+
+rust: webview2-com-sys 0.39.1
+Declared terms: MIT
+Source: https://crates.io/crates/webview2-com-sys/0.39.1
+Notice: upstream/rust-webview2-com-sys-0.39.1/c693279643-LICENSE.txt
+
+rust: winapi-util 0.1.11
+Declared terms: Unlicense OR MIT
+Source: https://crates.io/crates/winapi-util/0.1.11
+Notice: texts/rust/winapi-util-0.1.11/400d38e5cf-COPYING.txt
+Notice: texts/rust/winapi-util-0.1.11/421f8eecf7-LICENSE-MIT.txt
+
+rust: window-vibrancy 0.8.1
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/window-vibrancy/0.8.1
+Notice: texts/rust/window-vibrancy-0.8.1/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/window-vibrancy-0.8.1/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/window-vibrancy-0.8.1/b61c1e30f5-LICENSE.spdx.txt
+
+rust: windows 0.62.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows/0.62.2
+Notice: texts/rust/windows-0.62.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-0.62.2/0210719784-license-mit.txt
+
+rust: windows-collections 0.3.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-collections/0.3.2
+Notice: texts/rust/windows-collections-0.3.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-collections-0.3.2/0210719784-license-mit.txt
+
+rust: windows-core 0.62.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-core/0.62.2
+Notice: texts/rust/windows-core-0.62.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-core-0.62.2/0210719784-license-mit.txt
+
+rust: windows-future 0.3.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-future/0.3.2
+Notice: texts/rust/windows-future-0.3.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-future-0.3.2/0210719784-license-mit.txt
+
+rust: windows-implement 0.60.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-implement/0.60.2
+Notice: texts/rust/windows-implement-0.60.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-implement-0.60.2/0210719784-license-mit.txt
+
+rust: windows-interface 0.59.3
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-interface/0.59.3
+Notice: texts/rust/windows-interface-0.59.3/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-interface-0.59.3/0210719784-license-mit.txt
+
+rust: windows-link 0.2.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-link/0.2.1
+Notice: texts/rust/windows-link-0.2.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-link-0.2.1/0210719784-license-mit.txt
+
+rust: windows-numerics 0.3.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-numerics/0.3.1
+Notice: texts/rust/windows-numerics-0.3.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-numerics-0.3.1/0210719784-license-mit.txt
+
+rust: windows-result 0.4.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-result/0.4.1
+Notice: texts/rust/windows-result-0.4.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-result-0.4.1/0210719784-license-mit.txt
+
+rust: windows-strings 0.5.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-strings/0.5.1
+Notice: texts/rust/windows-strings-0.5.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-strings-0.5.1/0210719784-license-mit.txt
+
+rust: windows-sys 0.59.0
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-sys/0.59.0
+Notice: texts/rust/windows-sys-0.59.0/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-sys-0.59.0/0210719784-license-mit.txt
+
+rust: windows-sys 0.60.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-sys/0.60.2
+Notice: texts/rust/windows-sys-0.60.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-sys-0.60.2/0210719784-license-mit.txt
+
+rust: windows-sys 0.61.2
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-sys/0.61.2
+Notice: texts/rust/windows-sys-0.61.2/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-sys-0.61.2/0210719784-license-mit.txt
+
+rust: windows-targets 0.52.6
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-targets/0.52.6
+Notice: texts/rust/windows-targets-0.52.6/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-targets-0.52.6/0210719784-license-mit.txt
+
+rust: windows-targets 0.53.5
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-targets/0.53.5
+Notice: texts/rust/windows-targets-0.53.5/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-targets-0.53.5/0210719784-license-mit.txt
+
+rust: windows-threading 0.2.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-threading/0.2.1
+Notice: texts/rust/windows-threading-0.2.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-threading-0.2.1/0210719784-license-mit.txt
+
+rust: windows-version 0.1.7
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows-version/0.1.7
+Notice: texts/rust/windows-version-0.1.7/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows-version-0.1.7/0210719784-license-mit.txt
+
+rust: windows_x86_64_msvc 0.52.6
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows_x86_64_msvc/0.52.6
+Notice: texts/rust/windows_x86_64_msvc-0.52.6/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows_x86_64_msvc-0.52.6/0210719784-license-mit.txt
+
+rust: windows_x86_64_msvc 0.53.1
+Declared terms: MIT OR Apache-2.0
+Source: https://crates.io/crates/windows_x86_64_msvc/0.53.1
+Notice: texts/rust/windows_x86_64_msvc-0.53.1/5314a375b4-license-apache-2.0.txt
+Notice: texts/rust/windows_x86_64_msvc-0.53.1/0210719784-license-mit.txt
+
+rust: winnow 1.0.4
+Declared terms: MIT
+Source: https://crates.io/crates/winnow/1.0.4
+Notice: texts/rust/winnow-1.0.4/421f8eecf7-LICENSE-MIT.txt
+
+rust: winreg 0.55.0
+Declared terms: MIT
+Source: https://crates.io/crates/winreg/0.55.0
+Notice: texts/rust/winreg-0.55.0/c693279643-LICENSE.txt
+
+rust: writeable 0.6.4
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/writeable/0.6.4
+Notice: texts/rust/writeable-0.6.4/c693279643-LICENSE.txt
+
+rust: wry 0.57.0
+Declared terms: Apache-2.0 OR MIT
+Source: https://crates.io/crates/wry/0.57.0
+Notice: texts/rust/wry-0.57.0/1b7a452802-LICENSE-APACHE.txt
+Notice: texts/rust/wry-0.57.0/421f8eecf7-LICENSE-MIT.txt
+Notice: texts/rust/wry-0.57.0/b61c1e30f5-LICENSE.spdx.txt
+
+rust: yoke 0.8.3
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/yoke/0.8.3
+Notice: texts/rust/yoke-0.8.3/c693279643-LICENSE.txt
+
+rust: yoke-derive 0.8.4
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/yoke-derive/0.8.4
+Notice: texts/rust/yoke-derive-0.8.4/c693279643-LICENSE.txt
+
+rust: zerofrom 0.1.8
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/zerofrom/0.1.8
+Notice: texts/rust/zerofrom-0.1.8/c693279643-LICENSE.txt
+
+rust: zerofrom-derive 0.1.8
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/zerofrom-derive/0.1.8
+Notice: texts/rust/zerofrom-derive-0.1.8/c693279643-LICENSE.txt
+
+rust: zerotrie 0.2.5
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/zerotrie/0.2.5
+Notice: texts/rust/zerotrie-0.2.5/c693279643-LICENSE.txt
+
+rust: zerovec 0.11.8
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/zerovec/0.11.8
+Notice: texts/rust/zerovec-0.11.8/c693279643-LICENSE.txt
+
+rust: zerovec-derive 0.11.6
+Declared terms: Unicode-3.0
+Source: https://crates.io/crates/zerovec-derive/0.11.6
+Notice: texts/rust/zerovec-derive-0.11.6/c693279643-LICENSE.txt
+
+rust: zlib-rs 0.6.8
+Declared terms: Zlib
+Source: https://crates.io/crates/zlib-rs/0.6.8
+Notice: texts/rust/zlib-rs-0.6.8/c693279643-LICENSE.txt
+
+rust: zmij 1.0.23
+Declared terms: MIT
+Source: https://crates.io/crates/zmij/1.0.23
+Notice: texts/rust/zmij-1.0.23/421f8eecf7-LICENSE-MIT.txt
+
+runtime: microsoft-webview2-offline 1.3.275.13
+Declared terms: Microsoft Edge WebView2 Runtime terms (separate proprietary redistributable)
+Source: https://go.microsoft.com/fwlink/?linkid=2124701
+Notice: texts/runtime/microsoft-webview2-offline-1.3.275.13/a786f16493-WEBVIEW2-LICENSE.txt.txt
+
+runtime-external: sqlite3 sqlite-3.50.4.0
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/ef547e549b49a2822214ef7880c0ca212b32929e
+
+runtime-external: bz2 bzip2-1.0.8
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/05301997b2f9590f49c672cf3dfd3d3dfa7ad521
+Notice: runtime/bzip2-1.0.8/9bfa893330-LICENSE.txt
+
+runtime-external: lzma xz-5.2.5
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/c6bc0c612605622aaef101a33a751f9de2ecc193
+Notice: runtime/xz-5.2.5/74d94b9c67-COPYING.txt
+Notice: runtime/xz-5.2.5/f0af47f649-COPYING.GPLv2.txt
+Notice: runtime/xz-5.2.5/3e76fc45ec-COPYING.GPLv3.txt
+Notice: runtime/xz-5.2.5/635fcf99f4-COPYING.LGPLv2.1.txt
+
+runtime-external: openssl openssl-3.5.7
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/6a6901fa60c604816acb50b4e167791e5339c8f8
+Notice: runtime/openssl-3.5.7/71c6d545b1-LICENSE.txt.txt
+
+runtime-external: libffi libffi-3.4.4
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/73b247f34ef3ae1859b8c2c34d321d34ebc5db15
+Notice: runtime/libffi-3.4.4/03ef0f6c89-LICENSE.txt
+Notice: runtime/libffi-3.4.4/7ffefa8c24-LICENSE-BUILDTOOLS.txt
+
+runtime-external: zstd zstd-1.5.7
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/eef946ae8cf1591c0e5cc5f43486210768647c2e
+Notice: runtime/zstd-1.5.7/8575e3b84e-COPYING.txt
+Notice: runtime/zstd-1.5.7/c95f34847c-LICENSE.txt
+Notice: runtime/zstd-1.5.7/97ad20f491-LICENSE.txt
+
+runtime-external: zlibNg zlib-ng-2.2.4
+Declared terms: See verbatim upstream notices and CPython runtime license
+Source: https://codeload.github.com/python/cpython-source-deps/tar.gz/a502e047655c31db29601def76ad6539acacf43d
+Notice: runtime/zlib-ng-2.2.4/fb3c0e591f-LICENSE.md.txt

@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "installer_sha256": "REPLACE_WITH_TESTED_INSTALLER_SHA256",
+  "passed": false,
+  "results": [
+    {
+      "platform": "youtube",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "facebook",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "instagram",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "discord",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "tiktok",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "pinterest",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    },
+    {
+      "platform": "x",
+      "live": false,
+      "passed": false,
+      "checks": [
+        "public or explicitly authorized private download",
+        "progress and retry",
+        "playback and repeat",
+        "selected-folder confinement",
+        "duplicate handling and confirmed deletion"
+      ],
+      "browser": "RECORD_BROWSER_AND_VERSION",
+      "tested_at_utc": "RECORD_TIME",
+      "notes": "No cookies, tokens, signed attachment query strings or private content in this report."
+    }
+  ]
+}
