@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "SavedDesk",
+  "version": "0.2.10",
+  "identifier": "com.saveddesk.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://127.0.0.1:3000",
+    "frontendDist": "../out"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "SavedDesk",
+        "maximized": true,
+        "width": 1180,
+        "height": 780,
+        "minWidth": 760,
+        "minHeight": 520,
+        "backgroundColor": "#111418"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://savedmedia.localhost https://savedmedia.localhost; media-src http://savedmedia.localhost https://savedmedia.localhost; connect-src http://savedmedia.localhost https://savedmedia.localhost ipc: http://ipc.localhost; object-src 'none'; base-uri 'self'; frame-src 'none'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "resources/worker/": "worker/",
+      "resources/browser-connector/": "browser-connector/",
+      "resources/saveddesk-native-host.exe": "saveddesk-native-host.exe",
+      "resources/licenses/": "licenses/",
+      "../../packaging/unregister-connector.ps1": "maintenance/unregister-connector.ps1"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "../../packaging/installer-hooks.nsh"
+      },
+      "webviewInstallMode": {
+        "type": "skip"
+      }
+    },
+    "license": "MIT",
+    "licenseFile": "../../licensing/INSTALLER-TERMS.txt"
+  }
+}

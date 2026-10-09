@@ -1,0 +1,44 @@
+{
+  "name": "saveddesk-desktop",
+  "version": "0.2.10",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:connector": "node --test ../browser-connector/popup.test.mjs",
+    "test:native": "node scripts/native-smoke.mjs",
+    "test:native:live": "node scripts/native-live.mjs",
+    "test:native:media": "node scripts/native-media.mjs",
+    "preview": "node scripts/preview.mjs",
+    "tauri": "tauri",
+    "desktop:dev": "tauri dev",
+    "desktop:build": "tauri build",
+    "icons": "tauri icon public/app-icon.svg",
+    "test:native:chrome": "node scripts/chrome-approval.mjs",
+    "test:native:platforms": "node scripts/native-platforms.mjs",
+    "test:native:account-progress": "node scripts/native-account-progress.mjs",
+    "test:native:deletion": "node scripts/native-deletion-playback.mjs",
+    "test:native:advanced-video": "node scripts/native-advanced-video.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.0.0",
+    "@tauri-apps/plugin-dialog": "^2.0.0",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.0.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@tauri-apps/cli": "2.12.1",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5.0.0"
+  },
+  "license": "MIT"
+}

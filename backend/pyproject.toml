@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=78"]
+build-backend = "setuptools.build_meta"
+
+[project]
+license = "MIT"
+name = "saveddesk-worker"
+version = "0.2.10"
+description = "Structured, on-demand media worker for SavedDesk"
+requires-python = ">=3.10"
+dependencies = ["requests==2.34.2", "yt-dlp==2026.8.19", "yt-dlp-ejs==0.8.0"]
+
+[project.optional-dependencies]
+development = ["gallery-dl==1.32.14", "imageio-ffmpeg==0.6.0"]
+
+[project.scripts]
+saveddesk-worker = "social_downloader.worker:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

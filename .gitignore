@@ -1,0 +1,90 @@
+# Local environments, dependencies and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.uv-cache/
+.cache/
+.tooling/
+node_modules/
+.next/
+out/
+target/
+build/
+dist/
+*.tsbuildinfo
+desktop/next-env.d.ts
+
+# Generated desktop resources: packaging regenerates these from source.
+desktop/src-tauri/binaries/
+desktop/src-tauri/resources/licenses/
+desktop/src-tauri/resources/worker/
+desktop/src-tauri/resources/browser-connector/
+desktop/src-tauri/resources/saveddesk-native-host.exe
+desktop/src-tauri/gen/
+browser-connector/chromium/
+browser-connector/firefox/
+
+# Runtime content, protected sessions, private configuration and signing keys.
+downloads/
+prototype-media/
+.playback/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite-journal
+*.sqlite3-journal
+*.db-journal
+*.dpapi
+*cookies*.txt
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+*.keystore
+*.jks
+*.log
+
+# Test/benchmark outputs and release artifacts (attach binaries to Releases).
+# release-artifacts stays ignored permanently; upload approved assets to GitHub Releases.
+test-results/
+playwright-report/
+benchmarks/results/*.json
+release-artifacts/
+*.exe
+*.msi
+*.msix
+*.msixbundle
+*.zip
+*.7z
+*.tar.gz
+*.spec
+
+# Machine-only/editor state; retain the shared relative Python setting.
+.idea/
+.codex/
+.agents/
+.aws/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Provider registration files are imported locally, never published.
+client_secret_*.json
+oauth-client*.json
+
+# Owner-supplied OAuth registrations and local credentials.
+oauth-clients/

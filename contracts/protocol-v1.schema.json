@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SavedDesk worker event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "sequence", "job_id", "event", "data"],
+  "properties": {
+    "protocol_version": { "const": 1 },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "job_id": { "type": ["string", "null"] },
+    "event": { "enum": ["hello", "capabilities", "started", "item_decision_required", "item_completed", "item_skipped", "item_failed", "heartbeat", "account_verified", "browser_profiles", "browser_session", "cancelled", "completed", "failed"] },
+    "data": { "type": "object" }
+  }
+}
