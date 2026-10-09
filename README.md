@@ -28,9 +28,9 @@ I built SavedDesk to keep supported social-media saves in one local Windows libr
 
 ### Get the application
 
-Once I publish the repository, open its **Releases** page and download the Windows x64 installer named **SavedDesk_<version>_x64-setup.exe**. Use the installer asset, rather than GitHub's automatically generated source ZIP. A source ZIP contains development files and cannot be installed as the desktop app.
+Open the [SavedDesk Releases page](https://github.com/asteroidcrib729/saved-desk/releases) and download the Windows x64 installer named **SavedDesk_<version>_x64-setup.exe**. Use the installer asset, rather than GitHub's automatically generated source ZIP. A source ZIP contains development files and cannot be installed as the desktop app.
 
-There is no public repository/download URL yet. In this checkout, the tested installer is:
+The [source repository](https://github.com/asteroidcrib729/saved-desk) is public. No packaged release has been published yet. In this checkout, the tested installer is:
 
 ~~~text
 desktop/src-tauri/target/release/bundle/nsis/SavedDesk_0.2.10_x64-setup.exe
@@ -558,7 +558,7 @@ npm.cmd run preview
 
 Open http://127.0.0.1:4173 and choose **Try sample collection**. Preview records are temporary. For native development, environment creation, required Rust/Windows tools, worker packaging and checks, use [development instructions](development-plans/development.md). A built debug app lives at desktop/src-tauri/target/debug/saveddesk.exe and must retain its adjacent worker, connector and native-host resources.
 
-Source, tests, branding, configuration and dependency locks belong in Git. Downloaded content, cookies/tokens, OAuth JSON, local databases, caches, generated resources and binaries do not. The owner has initialized Git locally. The completed source is imported in development batches; GitHub publication remains pending. Follow [repository and release instructions](development-plans/repository-and-releases.md) when publishing.
+Source, tests, branding, configuration and dependency locks belong in Git. Downloaded content, cookies/tokens, OAuth JSON, local databases, caches, generated resources and binaries do not. The source is published at [asteroidcrib729/saved-desk](https://github.com/asteroidcrib729/saved-desk) with `main` as the default branch. The completed source was imported in nine development batches. Follow [repository and release instructions](development-plans/repository-and-releases.md) for future releases.
 
 ## Verification, releases and planned work
 
@@ -575,7 +575,7 @@ For 0.2.10, 272 automated cases plus native-app and exact-installer checks passe
 - [Development Plan 02: future features](development-plans/development-plan-02.md)
 - [Development Plan 04: revised account scope](development-plans/development-plan-04.md)
 
-Trusted signing, source/publication and browser-store connector delivery follow the owner's agreed schedule. A public-binary collection also requires fresh live-platform evidence bound to the final installer hash. Further Windows/GPU/VM coverage is outside this cycle. Encrypted SQLite, portable recovery and automatic updates remain planned; no current button silently enables them.
+Source publication is complete. Trusted signing and browser-store connector delivery follow the owner's agreed schedule. A public-binary collection also requires fresh live-platform evidence bound to the final installer hash. Further Windows/GPU/VM coverage is outside this cycle. Encrypted SQLite, portable recovery and automatic updates remain planned; no current button silently enables them.
 
 ## License, policies and support
 

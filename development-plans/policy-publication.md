@@ -21,16 +21,16 @@ Terms preserve MIT and third-party license rights. They do not relicense downloa
 
 ## Source publication
 
-Keep both policy files in the public source repository. Git initialization, committing, pushing, website deployment and changing Google Cloud settings have not been performed by this documentation task.
+Both policy files are included in the public source repository, asteroidcrib729/saved-desk, on main. Source publication does not deploy a policy website or change Google Cloud settings.
 
-After choosing the actual GitHub account, repository and default branch, their public repository URLs will follow this pattern:
+Their public source URLs are:
 
 ~~~
-https://github.com/OWNER/REPOSITORY/blob/BRANCH/PRIVACY_POLICY.md
-https://github.com/OWNER/REPOSITORY/blob/BRANCH/TERMS_OF_SERVICE.md
+https://github.com/asteroidcrib729/saved-desk/blob/main/PRIVACY_POLICY.md
+https://github.com/asteroidcrib729/saved-desk/blob/main/TERMS_OF_SERVICE.md
 ~~~
 
-Replace the path components with real values. Verify that each page opens without signing in and displays the complete document. Do not use local filesystem paths, private-repository links or a link to an unmerged branch as the public policy location.
+Verify that each page opens without signing in and displays the complete document. Do not use local filesystem paths, private-repository links or a link to an unmerged branch as the public policy location.
 
 ## Google branding and hosting
 
