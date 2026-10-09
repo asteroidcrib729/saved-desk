@@ -1,0 +1,3 @@
+:root{font-family:system-ui,sans-serif;color:#eef4f5;background:#151a20;color-scheme:dark}body{margin:0;width:360px}main{padding:24px}h1{font-size:21px;line-height:1.35}p{font-size:13px;line-height:1.6;color:#b6c2cd}.mark{color:#26c6b1;font-weight:700}button{width:100%;padding:12px;background:#26c6b1;color:#102923;border:0;border-radius:7px;font-weight:700;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible{outline:3px solid #fff;outline-offset:3px}.small{font-size:11px}#status{color:#eef4f5}
+
+button.secondary{margin-top:8px;background:transparent;border:1px solid #45514f;color:#e4eeec}button:disabled{cursor:default}
