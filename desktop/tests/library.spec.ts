@@ -46,6 +46,8 @@ test("new-only reuse and explicit repeat preserve logical item count", async ({ 
 test("compact layout, keyboard search, and browser preview keeps account access native", async ({ page }) => {
   await page.setViewportSize({ width: 760, height: 520 });
   await page.goto("/");
+  // Static markup can arrive before React installs keyboard handlers.
+  await expect(page.locator(".sidebar-toggle")).toBeEnabled();
   await page.keyboard.press("Control+f");
   await expect(page.getByRole("textbox", { name: "Search your library" })).toBeFocused();
   await page.keyboard.press("Control+n");

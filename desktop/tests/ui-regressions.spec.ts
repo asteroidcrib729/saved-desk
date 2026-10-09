@@ -878,10 +878,13 @@ for(const width of [1366,760,380])test(`full visual control and spacing audit at
  test.setTimeout(90000);await page.setViewportSize({width,height:900});await fixture(page,{active:false,allPlatforms:true,approvedSessions:true});
  const report:{screen:string;buttons:number;selects:number}[]=[];
  async function audit(label:string){
-  const buttons=await page.locator("button:visible").evaluateAll(nodes=>nodes.filter(node=>node.isConnected).map(node=>{const b=node.getBoundingClientRect(),s=getComputedStyle(node),walker=document.createTreeWalker(node,NodeFilter.SHOW_TEXT);let current;const text=[];
+  const readButtons=()=>page.locator("button:visible").evaluateAll(nodes=>nodes.filter(node=>node.isConnected).map(node=>{const b=node.getBoundingClientRect(),s=getComputedStyle(node),walker=document.createTreeWalker(node,NodeFilter.SHOW_TEXT);let current;const text=[];
    while(current=walker.nextNode()){const parent=current.parentElement;if(!current.textContent?.trim()||!parent||getComputedStyle(parent).visibility==="hidden")continue;const range=document.createRange();range.selectNodeContents(current);for(const r of range.getClientRects())text.push({left:r.left,right:r.right,top:r.top,bottom:r.bottom});}
    return {info:node.classList.contains("setting-info"),name:node.getAttribute("aria-label")??node.textContent?.trim(),height:b.height,border:parseFloat(s.borderTopWidth),style:s.borderTopStyle,textFits:text.every(r=>r.left>=b.left-1&&r.right<=b.right+1&&r.top>=b.top-1&&r.bottom<=b.bottom+1)};
   }));
+  // Inspect settled geometry, including sidebar label fade/collapse transitions.
+  await expect.poll(async()=>(await readButtons()).every(button=>button.textFits),{message:label+": visible button text must fit after transitions"}).toBe(true);
+  const buttons=await readButtons();
   for(const button of buttons){expect(button.height,label+":"+button.name).toBeCloseTo(40,0);if(button.info){expect(button.border).toBe(0);expect(button.style).toBe("none");}else{expect(button.border,label+":"+button.name).toBeGreaterThanOrEqual(1);expect(button.style,label+":"+button.name).toBe("solid");}expect(button.textFits,label+":"+button.name).toBe(true);}
   const selects=await page.locator("select:visible").evaluateAll(nodes=>nodes.map(n=>{const s=getComputedStyle(n);return {label:n.getAttribute("aria-label")??(n as HTMLSelectElement).labels?.[0]?.textContent,height:n.getBoundingClientRect().height,right:parseFloat(s.paddingRight),appearance:s.appearance,arrow:s.backgroundImage};}));
   for(const select of selects){expect(select.height,label+":"+select.label).toBeCloseTo(40,0);expect(select.right,label+":"+select.label).toBeGreaterThanOrEqual(40);expect(select.appearance).toBe("none");expect(select.arrow).toContain("svg");}
@@ -900,7 +903,12 @@ for(const width of [1366,760,380])test(`full visual control and spacing audit at
   await audit(screen);
  }
  await page.getByRole("button",{name:"Add download",exact:true}).click();const dialog=page.getByRole("dialog");await expect(dialog.getByRole("button",{name:"Advanced video settings",exact:true})).toHaveCount(0);await audit("Download dialog");await dialog.getByRole("button",{name:"Cancel",exact:true}).click();
- await page.getByRole("button",{name:"Library",exact:true}).click();await page.getByRole("button",{name:"View saved files",exact:true}).first().click();await audit("Image viewer");await page.getByRole("button",{name:"Close",exact:true}).click();
+ await page.getByRole("button",{name:"Library",exact:true}).click();
+ // Wait for the unfiltered result instead of opening a stale row from the prior platform.
+ await expect.poll(async()=>(await qa(page,"lastQuery")).source).toBe(null);
+ await expect(page.locator(".library-section")).toHaveAttribute("aria-busy","false");
+ const newest=page.getByTestId("library-list").locator("article").filter({has:page.getByRole("button",{name:"Delete post by Creator 100",exact:true})});
+ await newest.getByRole("button",{name:"View saved files",exact:true}).click();await audit("Image viewer");await page.getByRole("button",{name:"Close",exact:true}).click();
  await page.getByRole("button",{name:"Help & shortcuts",exact:true}).click();await audit("Help dialog");await page.getByRole("button",{name:"Close help",exact:true}).click();
  await page.getByRole("button",{name:"Delete post by Creator 100",exact:true}).click();await audit("Deletion dialog");await page.getByRole("button",{name:"Cancel",exact:true}).click();
  await info.attach("visual-control-audit.json",{body:JSON.stringify(report,null,2),contentType:"application/json"});
