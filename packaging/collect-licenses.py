@@ -68,7 +68,59 @@ def download(url, destination, expected=None):
         raise RuntimeError(f"Checksum mismatch for {destination.name}")
     return {"file": destination.name, "url": url, "sha256": actual, "bytes": destination.stat().st_size}
 
-def collect():
+
+def review_webview_distribution(mode, root=ROOT):
+    """Review the WebView2 distribution actually selected for this build."""
+    root = root.resolve()
+    licensing = root / "licensing"
+    try:
+        if mode == "offline-installer":
+            review = json.loads((licensing / "WEBVIEW2-REVIEW.json").read_text(encoding="utf-8-sig"))
+            executable = (root / review["path"]).resolve()
+            terms = (licensing / review["license_path"]).resolve()
+            if (not executable.is_relative_to(root / ".cache/webview-runtime")
+                or not terms.is_relative_to(licensing)
+                or digest(executable) != review["sha256"]
+                or review.get("signature") != "Valid"
+                or digest(terms) != review["license_sha256"]):
+                return None
+            return {"name": "microsoft-webview2-offline", "version": review["version"],
+                    "source_url": review["source_url"], "license_path": terms}
+        if mode != "fixed-runtime":
+            raise ValueError("Unsupported WebView2 distribution")
+        pinned = json.loads((root / "packaging/msix-runtime.json").read_text(encoding="utf-8"))
+        runtime = root / "desktop/src-tauri/resources/webview2"
+        review_path = runtime / "saveddesk-runtime-review.json"
+        review = json.loads(review_path.read_text(encoding="utf-8-sig"))
+        terms = (root / pinned["terms"]).resolve()
+        if (review.get("cab_sha256") != pinned["sha256"]
+            or review.get("version") != pinned["version"]
+            or review.get("source_url") != pinned["url"]
+            or review.get("signature") != "Valid Microsoft"
+            or not terms.is_relative_to(licensing) or not terms.is_file()
+            or not (runtime / "msedgewebview2.exe").is_file()):
+            return None
+        expected = {}
+        for entry in review["files"]:
+            path = (runtime / entry["path"]).resolve()
+            if not path.is_relative_to(runtime) or path == review_path or path in expected:
+                return None
+            expected[path] = entry["sha256"]
+        actual = {}
+        for path in [runtime, *runtime.rglob("*")]:
+            if path.is_symlink() or path.is_junction():
+                return None
+            if path.is_file() and path != review_path:
+                actual[path.resolve()] = digest(path)
+        if not expected or actual != expected:
+            return None
+        return {"name": "microsoft-webview2-fixed", "version": pinned["version"],
+                "source_url": pinned["url"], "license_path": terms}
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def collect(webview_mode="offline-installer"):
     OUT.mkdir(exist_ok=True)
     windows_license=(Path(sys.base_prefix)/"LICENSE.txt").read_text(encoding="utf-8")
     start=windows_license.index("Additional Conditions for this Windows binary build")
@@ -119,19 +171,14 @@ def collect():
         location = Path(package["manifest_path"]).parent
         record("rust", package["name"], package["version"], package["license"], location, notices(location),
                f"https://crates.io/crates/{package['name']}/{package['version']}")
-    # The signed, unmodified Microsoft prerequisite retains its separate terms.
-    webview_path = OUT / "WEBVIEW2-REVIEW.json"
-    webview_reviewed = False
-    if webview_path.is_file():
-        webview = json.loads(webview_path.read_text(encoding="utf-8-sig"))
-        executable = (ROOT / webview["path"]).resolve()
-        license_path = OUT / webview["license_path"]
-        webview_reviewed = (executable.is_relative_to(ROOT / ".cache/webview-runtime") and executable.is_file()
-                            and digest(executable) == webview["sha256"] and webview.get("signature") == "Valid"
-                            and license_path.is_file() and digest(license_path) == webview["license_sha256"])
-        if webview_reviewed:
-            record("runtime", "microsoft-webview2-offline", webview["version"], "Microsoft Edge WebView2 Runtime terms (separate proprietary redistributable)",
-                   OUT, [license_path], webview["source_url"])
+    # EXE prerequisites and MSIX Fixed Version payloads have separate proof.
+    # A cached EXE installer must never clear a different MSIX runtime.
+    webview = review_webview_distribution(webview_mode)
+    webview_reviewed = webview is not None
+    if webview_reviewed:
+        record("runtime", webview["name"], webview["version"],
+               "Microsoft Edge WebView2 Runtime terms (separate proprietary redistributable)",
+               OUT, [webview["license_path"]], webview["source_url"])
     # gallery-dl and FFmpeg are acquired separately by users, not redistributed.
     # Their old preview records remain historical and do not clear those installers.
     runtime_review = OUT / "RUNTIME-REVIEW.json"
@@ -149,12 +196,14 @@ def collect():
     payload_verified=bundle_audit.verify()
     findings=[] if payload_verified else ['Current worker payload exclusion and own-adapter-source verification is missing or stale.']
     runtime_recorded=runtime_review.is_file() and not reviewed.get("failures") and bool(reviewed.get("runtime_dlls")) and all(item.get("cpython_distribution_match") is True for item in reviewed["runtime_dlls"]) and len(reviewed.get("external_sources",[]))==7
-    if not webview_reviewed: findings.append("Bundled Microsoft offline prerequisite signature, hash and applicable terms need verification.")
+    if not webview_reviewed: findings.append(f"Bundled Microsoft WebView2 {webview_mode} signature, payload hashes and applicable terms need verification.")
     if not runtime_recorded: findings.append("Microsoft VC runtime redistributables and CPython external DLLs need their redistribution/source records; package metadata alone is insufficient.")
     data = {"project_license":"MIT", "project_version":npm_lock["version"], "inventory_scope":"installed Python/build dependencies, full Windows-filtered Cargo metadata and npm lock; includes build/test dependencies and vendored notices",
             "components":records, "missing_notice_components":missing,
             "source_review_findings":findings, "runtime_provenance_and_terms_recorded":runtime_recorded,
-            "worker_payload_verified":payload_verified, "webview_prerequisite_reviewed":webview_reviewed,
+            "worker_payload_verified":payload_verified, "webview_distribution":webview_mode,
+            "webview_distribution_reviewed":webview_reviewed,
+            "webview_prerequisite_reviewed":webview_reviewed and webview_mode == "offline-installer",
             "external_user_tools":[{"name":"gallery-dl","version":"1.32.14","declared_license":"GPL-2.0-only","shipped":False,"source":"https://github.com/mikf/gallery-dl","qualification":"Requests Apache-2.0 combination is not certified; no upstream permission or license change is claimed."},
                 {"name":"FFmpeg","shipped":False,"source":"https://ffmpeg.org/download.html","qualification":"User obtains tools separately; redistributing a chosen build requires its own license and corresponding-source review."}],
             "redistribution_cleared":payload_verified and runtime_recorded and not missing and not findings}
@@ -229,9 +278,14 @@ def source_archives(data):
     return report
 
 if __name__ == "__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("--sources",action="store_true");args=parser.parse_args()
-    data=collect()
+    parser=argparse.ArgumentParser();parser.add_argument("--sources",action="store_true")
+    parser.add_argument("--webview-mode",choices=["offline-installer","fixed-runtime"],default="offline-installer")
+    parser.add_argument("--require-complete",action="store_true");args=parser.parse_args()
+    data=collect(args.webview_mode)
     print(json.dumps({"components":len(records),"notice_files":sum(len(p.get("notices",[])) for p in records),"missing_notice_components":missing,"redistribution_cleared":data["redistribution_cleared"]},indent=2))
     if args.sources:
         sources=source_archives(data)
         print(json.dumps({"source_archives":len(sources["archives"]),"download_failures":sources["download_failures"],"source_closure_complete":sources["source_closure_complete"]},indent=2))
+    if args.require_complete and (not data["redistribution_cleared"] or args.sources and not sources["source_closure_complete"]):
+        print(json.dumps({"source_review_findings":data["source_review_findings"],"missing_notice_components":missing},indent=2),file=sys.stderr)
+        raise SystemExit("Dependency notices and corresponding sources are incomplete for this build mode.")

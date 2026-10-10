@@ -64,7 +64,9 @@ if (-not ($Check -or $Prototype -or $Dev)) {
         & (Join-Path $PSScriptRoot 'build-worker.ps1')
         if ($LASTEXITCODE) { throw 'Worker packaging failed.' }
     }
-    & (Join-Path $projectRoot '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'collect-licenses.py') --sources
+    $licenseArguments = @('--sources')
+    if ($Msix) { $licenseArguments += @('--webview-mode','fixed-runtime','--require-complete') }
+    & (Join-Path $projectRoot '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'collect-licenses.py') @licenseArguments
 } else {
     & (Join-Path $projectRoot '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'collect-licenses.py')
 }

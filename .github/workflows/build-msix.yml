@@ -121,6 +121,7 @@ jobs:
               or deps.get('missing_notice_components')
               or sources.get('source_closure_complete') is not True
               or sources.get('download_failures')):
+              print(json.dumps({'findings': deps.get('source_review_findings'), 'missing_notices': deps.get('missing_notice_components'), 'source_failures': sources.get('download_failures')}, indent=2), file=sys.stderr)
               raise SystemExit('Dependency notices and corresponding sources must be complete.')
           review = json.loads((output / 'msix-review.json').read_text())
           if review['source_commit'] != os.environ['GITHUB_SHA']:
