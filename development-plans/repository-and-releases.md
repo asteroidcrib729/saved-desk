@@ -44,7 +44,7 @@ The local per-file review is .cache/development-plans-publication-review.json. N
 
 ## Initialize and publish when ready
 
-The original project uses MIT, with root `LICENSE` and dependency-specific terms retained. Keep `LICENSE` and `licensing/` in Git. Supporting Markdown remains in `development-plans/`, with `README.md`, `PRIVACY_POLICY.md`, `TERMS_OF_SERVICE.md` and `CODE_SIGNING_POLICY.md` at root. The policies are source files to keep in Git; complete their public contact details before publication. See [policy publication](policy-publication.md). The owner selected the public repository https://github.com/asteroidcrib729/saved-desk and main as its default branch. The original initialization sequence is retained below for reference; do not repeat it in the existing checkout:
+The original project uses MIT, with root `LICENSE` and dependency-specific terms retained. Keep `LICENSE` and `licensing/` in Git. Supporting Markdown remains in `development-plans/`, with `README.md`, `PRIVACY_POLICY.md`, `TERMS_OF_SERVICE.md`, `CODE_SIGNING_POLICY.md` and `INSTALLER_EXIT_CODES.md` at root. The policies are source files to keep in Git; complete their public contact details before publication. See [policy publication](policy-publication.md). The owner selected the public repository https://github.com/asteroidcrib729/saved-desk and main as its default branch. The original initialization sequence is retained below for reference; do not repeat it in the existing checkout:
 
 ```powershell
 git init -b main

@@ -61,7 +61,7 @@ def audit() -> dict:
         "desktop/playwright-report/index.html": True,
         "desktop/test-results/screenshot.png": True,
         "desktop/src-tauri/gen/schemas/desktop-schema.json": True,
-        "README.md": False, "PRIVACY_POLICY.md": False, "TERMS_OF_SERVICE.md": False, "CODE_SIGNING_POLICY.md": False,
+        "README.md": False, "PRIVACY_POLICY.md": False, "TERMS_OF_SERVICE.md": False, "CODE_SIGNING_POLICY.md": False, "INSTALLER_EXIT_CODES.md": False,
         "desktop/package-lock.json": False,
         "desktop/src-tauri/Cargo.lock": False, "browser-connector/identity.json": False,
         "desktop/src-tauri/icons/icon.ico": False, ".vscode/settings.json": False,
@@ -123,7 +123,7 @@ def audit() -> dict:
             if re.search(pattern, content):
                 failures.append({"path": name, "problem": label})
         if path.suffix == ".md":
-            if name not in {"README.md", "PRIVACY_POLICY.md", "TERMS_OF_SERVICE.md", "CODE_SIGNING_POLICY.md"} and not name.startswith("development-plans/"):
+            if name not in {"README.md", "PRIVACY_POLICY.md", "TERMS_OF_SERVICE.md", "CODE_SIGNING_POLICY.md", "INSTALLER_EXIT_CODES.md"} and not name.startswith("development-plans/"):
                 failures.append({"path": name, "problem": "Markdown outside development-plans"})
             for target in re.findall(r"!?\[[^\]]*\]\(([^)]+)\)", content):
                 target = target.split("#")[0].strip("<>")

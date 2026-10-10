@@ -546,7 +546,7 @@ Normal installed users do not need to build the project. The source uses Next.js
 | oauth-clients/ | Ignored machine-local provider registration files; never publish |
 | release-artifacts/ | Permanently ignored generated assets; upload approved files through GitHub Releases |
 
-README.md, PRIVACY_POLICY.md, TERMS_OF_SERVICE.md and CODE_SIGNING_POLICY.md stay at root. All other authored project Markdown lives in development-plans. Dependency-provided documentation is not moved or edited.
+README.md, PRIVACY_POLICY.md, TERMS_OF_SERVICE.md, CODE_SIGNING_POLICY.md and INSTALLER_EXIT_CODES.md stay at root. All other authored project Markdown lives in development-plans. Dependency-provided documentation is not moved or edited.
 
 For a browser sample preview, run from the project root:
 
@@ -593,6 +593,7 @@ Downloaded content retains its owner's rights. Use supported routes only for con
 - [Privacy Policy](PRIVACY_POLICY.md)
 - [Terms of Service](TERMS_OF_SERVICE.md)
 - [Code signing policy](CODE_SIGNING_POLICY.md)
+- [Installer exit codes and Partner Center configuration](INSTALLER_EXIT_CODES.md)
 - [Policy publication and Google branding](development-plans/policy-publication.md)
 
 **Maintainer:** Faraz Hussain  
