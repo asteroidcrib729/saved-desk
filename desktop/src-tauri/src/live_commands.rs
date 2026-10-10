@@ -284,7 +284,9 @@ pub async fn setup_connector(
         if !host.is_file() { return Err("The browser connector host is missing. Repair the app installation.".into()); }
         let directory=resources.join("browser-connector").join(if browser=="firefox"{"firefox"}else{"chromium"});
         if !directory.join("manifest.json").is_file() { return Err("The companion connector package is missing. Repair the app installation.".into()); }
-        let manifest=data(&app_state)?.join(format!("connector-{browser}.json"));
+        let profile=data(&app_state)?;
+        let host=crate::connector_payload::install_host(&profile,&host)?;
+        let manifest=profile.join(format!("connector-{browser}.json"));
         let mut value=json!({"name":"com.saveddesk.connector","description":"SavedDesk selected-platform browser connector","path":platform::shell_path(&host),"type":"stdio"});
         if browser=="firefox" { value["allowed_extensions"]=json!([platform::FIREFOX_ID]); } else { value["allowed_origins"]=json!([platform::CHROMIUM_ORIGIN]); }
         std::fs::write(&manifest,serde_json::to_vec(&value).map_err(|_|"Invalid connector registration.")?).map_err(|_|"Connector registration could not be written.")?;

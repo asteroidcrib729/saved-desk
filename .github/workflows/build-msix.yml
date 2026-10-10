@@ -1,0 +1,177 @@
+name: Windows MSIX package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_identity:
+        description: Store submission identity or separate unsigned local preview
+        type: choice
+        options: [store, preview]
+        default: store
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-msix-${{ github.ref }}-${{ inputs.package_identity }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      REVIEW_DIRECTORY: release-artifacts/msix/ci-review
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.21.0'
+          package-manager-cache: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.7'
+          architecture: x64
+      - name: Validate source revision, version and build prerequisites
+        id: metadata
+        run: |
+          $revision = git rev-parse HEAD
+          if ($LASTEXITCODE -or $revision -ne $env:GITHUB_SHA) { throw 'Checkout differs from the requested commit.' }
+          $changes = git status --porcelain
+          if ($LASTEXITCODE -or $changes) { throw 'The source checkout must be clean before building.' }
+          $version = (python packaging/audit-repository.py --version).Trim()
+          if ($LASTEXITCODE) { throw 'Project versions are inconsistent.' }
+          python packaging/release-quarantine.py --check-version $version
+          if ($LASTEXITCODE) { throw 'Historical preview version is quarantined.' }
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+            python packaging/audit-repository.py --version --tag $env:GITHUB_REF_NAME
+            if ($LASTEXITCODE) { throw 'The selected tag must match the application version.' }
+          }
+          $sdk = Get-ChildItem 'C:/Program Files (x86)/Windows Kits/10/bin' -Directory |
+            Where-Object { $_.Name -match '^10\.0\.\d+\.0$' -and (Test-Path (Join-Path $_.FullName 'x64/makeappx.exe')) } |
+            Sort-Object { [version]$_.Name } -Descending | Select-Object -First 1
+          if (-not $sdk) { throw 'The runner needs the Windows SDK including MakeAppx.exe.' }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "msix_version=$version.0" >> $env:GITHUB_OUTPUT
+      - name: Install locked dependencies
+        run: |
+          python -m venv .venv
+          ./.venv/Scripts/python.exe -m pip install -r packaging/requirements-lock.txt
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m pip install --no-build-isolation -e "backend[development]"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m pip check
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          npm.cmd --prefix desktop ci
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Audit source and ignore rules
+        run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build and audit worker package
+        run: ./packaging/build-worker.ps1
+      - name: Python worker and packaging checks
+        run: |
+          $env:PYTHONPATH = Join-Path $PWD 'backend/src'
+          ./.venv/Scripts/python.exe -m unittest discover -s backend/tests -v
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          ./.venv/Scripts/python.exe -m unittest discover -s packaging/tests -v
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Browser connector checks
+        run: npm.cmd --prefix desktop run test:connector
+      - name: Static frontend
+        run: npm.cmd --prefix desktop run build
+      - name: TypeScript checks
+        run: npm.cmd --prefix desktop run typecheck
+      - name: Install Edge for UI checks
+        working-directory: desktop
+        run: npx.cmd playwright install msedge
+      - name: UI checks
+        run: npm.cmd --prefix desktop test
+      - name: Install the tested Rust toolchain
+        run: rustup default 1.99.0
+      - name: Native unit checks
+        run: ./packaging/build-desktop.ps1 -Check
+      - name: Build unsigned x64 MSIX with verified offline WebView2
+        env:
+          PACKAGE_IDENTITY: ${{ inputs.package_identity }}
+        run: |
+          if ($env:PACKAGE_IDENTITY -notin @('store', 'preview')) { throw 'Unsupported package identity.' }
+          $store = $env:PACKAGE_IDENTITY -eq 'store'
+          ./packaging/build-msix.ps1 -Store:$store -ReuseWorker -OutputDirectory $env:REVIEW_DIRECTORY
+      - name: Verify the actual MSIX archive
+        run: ./.venv/Scripts/python.exe packaging/verify-msix.py $env:REVIEW_DIRECTORY
+      - name: Collect connector, notices, corresponding sources and checksums
+        run: |
+          $version = '${{ steps.metadata.outputs.version }}'
+          Compress-Archive -Path browser-connector/chromium,browser-connector/firefox -DestinationPath (Join-Path $env:REVIEW_DIRECTORY "SavedDesk-connector-$version.zip")
+          @'
+          import hashlib, json, os, runpy, sys, zipfile
+          from pathlib import Path
+          output = Path(sys.argv[1])
+          deps = json.loads(Path('licensing/DEPENDENCIES.json').read_text(encoding='utf-8-sig'))
+          sources = json.loads(Path('.cache/redistribution-sources/SOURCE-PROVENANCE.json').read_text(encoding='utf-8-sig'))
+          if (deps.get('redistribution_cleared') is not True
+              or deps.get('worker_payload_verified') is not True
+              or deps.get('missing_notice_components')
+              or sources.get('source_closure_complete') is not True
+              or sources.get('download_failures')):
+              raise SystemExit('Dependency notices and corresponding sources must be complete.')
+          review = json.loads((output / 'msix-review.json').read_text())
+          if review['source_commit'] != os.environ['GITHUB_SHA']:
+              raise SystemExit('MSIX review belongs to a different source commit.')
+          runpy.run_path('packaging/release-evidence.py')['pack'](output)
+          for path in output.glob('*.zip'):
+              with zipfile.ZipFile(path) as archive:
+                  if archive.testzip() is not None:
+                      raise SystemExit('Companion archive CRC failure: ' + path.name)
+          provenance = {
+              'source_commit': os.environ['GITHUB_SHA'],
+              'source_ref': os.environ['GITHUB_REF'],
+              'source_tree_clean_before_build': True,
+              'workflow_ref': os.environ['GITHUB_WORKFLOW_REF'],
+              'run_url': os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY'] + '/actions/runs/' + os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'package': review['package'],
+              'package_sha256': review['package_sha256'],
+              'store_identity_confirmed': review['store_identity_confirmed'],
+              'signature': 'unsigned',
+              'windows_installation_tested': False,
+              'store_certification_received': False,
+          }
+          (output / 'ci-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
+          lines = []
+          for path in sorted(output.iterdir()):
+              if path.is_file() and path.name != 'SHA256SUMS.txt':
+                  with path.open('rb') as stream:
+                      lines.append(hashlib.file_digest(stream, 'sha256').hexdigest() + '  ' + path.name + '\n')
+          (output / 'SHA256SUMS.txt').write_text(''.join(lines), encoding='ascii')
+          '@ | & ./.venv/Scripts/python.exe - $env:REVIEW_DIRECTORY
+          if ($LASTEXITCODE) { throw 'MSIX review asset collection failed.' }
+      - name: Write build summary
+        run: |
+          $review = Get-Content (Join-Path $env:REVIEW_DIRECTORY 'msix-review.json') -Raw | ConvertFrom-Json
+          @(
+            '## SavedDesk Windows x64 MSIX',
+            "Source commit: $env:GITHUB_SHA",
+            "Package: $($review.package)",
+            "Identity: $($review.identity_name)",
+            "Publisher: $($review.publisher)",
+            "SHA-256: $($review.package_sha256)",
+            '',
+            'Download the windows-msix artifact below. It contains the MSIX, connector ZIP, manifest, validation reports, notices, corresponding sources and SHA256SUMS.txt.',
+            'The package is unsigned. The Store identity is for Partner Center submission; the preview identity needs deliberate local test signing before sideload installation.',
+            'These build checks do not establish installation lifecycle acceptance or Microsoft Store certification.'
+          ) >> $env:GITHUB_STEP_SUMMARY
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: windows-msix-${{ steps.metadata.outputs.msix_version }}-${{ inputs.package_identity }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release-artifacts/msix/ci-review/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30

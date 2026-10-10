@@ -1,7 +1,11 @@
-param([switch]$Dev, [switch]$Check, [switch]$Prototype, [switch]$RequireSigning, [switch]$ReuseWorker)
+param([switch]$Dev, [switch]$Check, [switch]$Prototype, [switch]$RequireSigning, [switch]$ReuseWorker, [switch]$Msix)
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-if (-not ($Dev -or $Check -or $Prototype)) {
+if ($Msix -and ($Dev -or $Check -or $Prototype -or $RequireSigning)) { throw "Msix is a separate unsigned package build; do not combine it with other build modes." }
+if ($Msix) {
+    & (Join-Path $PSScriptRoot 'prepare-msix-runtime.ps1')
+}
+if (-not ($Dev -or $Check -or $Prototype -or $Msix)) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'prepare-webview-runtime.ps1')
     if ($LASTEXITCODE) { throw 'Verified offline WebView prerequisite is required before building.' }
 }
@@ -137,13 +141,26 @@ try {
                 $config.bundle.windows | Add-Member signCommand $command -Force
                 $env:TAURI_CONFIG = $config | ConvertTo-Json -Depth 20 -Compress
             }
-            npm.cmd run desktop:build
+            if ($Msix) {
+                $config = if ($priorSigningConfig) { $priorSigningConfig | ConvertFrom-Json } else { [pscustomobject]@{} }
+                if (-not $config.bundle) { $config | Add-Member bundle ([pscustomobject]@{}) }
+                if (-not $config.bundle.windows) { $config.bundle | Add-Member windows ([pscustomobject]@{}) }
+                $config.bundle.windows | Add-Member webviewInstallMode ([pscustomobject]@{type='fixedRuntime';path='resources/webview2'}) -Force
+                $env:TAURI_CONFIG = $config | ConvertTo-Json -Depth 20 -Compress
+                npm.cmd run desktop:build -- --no-bundle
+            } else {
+                npm.cmd run desktop:build
+            }
             if ($LASTEXITCODE) { throw 'Desktop installer build failed.' }
         } finally { $env:TAURI_CONFIG = $priorSigningConfig }
     }
     if (-not ($Check -or $Dev)) {
         $configuration = if ($Prototype) { 'debug' } else { 'release' }
         & (Join-Path $PSScriptRoot 'test-installed-payload.ps1') -InstallDirectory (Join-Path $projectRoot "desktop/src-tauri/target/$configuration")
+    }
+    if ($Msix) {
+        $target = Join-Path $projectRoot 'desktop/src-tauri/target/release'
+        @{schema=1;mode='msix-fixed-runtime';application_sha256=(Get-FileHash -LiteralPath (Join-Path $target 'saveddesk.exe')).Hash.ToLowerInvariant();host_sha256=(Get-FileHash -LiteralPath (Join-Path $target 'saveddesk-native-host.exe')).Hash.ToLowerInvariant();runtime_sha256=(Get-FileHash -LiteralPath (Join-Path $target 'resources/webview2/msedgewebview2.exe')).Hash.ToLowerInvariant()} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $target 'msix-build-review.json') -Encoding UTF8
     }
     if ($LASTEXITCODE -ne 0) { throw 'Desktop build/check failed.' }
 } finally { Pop-Location }

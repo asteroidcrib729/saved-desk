@@ -149,7 +149,8 @@ pub async fn check_readiness(
             }
             let manifest = state.database.parent().ok_or("App data is unavailable.")?.join(format!("connector-{browser}.json"));
             let packaged = resources.join("browser-connector/chromium/manifest.json").is_file() && host.is_file();
-            let registered = packaged && platform::connector_registered(&browser, &manifest, &host);
+            let registered_host = crate::connector_payload::expected_host(state.database.parent().ok_or("App data is unavailable.")?, &host);
+            let registered = packaged && registered_host.map(|path| platform::connector_registered(&browser, &manifest, &path)).unwrap_or(false);
             checks.push(check("connector", "Browser connection", if registered { "ready" } else { "warning" },
                 if registered { "The browser host is registered for this app. Extension installation and account approval must still be checked in your browser." }
                 else if packaged { "Set up the connector for this browser in Accounts, then load or reload the extension." }

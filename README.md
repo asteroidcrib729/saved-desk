@@ -2,7 +2,7 @@
 
 I built SavedDesk to keep supported social-media saves in one local Windows library. You can download posts and collections, search your saved content, view images, play videos and audio, and manage the files on your computer.
 
-**Current application: 0.2.10. User guide reviewed: 9 October 2026.** The GitHub-built Windows installer has passed installation, upgrade and uninstall checks on this system. It remains an unsigned draft until the maintainer publishes the prepared prerelease. [Current GitHub-build verification and preview policy](development-plans/signpath-and-public-preview.md) records its exact hash and limitations; [earlier local-build verification](development-plans/scope-and-lifecycle-0.2.10.md) retains its own evidence.
+**Current application: 0.2.10. User guide reviewed: 10 October 2026.** The GitHub-built Windows installer has passed installation, upgrade and uninstall checks on this system. The maintainer has published it as a publicly accessible unsigned prerelease. [Current GitHub-build verification and preview policy](development-plans/signpath-and-public-preview.md) records its exact hash and limitations; [earlier local-build verification](development-plans/scope-and-lifecycle-0.2.10.md) retains its own evidence.
 
 ## Contents
 
@@ -51,6 +51,42 @@ The GitHub-built 0.2.10 installer SHA-256 is:
 19e8b9d810888d686843f80dd72c7e0467bc6912ca38e603e1f6951f701f4dc6
 ~~~
 
+### MSIX packages
+
+I also provide a separate Windows x64 MSIX build. The local testing package uses a separate test identity. The Store build uses the public identity confirmed in Partner Center: FarazHussain.SavedDesk, publisher CN=F14492EE-882F-4921-8253-B73CEB32823A. Its unsigned package is intended for review; Windows requires appropriate package trust before normal sideload installation. A locally signed preview and public test certificate, when supplied, are for deliberate local testing only. Do not treat that certificate as a trusted public publisher certificate.
+
+MSIX includes the complete Microsoft Fixed Version WebView2 runtime, so it does not run the EXE installer's runtime prerequisite. It includes the same reviewed worker, connector and dependency notices; gallery-dl and FFmpeg remain separately configured download tools. It requires Windows 10 build 19041 or later, x64. Fixed Version WebView2 updates ship through new app packages.
+
+For local builds from source:
+
+```powershell
+./packaging/build-msix.ps1
+```
+
+If the worker has already been built and audited against the current source, add -ReuseWorker. Outputs are under the permanently ignored release-artifacts/msix directory and include the manifest, hashes and review record. Existing output directories are not overwritten.
+
+For the confirmed Microsoft Store identity, build using its tracked public values:
+
+```powershell
+./packaging/build-msix.ps1 -Store
+```
+
+For GitHub-hosted builds, I provide [Windows MSIX package](.github/workflows/build-msix.yml). After the workflow and its MSIX packaging prerequisites are committed and pushed to `main`:
+
+1. Open **Actions -> Windows MSIX package -> Run workflow**.
+2. Select a branch containing the MSIX implementation, normally `main`. The workflow builds the exact commit selected for that run. The earlier `v0.2.10` tag does not contain the later MSIX implementation; use a new version tag for a future tagged build.
+3. Leave **package_identity** set to **store** for Partner Center. Select **preview** only for the separate unsigned local test identity.
+4. Run the workflow, then download its **windows-msix-<version>-<identity>-<run>-<attempt>** artifact from the completed run. Artifacts expire after 30 days.
+5. Extract it, verify the `.msix` against `SHA256SUMS.txt`, and upload only the Store-identity `.msix` through the MSIX/AppX submission. Keep the companion notices and source archives with any distributed review assets.
+
+The workflow installs locked dependencies, runs Python, packaging, connector, frontend, UI and native checks, builds the worker once, verifies the pinned Microsoft Fixed Version WebView2 runtime, builds an unsigned x64 MSIX, and validates the archived payload. It includes the connector ZIP, original source, dependency sources, notices, manifest, checksums and CI provenance. It requires no signing certificate or repository secrets and does not publish a GitHub release or install the package on the runner. Microsoft Store signing, capability approval and certification remain separate steps. The EXE workflow remains separate.
+
+Upload an identity-correct package through an MSIX/AppX submission, not the EXE/MSI Package URL form. Microsoft supplies signing for Store MSIX distribution. The local-preview package must not be submitted under a guessed identity. See the [MSIX plan, testing limits and precise Store steps](development-plans/development-plan-05.md).
+
+MSIX connector setup installs a hash-verified native-host copy under the existing profile\connector-bin folder, because an unpackaged browser cannot execute it directly from WindowsApps. The packaged worker and app remain inside MSIX.
+
+Close the other edition before using MSIX: both editions share the existing catalog and settings. After an MSIX update, repeat **Accounts -> Set up browser connector**, since Windows changes the package installation path. Before removal, unregister this installation's connector using packaging/unregister-connector.ps1 with the exact native-host parent directory recorded in your connector manifest; then uninstall through Windows Settings -> Apps. Package removal retains local SavedDesk data and downloaded media. The EXE's /S parameter and process exit codes do not apply to MSIX.
+
 ### Requirements
 
 | Requirement | What it is for |
@@ -73,7 +109,7 @@ Linux, macOS and native ARM64 installers are not supplied by this project. The p
 4. Open SavedDesk from the installed shortcut. The window starts maximized.
 5. Complete [first-run setup](#first-run-setup) before connecting Instagram/X or downloading videos.
 
-The current preview installer has no trusted publisher signature; Windows may display an unknown-publisher or reputation prompt. Check the intended source and checksum before deciding whether to run it. SignPath Foundation approval and integration are pending; see the [Code signing policy](CODE_SIGNING_POLICY.md).
+The current preview installer has no trusted publisher signature; Windows may display an unknown-publisher or reputation prompt. Check the intended source and checksum before deciding whether to run it. SignPath Foundation declined the application; trusted EXE signing remains outstanding; see the [Code signing policy](CODE_SIGNING_POLICY.md).
 
 For an upgrade, run the newer installer with the same Windows account and retain the current installation location. Your catalog, settings, volume preference, history and downloaded media are kept. A future updated connector may need to be reloaded in the browser.
 

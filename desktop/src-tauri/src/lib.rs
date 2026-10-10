@@ -1,5 +1,6 @@
 mod auth;
 mod catalog;
+mod connector_payload;
 mod external_tools;
 mod deletion;
 mod live_commands;

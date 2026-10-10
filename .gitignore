@@ -23,6 +23,7 @@ desktop/next-env.d.ts
 desktop/src-tauri/binaries/
 desktop/src-tauri/resources/licenses/
 desktop/src-tauri/resources/worker/
+desktop/src-tauri/resources/webview2/
 desktop/src-tauri/resources/browser-connector/
 desktop/src-tauri/resources/saveddesk-native-host.exe
 desktop/src-tauri/gen/

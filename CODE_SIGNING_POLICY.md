@@ -1,6 +1,6 @@
 # Code signing policy
 
-**Last updated:** 9 October 2026
+**Last updated:** 10 October 2026
 
 **Project:** [SavedDesk](https://github.com/asteroidcrib729/saved-desk)
 
@@ -8,7 +8,7 @@
 
 ## Current status
 
-SavedDesk is applying to SignPath Foundation. Approval and signing integration are pending. Current Windows preview installers are **unsigned**; no SignPath sponsorship, certificate, independent security certification or SmartScreen reputation is claimed.
+SignPath Foundation declined SavedDesk's application twice because it does not yet have sufficient public adoption and visibility. No Foundation signing integration is active. The separate Microsoft Store MSIX route is being prepared; it does not sign the existing EXE. Current Windows preview installers are **unsigned**; no SignPath sponsorship, certificate, independent security certification or SmartScreen reputation is claimed.
 
 If the application is approved and signing is operational, the acknowledgement will be: **Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org)**. This describes the intended future arrangement, not the current previews.
 
@@ -45,3 +45,7 @@ The application does not automatically send its library or account credentials t
 Official downloads are listed on [GitHub Releases](https://github.com/asteroidcrib729/saved-desk/releases). Report unexpected signatures, altered assets or security concerns to [farazhussain5000@gmail.com](mailto:farazhussain5000@gmail.com), without sending cookies, tokens, private content or unredacted logs.
 
 For setup and remaining owner actions, see [SignPath application and preview preparation](development-plans/signpath-and-public-preview.md). The external [Foundation conditions](https://signpath.org/terms.html) and [GitHub integration documentation](https://docs.signpath.io/trusted-build-systems/github) govern service approval and setup.
+
+## Microsoft Store MSIX packages
+
+The separate MSIX build uses Microsoft's Store package-upload route, which supplies Store signing. It does not claim that Microsoft signs the web-hosted NSIS EXE. A Store MSIX must match the assigned identity and pass capability, packaging and policy review; the local SavedDesk.MsixPreview identity is for testing only. Local self-signed test packages require explicit test-machine trust and are not publicly trusted releases. Fixed Version WebView2 binaries retain Microsoft's signatures and applicable license terms. The existing NSIS signed-production release gates remain unchanged. See [MSIX packaging and submission](development-plans/development-plan-05.md).
