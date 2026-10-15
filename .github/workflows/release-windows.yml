@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing version tag, for example v0.2.6
-        required: true
+        description: Optional existing tag (v0.2.11); leave blank to build the selected branch
+        required: false
+        default: ''
         type: string
       signing_mode:
         description: Unsigned review or real Azure Artifact Signing (requires setup)
@@ -18,7 +19,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: windows-release-${{ inputs.release_tag }}
+  group: windows-release-${{ github.ref }}-${{ inputs.release_tag }}
   cancel-in-progress: false
 jobs:
   build:
@@ -28,29 +29,37 @@ jobs:
     permissions:
       contents: read
       id-token: write # Manual release build only; Azure OIDC avoids long-lived secrets.
+    outputs:
+      release_tag: ${{ steps.metadata.outputs.release_tag }}
+      source_commit: ${{ steps.metadata.outputs.source_commit }}
+      artifact_name: windows-exe-${{ steps.metadata.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ inputs.release_tag }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Validate the checked-out tag
-        shell: pwsh
-        env:
-          RELEASE_TAG: ${{ inputs.release_tag }}
-        run: |
-          if ($env:RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'Use a vMAJOR.MINOR.PATCH tag.' }
-          $tagCommit = git rev-parse --verify "refs/tags/$env:RELEASE_TAG^{commit}"
-          if ($LASTEXITCODE) { throw 'Existing tag required.' }
-          if ($tagCommit -ne (git rev-parse HEAD)) { throw 'Checkout does not match the tag.' }
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
-        with:
-          node-version: '24.21.0'
-          package-manager-cache: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14.7'
           architecture: x64
+      - name: Resolve branch preview or existing version tag
+        id: metadata
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          CREATE_DRAFT: ${{ inputs.create_draft }}
+        run: |
+          python packaging/resolve-release.py
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $version = (python packaging/audit-repository.py --version).Trim()
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python packaging/release-quarantine.py --check-version $version
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.21.0'
+          package-manager-cache: false
       - name: Install locked dependencies
         shell: pwsh
         run: |
@@ -116,14 +125,39 @@ jobs:
       - name: Build fresh Windows release review assets
         shell: pwsh
         env:
-          RELEASE_TAG: ${{ inputs.release_tag }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.release_tag }}
         run: |
           $signed = '${{ inputs.signing_mode }}' -eq 'azure'
-          ./packaging/build-release.ps1 -Tag $env:RELEASE_TAG -RequireSigning:$signed
+          $arguments = @{ Tag = $env:RELEASE_TAG; RequireSigning = $signed }
+          # Existing tags can contain the older script interface. Reuse only
+          # when that selected source implements the audited reuse switch.
+          $script = Get-Command ./packaging/build-release.ps1
+          if ($script.Parameters.ContainsKey('ReuseWorker')) { $arguments.ReuseWorker = $true }
+          & ./packaging/build-release.ps1 @arguments
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Write EXE build summary
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ steps.metadata.outputs.release_tag }}
+          TAG_MATCHES_SOURCE: ${{ steps.metadata.outputs.tag_matches_source }}
+        run: |
+          $manifest = Get-Content (Join-Path "release-artifacts/$env:RELEASE_TAG" 'release-manifest.json') -Raw | ConvertFrom-Json
+          @(
+            '## SavedDesk Windows x64 EXE preview',
+            "Source commit: $($manifest.source_commit)",
+            "Version label: $($manifest.tag)",
+            "Existing tag matches source: $env:TAG_MATCHES_SOURCE",
+            "Installer signature: $($manifest.signature_status)",
+            '',
+            'Download the windows-exe artifact below. It includes the EXE, connector, notices, corresponding sources and SHA256SUMS.txt.',
+            'A branch build does not create or publish a Git tag or GitHub release. A draft is created only when explicitly selected and a matching tag exists.',
+            'This build does not establish installation lifecycle acceptance, trusted signing or Microsoft certification.'
+          ) >> $env:GITHUB_STEP_SUMMARY
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: windows-release-review
-          path: release-artifacts/${{ inputs.release_tag }}/*
+          name: windows-exe-${{ steps.metadata.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release-artifacts/${{ steps.metadata.outputs.release_tag }}/*
+          compression-level: 0
           if-no-files-found: error
           retention-days: 14
   draft:
@@ -134,16 +168,17 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: windows-release-review
+          name: ${{ needs.build.outputs.artifact_name }}
           path: review-assets
       - name: Create a draft prerelease without replacing assets
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+          EXPECTED_SOURCE_COMMIT: ${{ needs.build.outputs.source_commit }}
         run: |
           if ($env:RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'Invalid tag.' }
           if ([version]$env:RELEASE_TAG.Substring(1) -le [version]'0.2.3') { throw 'Uncleared historical previews are quarantined; draft creation is blocked.' }
@@ -151,6 +186,9 @@ jobs:
           if ($notes.Count -ne 1) { throw 'Expected one release asset set.' }
           $manifest = Get-Content -LiteralPath (Join-Path $notes[0].DirectoryName 'release-manifest.json') -Raw | ConvertFrom-Json
           if ($manifest.tag -ne $env:RELEASE_TAG -or ('v'+$manifest.version) -ne $env:RELEASE_TAG) { throw 'Artifact manifest/tag mismatch.' }
+          if ($manifest.source_commit -ne $env:EXPECTED_SOURCE_COMMIT) { throw 'Draft artifact source differs from the build job.' }
+          $remoteCommit = gh api "repos/$env:GH_REPO/commits/$env:RELEASE_TAG" --jq .sha
+          if ($LASTEXITCODE -or $remoteCommit -ne $manifest.source_commit) { throw 'Release tag moved or differs from the built source.' }
           $assets = @(Get-ChildItem -LiteralPath $notes[0].DirectoryName -File | ForEach-Object FullName)
           gh release create $env:RELEASE_TAG @assets --draft --prerelease --verify-tag --title "SavedDesk $env:RELEASE_TAG preview" --notes-file $notes[0].FullName
           if ($LASTEXITCODE) { throw 'Draft creation failed; existing releases are not overwritten.' }

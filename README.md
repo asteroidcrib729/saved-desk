@@ -51,6 +51,31 @@ The GitHub-built 0.2.10 installer SHA-256 is:
 19e8b9d810888d686843f80dd72c7e0467bc6912ca38e603e1f6951f701f4dc6
 ~~~
 
+### Build EXE and MSIX installers with GitHub Actions
+
+I maintain two independent packaging workflows. Both can build the selected branch, normally **main**, without creating a version tag.
+
+| Installer | Workflow | Settings for a normal build | Downloaded artifact |
+| --- | --- | --- | --- |
+| Windows EXE | [Windows release preview](.github/workflows/release-windows.yml) | Leave release_tag empty; signing_mode unsigned; create_draft off | windows-exe-&lt;version&gt;-&lt;run&gt;-&lt;attempt&gt; |
+| Microsoft Store MSIX | [Windows MSIX package](.github/workflows/build-msix.yml) | package_identity store | windows-msix-&lt;version&gt;-store-&lt;run&gt;-&lt;attempt&gt; |
+
+1. Commit and push the intended source to main. Each workflow checks out the selected commit and reads the version from the project files.
+2. Open GitHub **Actions**, select the desired workflow and choose **Run workflow**. Select **main** in the branch dropdown and use the settings above.
+3. Wait for all required jobs to succeed. Open that run's summary and download its artifact. Artifacts are temporary build downloads: EXE artifacts expire after 14 days and MSIX artifacts after 30 days.
+4. Extract the artifact, compare the installer with **SHA256SUMS.txt**, and retain the complete notices and source companions when distributing it.
+5. Submit the Store-identity unsigned MSIX to Partner Center. The unsigned EXE is a development preview and follows the [Code signing policy](CODE_SIGNING_POLICY.md).
+
+FFmpeg/FFprobe and their notices are included in both formats. Gallery tools are acquired through the app's explicit-consent setup. EXE uses the reviewed Microsoft offline WebView2 prerequisite installer; MSIX includes the reviewed Fixed Version runtime. Neither build success nor an unsigned artifact establishes trusted signing or Store certification.
+
+For an EXE build from an immutable tag, first create and push a tag such as **v0.2.11** at the intended commit. Enter that existing tag in **release_tag**; a bare version such as 0.2.11 is normalized to v0.2.11, but the tag still needs to exist. The tag must match the application's version and include the current packaging tools. A version string in package.json is not itself a Git tag. Leaving release_tag empty builds the branch without creating a tag.
+
+Keep **create_draft** off for artifact-only builds. Enable it only when a matching tag already points at the selected source and you want a private draft prerelease. The workflow verifies the tag before expensive build steps and refuses to replace existing releases. Review the resulting draft before publishing it. **signing_mode azure** requires the separately configured signing service and release-signing environment; use unsigned while that service is unavailable.
+
+For MSIX, use **preview** only for the separate local test identity. Normal sideload installation requires deliberate test signing/trust; Store identity packages go through Partner Center. For future Store updates, increment the project/package version consistently; a repeat CI build at the same version is not a higher-version Store update.
+
+Start a **new Run workflow** after workflow changes. **Re-run jobs** repeats the old run's commit and inputs, so retrying the original missing-tag run will not pick up these fixes. For a repeat build without source changes, starting a fresh run creates a new artifact with a distinct run ID and preserves earlier downloads.
+
 ### MSIX packages
 
 I also provide a separate Windows x64 MSIX build. The local testing package uses a separate test identity. The Store build uses the public identity confirmed in Partner Center: FarazHussain.SavedDesk, publisher CN=F14492EE-882F-4921-8253-B73CEB32823A. Its unsigned package is intended for review; Windows requires appropriate package trust before normal sideload installation. A locally signed preview and public test certificate, when supplied, are for deliberate local testing only. Do not treat that certificate as a trusted public publisher certificate.

@@ -43,3 +43,7 @@ Prepare a new 0.2.11.0 Store-identity MSIX and checksum/source/notice companions
 ## Media build references
 
 The exact source/assembler/compiler/build-tool URLs and hashes are recorded in packaging/media-tools/sources.json. AV1 decoding follows the upstream [dav1d build instructions](https://github.com/videolan/dav1d/blob/1.5.3/README.md); its source is pinned to the [official VideoLAN release](https://downloads.videolan.org/pub/videolan/dav1d/1.5.3/). These are build-time references, not additional end-user setup steps.
+
+## Workflow follow-up
+
+[Development plan 07](development-plan-07.md) covers repeatable branch/tag EXE and MSIX workflow execution. Its workflow evidence is separate from the installed-app acceptance recorded above.
