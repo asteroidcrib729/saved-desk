@@ -1,6 +1,6 @@
 {
   "project_license": "MIT",
-  "project_version": "0.2.10",
+  "project_version": "0.2.11",
   "inventory_scope": "installed Python/build dependencies, full Windows-filtered Cargo metadata and npm lock; includes build/test dependencies and vendored notices",
   "components": [
     {
@@ -7139,15 +7139,100 @@
     },
     {
       "scope": "runtime",
-      "name": "microsoft-webview2-offline",
-      "version": "1.3.275.13",
+      "name": "microsoft-webview2-fixed",
+      "version": "155.0.4283.45",
       "declared_license": "Microsoft Edge WebView2 Runtime terms (separate proprietary redistributable)",
-      "source": "https://go.microsoft.com/fwlink/?linkid=2124701",
+      "source": "https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/01b0fbd9-6ea3-4e12-818a-a71f73f3855b/Microsoft.WebView2.FixedVersionRuntime.155.0.4283.45.x64.cab",
       "notices": [
         {
           "original": "WEBVIEW2-LICENSE.txt",
-          "path": "texts/runtime/microsoft-webview2-offline-1.3.275.13/a786f16493-WEBVIEW2-LICENSE.txt.txt",
+          "path": "texts/runtime/microsoft-webview2-fixed-155.0.4283.45/a786f16493-WEBVIEW2-LICENSE.txt.txt",
           "sha256": "dd16f0c40f2f1f85efe9fffc221e32923bb2b2e6d94e81774e16d7557b293fdc"
+        }
+      ]
+    },
+    {
+      "scope": "media-tool",
+      "name": "ffmpeg",
+      "version": "9.0.2",
+      "declared_license": "GPL-3.0-or-later",
+      "source": "https://ffmpeg.org/",
+      "notices": [
+        {
+          "original": "COPYING.GPLv3",
+          "path": "texts/media-tool/ffmpeg-9.0.2/b6101550e2-COPYING.GPLv3.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "original": "COPYING.GPLv2",
+          "path": "texts/media-tool/ffmpeg-9.0.2/cbaec58e25-COPYING.GPLv2.txt",
+          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+        },
+        {
+          "original": "COPYING.LGPLv2.1",
+          "path": "texts/media-tool/ffmpeg-9.0.2/cf71c7dbc4-COPYING.LGPLv2.1.txt",
+          "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+        }
+      ]
+    },
+    {
+      "scope": "media-tool",
+      "name": "libx264",
+      "version": "c24e06c2e184345ceb33eb20a15d1024d9fd3497",
+      "declared_license": "GPL-2.0-or-later",
+      "source": "https://code.videolan.org/videolan/x264",
+      "notices": [
+        {
+          "original": "X264-COPYING.txt",
+          "path": "texts/media-tool/libx264-c24e06c2e184345ceb33eb20a15d1024d9fd3497/18a5eaad3d-X264-COPYING.txt.txt",
+          "sha256": "32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670"
+        }
+      ]
+    },
+    {
+      "scope": "media-tool",
+      "name": "dav1d",
+      "version": "1.5.3",
+      "declared_license": "BSD-2-Clause",
+      "source": "https://code.videolan.org/videolan/dav1d",
+      "notices": [
+        {
+          "original": "DAV1D-COPYING.txt",
+          "path": "texts/media-tool/dav1d-1.5.3/c135da39e6-DAV1D-COPYING.txt.txt",
+          "sha256": "dd92c3c2247c5651606fc23a5e2d6a1ebc5ace9a3e49cbde0e12f05ad1cb1ee5"
+        }
+      ]
+    },
+    {
+      "scope": "media-runtime",
+      "name": "libgcc",
+      "version": "16.2.0",
+      "declared_license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+      "source": "https://gcc.gnu.org/",
+      "notices": [
+        {
+          "original": "GCC-COPYING3.txt",
+          "path": "texts/media-runtime/libgcc-16.2.0/8791c9785e-GCC-COPYING3.txt.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "original": "GCC-RUNTIME-EXCEPTION.txt",
+          "path": "texts/media-runtime/libgcc-16.2.0/5c4570c459-GCC-RUNTIME-EXCEPTION.txt.txt",
+          "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+        }
+      ]
+    },
+    {
+      "scope": "media-runtime",
+      "name": "mingw-w64",
+      "version": "w64devkit-2.10.1",
+      "declared_license": "See permissive runtime notices and compiler runtime exception",
+      "source": "https://github.com/skeeto/w64devkit",
+      "notices": [
+        {
+          "original": "MINGW-RUNTIME.txt",
+          "path": "texts/media-runtime/mingw-w64-w64devkit-2.10.1/e4418d21f4-MINGW-RUNTIME.txt.txt",
+          "sha256": "ecff91ddb5799c8b79a4bdb576921b9c3e2989783fd1944527e8eb9b41a5ff5f"
         }
       ]
     },
@@ -7292,7 +7377,10 @@
   "source_review_findings": [],
   "runtime_provenance_and_terms_recorded": true,
   "worker_payload_verified": true,
-  "webview_prerequisite_reviewed": true,
+  "media_tools_reviewed": true,
+  "webview_distribution": "fixed-runtime",
+  "webview_distribution_reviewed": true,
+  "webview_prerequisite_reviewed": false,
   "external_user_tools": [
     {
       "name": "gallery-dl",
@@ -7304,9 +7392,10 @@
     },
     {
       "name": "FFmpeg",
-      "shipped": false,
-      "source": "https://ffmpeg.org/download.html",
-      "qualification": "User obtains tools separately; redistributing a chosen build requires its own license and corresponding-source review."
+      "shipped": true,
+      "separate_process": true,
+      "source": "https://ffmpeg.org/",
+      "qualification": "Controlled standalone GPL-3.0-or-later build; matching sources, build recipe and payload are independently verified."
     }
   ],
   "redistribution_cleared": true

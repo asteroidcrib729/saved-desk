@@ -11,10 +11,10 @@ async function inspectSettingHelp(page:Page,name:string){
 
 // Only this test page supplies an in-memory native bridge. No browser sessions,
 // owner catalog, downloads or network platform APIs are accessed.
-async function fixture(page: Page, options: { active?: boolean; repairBlocked?: boolean; slowSettings?: boolean; portraitPreviews?: boolean; emptyFiles?: boolean; missingFiles?:boolean; videoFiles?:boolean; videoPlayback?:"original"|"cached"; paginated?:boolean; allPlatforms?:boolean; approvedSessions?:boolean } = {}) {
+async function fixture(page: Page, options: { active?: boolean; repairBlocked?: boolean; slowSettings?: boolean; portraitPreviews?: boolean; emptyFiles?: boolean; missingFiles?:boolean; videoFiles?:boolean; videoPlayback?:"original"|"cached"; paginated?:boolean; allPlatforms?:boolean; approvedSessions?:boolean; missingTools?:boolean; connectorMissing?:boolean } = {}) {
   await page.addInitScript(options => {
     const qa = { auth:{clientId:"",state:"setup_required",displayName:null as string|null,accountKey:null as string|null,expiresAt:null as number|null,grantedScopes:[] as string[],message:""},authCalls:[] as string[], snapshots: 0, queries: 0, previews: 0, saves: 0, inFlight: 0, maxInFlight: 0, saved: 10, dateFormats: 0,
-      downloadRequests:[] as unknown[],queuedModes:[] as string[],downloadExisting:0,prepareCalls:0,deletions:[] as unknown[], deletionTarget:null as any, deletionFail:false,deletedJobs:false,providerSetup:[] as string[],compatibilityHeld:false,repairBlocked: !!options.repairBlocked, active: options.active ?? true, toolSettings:{galleryPython:"",ffmpeg:""}, readinessCalls:0, readinessHeld:false, openedSource:null,scale:1,setupState:"ready", settings: { downloadFolder: "C:\\Fixture", lowResource: true, quality: "original", profile: "original", advanced:{encoder:"auto",preset:"superfast",crf:23,audioBitrate:128} } };
+      downloadRequests:[] as unknown[],queuedModes:[] as string[],downloadExisting:0,prepareCalls:0,deletions:[] as unknown[], deletionTarget:null as any, deletionFail:false,deletedJobs:false,providerSetup:[] as string[],compatibilityHeld:false,repairBlocked: !!options.repairBlocked, active: options.active ?? true, galleryReady:!options.missingTools,connectorVerified:!options.connectorMissing,toolSettings:{galleryPython:"",ffmpeg:""}, readinessCalls:0, readinessHeld:false, openedSource:null,scale:1,setupState:"ready", settings: { downloadFolder: "C:\\Fixture", lowResource: true, quality: "original", profile: "original", advanced:{encoder:"auto",preset:"superfast",crf:23,audioBitrate:128} } };
     (window as any).__qa = qa;
     const aspectPreviews=[[24,240],[320,24]].map(([width,height],index)=>{
       const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;
@@ -38,6 +38,11 @@ async function fixture(page: Page, options: { active?: boolean; repairBlocked?: 
         if (command === "disconnect_google_identity"){qa.authCalls.push(args.revoke?"revoke_google":"disconnect_google");qa.auth.accountKey=null;qa.auth.displayName=null;qa.auth.state="not_connected";qa.auth.message="Google identity disconnected locally.";return;}
         if (command === "reset_google_identity"){qa.authCalls.push(command);qa.auth.clientId="";qa.auth.state="setup_required";qa.auth.accountKey=null;qa.auth.displayName=null;return;}
         if (command === "import_google_identity"){qa.authCalls.push(command);qa.auth.clientId="123-imported.apps.googleusercontent.com";qa.auth.state="not_connected";return true;}
+        if (command === "get_download_tools_status") return {galleryReady:qa.galleryReady,ffmpegReady:true,ffprobeReady:true,galleryPython:qa.toolSettings.galleryPython,ffmpeg:qa.toolSettings.ffmpeg};
+        if (command === "get_browser_connector_status") return {registered:true,verified:qa.connectorVerified,message:qa.connectorVerified?"Browser extension connection checked.":"Open the extension and check the connection."};
+        if (command === "install_gallery_tools"){if(!args.consent)throw new Error("Consent required");qa.authCalls.push("install_gallery_tools");qa.galleryReady=true;qa.toolSettings.galleryPython="C:\\FixtureTools\\python.exe";return {...qa.toolSettings};}
+        if (command === "begin_connection"){qa.authCalls.push("begin_connection");return;}
+        if (command === "setup_connector"){qa.authCalls.push("setup_connector");return;}
         if (command === "get_external_tools") return {...qa.toolSettings};
         if (command === "choose_external_tool") return "C:\\FixtureTools\\python.exe";
         if (command === "save_external_tools") {qa.toolSettings={...args.config};return {...qa.toolSettings};}
@@ -335,7 +340,7 @@ test("compact layouts keep search, help, filters and dialogs reachable",async({p
 
 
 for(const width of [1366,760,640,380])test(`automated accessibility audit across screens and dialogs at ${width}px`,async({page},info)=>{
-  test.setTimeout(90000);await page.setViewportSize({width,height:width===1366?768:width===380?260:520});await fixture(page,{active:false});
+  test.setTimeout(180000);await page.setViewportSize({width,height:width===1366?768:width===380?260:520});await fixture(page,{active:false});
   const reports=[];
   for(const name of ["Library","Instagram","X (F.K.A. Twitter)","Downloads","Accounts","Settings"]){
     await page.getByRole("button",{name,exact:true}).click();await expect(page.getByRole("heading",{name,exact:true})).toBeVisible();
@@ -474,8 +479,8 @@ test("accounts guidance and actions remain readable at wide and compact sizes",a
     await page.getByRole("button",{name:"Accounts",exact:true}).click();await page.mouse.move(width-20,200);
     await expect(page.getByRole("heading",{name:"Your connected accounts",exact:true})).toBeVisible();
     await page.getByRole("combobox",{name:"Browser",exact:true}).selectOption("chrome");
-    const guide=page.getByText("First time? Set up the browser connector",{exact:true});await guide.click();
-    await expect(page.getByRole("button",{name:"Set up connector and open its folder",exact:true})).toBeVisible();
+    const guide=page.getByText("Set up or repair the browser connection",{exact:true});await guide.click();
+    await expect(page.getByRole("button",{name:"Prepare connector and open extension folder",exact:true})).toBeVisible();
     expect(await page.locator("main").evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
     expect(await page.locator(".account-card").evaluateAll(cards=>cards.every(card=>{
       const r=card.getBoundingClientRect(),title=card.querySelector(".account-title")!.getBoundingClientRect();
@@ -930,11 +935,12 @@ test("external tool selection persists without overflowing its settings card",as
  await page.getByRole("button",{name:"Settings",exact:true}).click();
  const panel=page.locator(".external-tools-panel");
  await expect(panel.getByRole("heading",{name:"Download tools"})).toBeVisible();
+ await panel.getByText("Use existing tools or change an override",{exact:true}).click();
  await panel.getByRole("button",{name:"Choose Gallery Python environment",exact:true}).click();
  await expect(panel.locator("code").first()).toHaveText("C:\\FixtureTools\\python.exe");
  expect(await page.evaluate(()=>(window as any).__qa.toolSettings)).toEqual({galleryPython:"C:\\FixtureTools\\python.exe",ffmpeg:""});
  await panel.getByRole("button",{name:"Clear Gallery Python environment",exact:true}).click();
- await expect(panel.locator("code").first()).toHaveText("Not selected");
+ await expect(panel.locator("code").first()).toHaveText("Automatic / not configured");
  await panel.locator("summary").click();
  await page.setViewportSize({width:800,height:720});
  expect(await panel.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
@@ -942,6 +948,7 @@ test("external tool selection persists without overflowing its settings card",as
 
 test("Google identity setup validates input, imports natively and cancels pending sign-in",async({page})=>{
  await fixture(page,{active:false});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await page.getByText("Optional Google identity (advanced)",{exact:true}).click();
  const panel=page.locator(".identity-panel");await expect(panel.getByText("Developer setup required",{exact:true})).toBeVisible();
  await expect(panel.getByRole("button",{name:"Sign in with Google",exact:true})).toBeDisabled();
  await panel.getByText("Configure Google Desktop sign-in",{exact:true}).click();
@@ -957,6 +964,7 @@ test("Google identity setup validates input, imports natively and cancels pendin
 });
 test("verified Google identity stays independent of private capability and revoke needs confirmation",async({page})=>{
  await fixture(page,{active:false,approvedSessions:true});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await page.getByText("Optional Google identity (advanced)",{exact:true}).click();
  const panel=page.locator(".identity-panel");await panel.getByText("Configure Google Desktop sign-in",{exact:true}).click();await panel.getByRole("button",{name:"Import Desktop OAuth JSON",exact:true}).click();await panel.getByRole("button",{name:"Sign in with Google",exact:true}).click();
  await page.evaluate(()=>{Object.assign((window as any).__qa.auth,{state:"identity_verified",accountKey:"google:fixture",displayName:"Fixture Google",expiresAt:2000000000,grantedScopes:["openid","profile"]});});
  await expect(panel.getByText("Verified: Fixture Google",{exact:true})).toBeVisible();
@@ -970,6 +978,7 @@ test("verified Google identity stays independent of private capability and revok
 });
 for(const width of [760,1366])test(`authentication setup is accessible and contained at ${width}px`,async({page},info)=>{
  await page.setViewportSize({width,height:900});await fixture(page,{active:false});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await page.getByText("Optional Google identity (advanced)",{exact:true}).click();
  const panel=page.locator(".identity-panel");await panel.getByText("Configure Google Desktop sign-in",{exact:true}).click();
  await expect(panel.getByRole("textbox",{name:"Google Desktop client ID"})).toBeVisible();
  expect(await panel.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
@@ -979,6 +988,7 @@ for(const width of [760,1366])test(`authentication setup is accessible and conta
 
 test("local Google setup reset is explicit and leaves legacy accounts visible",async({page})=>{
  await fixture(page,{active:false,approvedSessions:true});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await page.getByText("Optional Google identity (advanced)",{exact:true}).click();
  const panel=page.locator(".identity-panel");await panel.getByText("Configure Google Desktop sign-in",{exact:true}).click();await panel.getByRole("button",{name:"Import Desktop OAuth JSON",exact:true}).click();
  await panel.getByRole("button",{name:"Reset Google identity setup",exact:true}).click();
  const popup=page.getByRole("dialog",{name:"Reset Google identity setup?"});await expect(popup).toContainText("Remote Google grants are not revoked");await popup.getByRole("button",{name:"Cancel reset",exact:true}).click();await expect(panel.getByRole("button",{name:"Reset Google identity setup",exact:true})).toBeFocused();expect(await qa(page,"authCalls")).not.toContain("reset_google_identity");
@@ -1014,4 +1024,35 @@ test("public-only provider guidance removes private promises and Pinterest devel
    await expect(dialog).not.toContainText("For sign-in-required posts");
    await expect(dialog).not.toContainText("For private or sign-in-required content");
  }
+});
+
+test("first-run gallery setup requires explicit consent and completes without manual file selection",async({page})=>{
+ await fixture(page,{active:false,missingTools:true});
+ await expect(page.getByRole("complementary",{name:"Download setup"})).toContainText("Public video downloads are ready");
+ await page.getByRole("button",{name:"Settings",exact:true}).click();
+ const panel=page.locator(".external-tools-panel");await panel.getByRole("button",{name:"Set up gallery downloads",exact:true}).click();
+ const popup=page.getByRole("dialog",{name:"Set up separate gallery tools"});
+ await expect(popup.getByRole("button",{name:"Download and set up tools",exact:true})).toBeDisabled();
+ expect(await qa(page,"authCalls")).not.toContain("install_gallery_tools");
+ await popup.getByRole("checkbox").check();
+ const audit=await new AxeBuilder({page}).include("dialog[open]").analyze();expect(audit.violations).toEqual([]);
+ await popup.getByRole("button",{name:"Download and set up tools",exact:true}).click();
+ await expect(panel).toContainText("Gallery downloads are ready");
+ expect(await qa(page,"authCalls")).toContain("install_gallery_tools");
+});
+test("missing extension sends account connection to setup without entering a pending state",async({page})=>{
+ await fixture(page,{active:false,connectorMissing:true});
+ await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ const youtube=page.locator(".account-card").filter({has:page.getByRole("heading",{name:"YouTube",exact:true})});
+ await youtube.getByRole("button",{name:"Connect using this browser",exact:true}).click();
+ await expect(page.locator(".error-banner")).toContainText("Complete the browser setup steps");
+ await expect(page.getByRole("button",{name:"Prepare connector and open extension folder"})).toBeVisible();
+ expect(await qa(page,"authCalls")).not.toContain("begin_connection");
+});
+test("Google identity is optional and not exposed as the primary download connection",async({page})=>{
+ await fixture(page,{active:false});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await expect(page.getByRole("button",{name:"Sign in with Google",exact:true})).not.toBeVisible();
+ await expect(page.getByText("Public downloads need no account connection.",{exact:true})).toBeVisible();
+ await page.getByText("Optional Google identity (advanced)",{exact:true}).click();
+ await expect(page.getByRole("button",{name:"Sign in with Google",exact:true})).toBeVisible();
 });

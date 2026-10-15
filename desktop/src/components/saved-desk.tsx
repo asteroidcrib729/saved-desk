@@ -15,6 +15,7 @@ import { DownloadDialog } from "./download-dialog";
 import { MediaDialog } from "./media-dialog";
 import { DownloadHistory } from "./download-history";
 import { ExternalToolsPanel } from "./external-tools-panel";
+import { DownloadToolsNotice } from "./download-tools-notice";
 import { ReadinessPanel } from "./readiness-panel";
 import { DeleteContentDialog } from "./delete-content-dialog";
 import { LibraryList } from "./library-list";
@@ -263,7 +264,8 @@ export function SavedDesk() {
       <header className="topbar"><div className="search-field"><Icon name="search" /><input ref={searchRef} aria-label="Search your library" placeholder="Search your library" value={search} onChange={event => { setSearch(event.target.value); setCursor(null); if (!libraryScreen) { setScreen("library"); setKind(null); } }} /><button className="search-clear" disabled={!search} tabIndex={search?0:-1} aria-label="Clear search" title="Clear search" onClick={()=>{setSearch("");setCursor(null);searchRef.current?.focus();}}><Icon name="close" size={16}/></button><kbd>Ctrl F</kbd></div><div className="topbar-actions"><button className="primary" onClick={newDownload}><Icon name="plus" size={18} /><span>Add download</span></button><button className="secondary" onClick={()=>setHelpOpen(true)}>Help & shortcuts</button></div></header>
       <ScrollArea as="main" viewportRef={mainRef} className="main-scroll" label="Page" id="main" tabIndex={-1}>
         {snapshot && !snapshot.native && <div className="preview-note">Browser preview · Sample records stay in this tab. Use the Windows app to connect accounts and save real files.</div>}
-        {error && <div className="error-banner" role="alert"><span>{error}</span><button aria-label="Dismiss message" onClick={() => setError("")}><Icon name="close" size={16} /></button></div>}
+        {error && <div className="error-banner" role="alert"><span>{error}</span>{/Gallery downloads need setup|bundled video tools/.test(error)&&<button className="secondary" onClick={()=>go("settings")}>Open download tools</button>}<button aria-label="Dismiss message" onClick={() => setError("")}><Icon name="close" size={16} /></button></div>}
+        <DownloadToolsNotice native={snapshot?.native??false} settings={()=>go("settings")}/>
         <div className="page-heading"><div><div className="eyebrow">YOUR CONTENT, WITH YOU</div><h1 ref={headingRef} tabIndex={-1}>{activeNav.label}</h1><p>{screen === "library" ? "Everything you saved. Easy to find, ready to revisit." : screen === "downloads" ? "See what was saved and what needs your attention." : screen === "accounts" ? "Connect the browser where you are already signed in." : screen === "settings" ? "Make SavedDesk work comfortably on your computer." : "Keep the things you want to come back to."}</p></div><span className="local-chip"><Icon name="check" size={15} />Local library</span></div>
         {libraryScreen && <>
           <div className="stats-grid"><Stat label="Saved posts" value={snapshot?.total ?? 0} icon="bookmark" /><Stat label="Images" value={snapshot?.images ?? 0} icon="image" /><Stat label="Videos" value={snapshot?.videos ?? 0} icon="video" /></div>

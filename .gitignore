@@ -89,3 +89,6 @@ oauth-client*.json
 
 # Owner-supplied OAuth registrations and local credentials.
 oauth-clients/
+
+# Controlled standalone media binaries are regenerated from pinned source.
+desktop/src-tauri/resources/media-tools/

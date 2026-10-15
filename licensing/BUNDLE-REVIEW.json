@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "project_version": "0.2.10",
+  "project_version": "0.2.11",
   "scope": "Frozen worker archive and complete adjacent installer resource tree",
   "excluded_redistribution": [
     "gallery-dl",
     "imageio-ffmpeg",
-    "FFmpeg/FFprobe executables"
+    "FFmpeg/FFprobe executables inside the frozen worker; separate media-tools are independently reviewed"
   ],
   "adapter_source_verified": true,
-  "frozen_module_count": 1643,
+  "frozen_module_count": 1644,
   "files": [
     {
       "path": "_internal/_asyncio.pyd",
@@ -91,8 +91,218 @@
       "bytes": 503520
     },
     {
+      "path": "_internal/api-ms-win-core-console-l1-1-0.dll",
+      "sha256": "880cb1680bf1977aa232cccb59a49dc9d3708d940af0f0a9029734216a6dc2bb",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-datetime-l1-1-0.dll",
+      "sha256": "d5bcedb99014c6d0993eb76af35ac16e820969ecfb149f19b75d02d603dd52a9",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-core-debug-l1-1-0.dll",
+      "sha256": "7c8276339755acd397f44b7affa938103ea72966d4c066a4cdc259bc0e8500fe",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-errorhandling-l1-1-0.dll",
+      "sha256": "0c06dfc6cd7d358b58ea4e6af0cb54e0469bb89d5b2a12c187fc788f9543741f",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-fibers-l1-1-0.dll",
+      "sha256": "804c3ae2c3dc033bdc5beec45cb369c8470c0d9a790bed79b05ae93cdad83460",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-fibers-l1-1-1.dll",
+      "sha256": "0456c30ee2124ebe7788cd7c41a96a8ce8f5c18e4f28c782e1be4b9852c5b0b0",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-file-l1-1-0.dll",
+      "sha256": "7645683e443ba242e8ae03fa8241aaec1c304bbb3b6eacd5897f85846d98e2c7",
+      "bytes": 26192
+    },
+    {
+      "path": "_internal/api-ms-win-core-file-l1-2-0.dll",
+      "sha256": "b2c7cb7d8cc4d78d3aeaa33be5f37fa72c8dacdafb9259e2ab9c633eb4523221",
+      "bytes": 22064
+    },
+    {
+      "path": "_internal/api-ms-win-core-file-l2-1-0.dll",
+      "sha256": "cf9bbd97661a1bafe171e5f9fc1edf7f172da0bc6424e1b68550455196a0a049",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-handle-l1-1-0.dll",
+      "sha256": "a6a86eed6c1b67723d66b8715bc148e45650f3017c2a22d35ae2b06348a4b8e0",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-core-heap-l1-1-0.dll",
+      "sha256": "81cae96e0876aa0b5242e2acc6014b5c51f811389979d7dc583d3cb9374e549c",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-interlocked-l1-1-0.dll",
+      "sha256": "bcb5b0ec15fd59cf19d5ffc490a40d907c1f320c3a5f2b9570c24bf62d8c43d6",
+      "bytes": 22056
+    },
+    {
+      "path": "_internal/api-ms-win-core-kernel32-legacy-l1-1-1.dll",
+      "sha256": "d3667ed353e1548c8833280e50834b634b9775d15d25ce0511d2b385d7a607a8",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-libraryloader-l1-1-0.dll",
+      "sha256": "007305876bdf0472c403ddcf8c1f8a0d3831427e06ddfaea8e40aaaa8d870384",
+      "bytes": 22056
+    },
+    {
+      "path": "_internal/api-ms-win-core-localization-l1-2-0.dll",
+      "sha256": "058a3bcb3c1e463bce5c1990c369600dcca924f1b0aac87dde15f10c00fb4aaf",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-memory-l1-1-0.dll",
+      "sha256": "b27f216be782ad764c881d45612838efe3e4ee34ac8a7171319d6d42c0bee37b",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-core-namedpipe-l1-1-0.dll",
+      "sha256": "9054404f0aff7ac16d86f672117715047ec1d2797a47ed44bdcb2fbb022421c5",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-processenvironment-l1-1-0.dll",
+      "sha256": "1ec7a2a06577bb6781fbd3e32176de34e22692134e79ed3b478bde9048c007f9",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-processthreads-l1-1-0.dll",
+      "sha256": "dd41abec22841140f58ee12b60f825d72bdb7b6c61765c4465c10dcb6072373e",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-processthreads-l1-1-1.dll",
+      "sha256": "0203d7ebe58d19216f53812a8944044c663df83ad118fc3e308dfe8a694774fe",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-profile-l1-1-0.dll",
+      "sha256": "c4f24e945d3cb6362ac6cc396b8d235f16308c80831770e2b8b72456330fb475",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-rtlsupport-l1-1-0.dll",
+      "sha256": "e93bcae3cce38e176e7cda2d3f83c04aee03288062fb2a111468ec2fbc641bbb",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-string-l1-1-0.dll",
+      "sha256": "8eb1da72518c92b2250e16e5fcf221bcc3febdcb9294f6830f3034756d44aae9",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-synch-l1-1-0.dll",
+      "sha256": "5f2c9c688fcba002f7dd0ffcb22b213402a3f18fa5cede2a0a6d960a614ab6f6",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-core-synch-l1-2-0.dll",
+      "sha256": "7bd60aee2db91901c5804c6c69f9d877727bd8cddec30bcd047bc3afec5d8852",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-sysinfo-l1-1-0.dll",
+      "sha256": "0eea540b635eadae0d4fd77d72438d8f49658bc6433253babf99fdf1fe3aec0a",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-sysinfo-l1-2-0.dll",
+      "sha256": "f03792b75b79cd3ed91953c2960019e5b5d331dd5bad713b617cd3ec8d3150fb",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-core-timezone-l1-1-0.dll",
+      "sha256": "ef80d454da25256a4c5af5322ced313867576978e8201ec0946eac21d44fe637",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-core-util-l1-1-0.dll",
+      "sha256": "910f94a276ac11a8f2721a5bdaf25c2089d2c5fa83fa593b05dbb0f5b00b6d27",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-crt-conio-l1-1-0.dll",
+      "sha256": "d306cb07db31e3d74d2c79891e8c861feaa13e8dfa5d1ce042cd777ea1566b0a",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-crt-convert-l1-1-0.dll",
+      "sha256": "81f4b3cd11611aeaa94171ebc1079e501ec247e8da6c113e6c81a3877acca15d",
+      "bytes": 26192
+    },
+    {
+      "path": "_internal/api-ms-win-crt-environment-l1-1-0.dll",
+      "sha256": "1884872dbbe89023100d7f15e7b3a3eac16c3c8e3c103016c87c223bdc60ba7a",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-crt-filesystem-l1-1-0.dll",
+      "sha256": "54545d0571542469e80141d18e1af3c5185f6ce849478f1bd829f53703a92ae1",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-crt-heap-l1-1-0.dll",
+      "sha256": "0d69f5d5720655dd15172949e379dce5dc364e1920f6fcab8f809aed7ed2ce9c",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-crt-locale-l1-1-0.dll",
+      "sha256": "7d49900ca3815f1737b10e0c7e603dde326053d56e89139c41eae3d27dec7d8b",
+      "bytes": 22096
+    },
+    {
+      "path": "_internal/api-ms-win-crt-math-l1-1-0.dll",
+      "sha256": "a991ecd3b528f586274c638cdfa196454f2bccca70692652867bf224f7cc6258",
+      "bytes": 30272
+    },
+    {
+      "path": "_internal/api-ms-win-crt-process-l1-1-0.dll",
+      "sha256": "95a4f71991dc98393a69a56c3562f38882a9842daeb7f905e49d9b40a1ea5e38",
+      "bytes": 22080
+    },
+    {
+      "path": "_internal/api-ms-win-crt-runtime-l1-1-0.dll",
+      "sha256": "09b320d575b456b1199e4e2b09d34d4200fb8146b297ca78d06d80e9158a45e0",
+      "bytes": 26192
+    },
+    {
+      "path": "_internal/api-ms-win-crt-stdio-l1-1-0.dll",
+      "sha256": "4e72f645f47abae98427b4ce8c510f96112c16e640721ce3f82d3619eb3961a8",
+      "bytes": 26192
+    },
+    {
+      "path": "_internal/api-ms-win-crt-string-l1-1-0.dll",
+      "sha256": "265c87b9a63420de788ba7855e847b4eb794c4256080eeacf64b81e70af889cd",
+      "bytes": 26192
+    },
+    {
+      "path": "_internal/api-ms-win-crt-time-l1-1-0.dll",
+      "sha256": "ac90c44b194135bf555ac7df2405d443da87e1374e5b5bb408a2761a9bc63e3d",
+      "bytes": 22072
+    },
+    {
+      "path": "_internal/api-ms-win-crt-utility-l1-1-0.dll",
+      "sha256": "3fc3564e2276e8149856e74f59f594549d017a3a967ea66450e1c04af8768bc8",
+      "bytes": 22096
+    },
+    {
       "path": "_internal/base_library.zip",
-      "sha256": "34d84a694ef1b7382adad929ea3ddd93e5511e2f27e1f6e5618208877e6d36c4",
+      "sha256": "3a2f7efb001646de4f7e1f55586c3f19789df897a1a694a943ba0e367ace3459",
       "bytes": 1394319
     },
     {
@@ -127,8 +337,8 @@
     },
     {
       "path": "_internal/external-adapter/social_downloader/__init__.py",
-      "sha256": "86d3969dacb376fce1e25c8db9520df5ea2b518e8b6624e1f7ecfa285c5320c3",
-      "bytes": 106
+      "sha256": "8b1d4846231b102018ece1faf5ddd7ba65eff03d39aa47352435b9280147f24f",
+      "bytes": 109
     },
     {
       "path": "_internal/external-adapter/social_downloader/audio.py",
@@ -196,6 +406,11 @@
       "bytes": 4126
     },
     {
+      "path": "_internal/external-adapter/social_downloader/tool_setup.py",
+      "sha256": "90ff8dbb8db9bbcab9e72fd377f87d856bccba2c2d922387336e2fb551ae7a70",
+      "bytes": 8868
+    },
+    {
       "path": "_internal/external-adapter/social_downloader/tools.py",
       "sha256": "a603e79ec0e163fd06fda31e980808ec0584690fa9ba89547725b69d2cafe6f1",
       "bytes": 3687
@@ -207,8 +422,8 @@
     },
     {
       "path": "_internal/external-adapter/social_downloader/worker.py",
-      "sha256": "e18652c1aacb39fa1ee9aac41304bbbfcbdd23b0109a0773e1d9c7984528d9cd",
-      "bytes": 13268
+      "sha256": "904ffb6a8016f385ba0a71234270b370e82a9ac2ebde7bee303f6fd6926b592e",
+      "bytes": 13823
     },
     {
       "path": "_internal/libcrypto-3.dll",
@@ -256,6 +471,11 @@
       "bytes": 33504
     },
     {
+      "path": "_internal/setup/gallery-tools-lock.json",
+      "sha256": "03928cfe38ee3a78cc4bf345c92046b97bb8d86698e645260669ac86a825205a",
+      "bytes": 3583
+    },
+    {
       "path": "_internal/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/INSTALLER",
       "sha256": "e6184ce10e266134fdcfa401e8f1a95005bcd4f18d16b62b757323e2833fe9a9",
       "bytes": 2
@@ -299,6 +519,11 @@
       "path": "_internal/sqlite3.dll",
       "sha256": "d3e60dd22e62c9fbdb64b31b1b8c48782e1d4958d04d0bf830cffd31ace3275f",
       "bytes": 1584864
+    },
+    {
+      "path": "_internal/ucrtbase.dll",
+      "sha256": "3088326cb0fe5b5646e02c7b2de71ae363fcd26a0000cf32209c8bed05a7a866",
+      "bytes": 1361464
     },
     {
       "path": "_internal/unicodedata.pyd",
@@ -5657,8 +5882,8 @@
     },
     {
       "path": "saveddesk-worker.exe",
-      "sha256": "76de721400797a82026c05787b5f4900c83fe882a0feaf83b8cd2cee4cf130ae",
-      "bytes": 11314259
+      "sha256": "d6a3aec2dfbebfa6ef91fd62a442af4146c7f7b90b397a99d4000854d2605fd0",
+      "bytes": 11322406
     }
   ],
   "findings": [],

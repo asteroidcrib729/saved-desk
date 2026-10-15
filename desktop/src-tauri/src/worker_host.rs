@@ -57,7 +57,7 @@ fn launch<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result<OwnedWorker> {
     let data=app.path().app_local_data_dir().map_err(|_|"Tool settings unavailable.")?;
     #[cfg(debug_assertions)]
     let data=std::env::var("SAVEDDESK_TEST_DATA_DIR").map(PathBuf::from).unwrap_or(data);
-    let tools=crate::external_tools::load(&data)?;
+    let tools=crate::external_tools::effective(app,&data)?;
     if !tools.gallery_python.is_empty() {command.env("SAVEDDESK_GALLERY_PYTHON",tools.gallery_python);}
     if !tools.ffmpeg.is_empty() {command.env("SAVEDDESK_FFMPEG",tools.ffmpeg);}
     command

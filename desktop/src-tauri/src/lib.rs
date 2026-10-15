@@ -1,6 +1,8 @@
 mod auth;
 mod catalog;
 mod connector_payload;
+mod connector_presence;
+mod connector_extension;
 mod external_tools;
 mod deletion;
 mod live_commands;
@@ -351,6 +353,8 @@ pub fn run() {
             auth::check_google_identity,
             auth::disconnect_google_identity,
             external_tools::get_external_tools,
+            external_tools::get_download_tools_status,
+            external_tools::install_gallery_tools,
             external_tools::save_external_tools,
             external_tools::choose_external_tool,
             deletion::prepare_deletion,
@@ -366,6 +370,7 @@ pub fn run() {
             open_item,
             open_job_folder,
             live_commands::setup_connector,
+            live_commands::get_browser_connector_status,
             live_commands::begin_connection,
             live_commands::cancel_connection,
             live_commands::disconnect_account,

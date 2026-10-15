@@ -16,3 +16,17 @@ foreach ($file in Get-ChildItem -LiteralPath $worker -Recurse -File) {
     if (-not $expected.ContainsKey($file.FullName.ToLowerInvariant())) { throw 'Installed worker contains an unreviewed stale payload file.' }
 }
 Write-Output 'Installed worker matches the complete exclusion and source-verification manifest.'
+
+$media=Join-Path $base 'media-tools'
+$mediaProof=Get-Content -LiteralPath (Join-Path $media 'MEDIA-TOOLS-REVIEW.json') -Raw | ConvertFrom-Json
+$mediaPrefix=[IO.Path]::GetFullPath($media)+[IO.Path]::DirectorySeparatorChar
+$mediaExpected=@{}
+foreach($record in $mediaProof.files){
+ $path=[IO.Path]::GetFullPath((Join-Path $media $record.path))
+ if(-not $path.StartsWith($mediaPrefix,[StringComparison]::OrdinalIgnoreCase) -or (Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant() -ne $record.sha256){throw 'Installed media tools differ from their reviewed payload.'}
+ $mediaExpected[$path.ToLowerInvariant()]=$true
+}
+foreach($file in Get-ChildItem -LiteralPath $media -Recurse -File){
+ if($file.FullName -ne (Join-Path $media 'MEDIA-TOOLS-REVIEW.json') -and -not $mediaExpected.ContainsKey($file.FullName.ToLowerInvariant())){throw 'Unreviewed file in installed media tools.'}
+}
+Write-Output 'Installed standalone media tools match their complete source-build manifest.'

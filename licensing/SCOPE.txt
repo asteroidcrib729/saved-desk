@@ -1,7 +1,17 @@
 SavedDesk original source, documentation and original branding: MIT (see root LICENSE).
+
 Third-party components retain their own license, copyright and notice terms.
+
 The root MIT license does not relicense bundled dependencies or downloaded user content.
+
 GPL-covered engine components and standalone tools require their corresponding license/source obligations.
+
 No codec patent license, platform affiliation, content rights or permission to bypass access controls is granted.
 
+
+
 From SavedDesk 0.2.4, gallery-dl, imageio-ffmpeg and FFmpeg/FFprobe executables are external user installations, not shipped payload. No upstream exception or relicensing is claimed. Redistribution findings for previews through 0.2.3 remain unresolved for those binaries. Current inventory clearance is scoped to the exclusion-audited payload.
+
+
+
+From SavedDesk 0.2.11, a controlled standalone FFmpeg/FFprobe distribution is included under GPL-3.0-or-later, with its exact libx264/dav1d/runtime sources, build recipe, configuration and notices. MEDIA-TOOLS-REVIEW.json independently gates this payload. Gallery-dl/imageio-ffmpeg remain excluded from the frozen worker. The gallery environment is separately downloaded by the user after consent; no upstream license exception or change is claimed. Historical 0.2.4–0.2.10 exclusions and rejected preview findings retain their original scope.

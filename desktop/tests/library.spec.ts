@@ -62,7 +62,7 @@ test("account setup explains platform scope without credential entry fields", as
   await expect(page.getByRole("combobox",{name:"Browser",exact:true})).toBeVisible();
   await expect(page.getByRole("button",{name:"Connect using this browser"})).toHaveCount(6);
   await expect(page.getByRole("button",{name:"Connect using this browser"}).first()).toBeDisabled();
-  await page.getByText("First time? Set up the browser connector").click();
+  await page.getByText("Set up or repair the browser connection").click();
   await expect(page.getByText("Access is limited to the platform you approve",{exact:false})).toBeVisible();
   expect(await page.locator('input[type="password"],input[type="file"]').count()).toBe(0);
 });

@@ -3,6 +3,7 @@ const api = globalThis.browser ?? chrome;
 const host = "com.saveddesk.connector";
 const approve = document.querySelector("#approve");
 const status = document.querySelector("#status");
+let hostChecked=false;
 const scope = document.querySelector("#scope");
 const check = document.querySelector("#check");
 let pending;
@@ -30,7 +31,16 @@ async function request() {
   scope.textContent = "Checking the request from SavedDesk...";
   status.textContent = "Checking the desktop request...";
   try {
+    const detected = await provider();
+    const checked = await api.runtime.sendNativeMessage(host, {protocol_version:1,command:"connector_probe",browser:detected,extension_version:api.runtime.getManifest().version});
+    if (!checked?.ok) throw new Error(checked?.message || "The browser extension could not connect to SavedDesk.");
+    hostChecked=true;
     const requested = await api.runtime.sendNativeMessage(host, { protocol_version: 1, command: "request" });
+    if (!requested?.ok && /No connection|No .*request|Start Connect|unavailable|not.*connect/i.test(requested?.message || "")) {
+      scope.textContent="Your browser extension is connected to SavedDesk.";
+      status.textContent="Return to SavedDesk, check the extension connection, choose a platform and click Connect. Then return here to approve it. Signing in on the platform website alone does not connect SavedDesk.";
+      return;
+    }
     if (!requested?.ok || !["instagram","x","youtube","facebook","tiktok","pinterest"].includes(requested.source)) throw new Error(requested?.message || "No connection request is waiting.");
     const browser = await provider();
     if ((browser === "firefox" || browser === "edge" || browser === "brave") && requested.browser !== browser) throw new Error("Select this browser on the Accounts screen and start the connection again.");
@@ -40,7 +50,7 @@ async function request() {
     approve.textContent = `Approve ${({x:"X",instagram:"Instagram",youtube:"YouTube",facebook:"Facebook",tiktok:"TikTok",pinterest:"Pinterest"}[pending.source])} connection`;
     approve.disabled = false;
     status.textContent = "Make sure you are signed in to the intended account in this profile.";
-  } catch (error) { status.textContent = connectionHelp(error); }
+  } catch (error) { status.textContent = hostChecked && /No connection|No .*request|Start Connect|not.*connect|pipe/i.test(error?.message || "") ? "Browser extension connected. Return to SavedDesk, check the extension connection and start a platform connection. Then choose Check connection again here." : connectionHelp(error); }
   finally { check.disabled = false; }
 }
 async function verificationStatus() {

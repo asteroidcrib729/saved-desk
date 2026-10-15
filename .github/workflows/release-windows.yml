@@ -23,7 +23,7 @@ concurrency:
 jobs:
   build:
     runs-on: windows-2022
-    timeout-minutes: 90
+    timeout-minutes: 180
     environment: ${{ inputs.signing_mode == 'azure' && 'release-signing' || 'release-preview' }}
     permissions:
       contents: read
@@ -65,6 +65,8 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Audit source and ignore rules
         run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build standalone video tools from verified source
+        run: ./.venv/Scripts/python.exe packaging/build-media-tools.py
       - name: Build and audit worker package
         shell: pwsh
         run: ./packaging/build-worker.ps1

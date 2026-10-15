@@ -3,6 +3,9 @@
 #[path = "../platform.rs"]
 #[allow(dead_code)]
 mod platform;
+#[path = "../connector_presence.rs"]
+#[allow(dead_code)]
+mod connector_presence;
 
 fn connection_status(
     database: &std::path::Path,
@@ -65,10 +68,15 @@ fn main() {
     let result = (|| -> Result<serde_json::Value, String> {
         let request = platform::read_frame(&mut std::io::stdin())?;
         if request["protocol_version"] != 1
-            || !["request", "authorize", "connection_status"]
+            || !["request", "authorize", "connection_status", "connector_probe"]
                 .contains(&request["command"].as_str().unwrap_or(""))
         {
             return Err("Unsupported connector request.".into());
+        }
+        if request["command"] == "connector_probe" {
+            let database=status_database()?;
+            connector_presence::record(database.parent().ok_or("App data unavailable.")?,request["browser"].as_str().unwrap_or(""),request["extension_version"].as_str().unwrap_or(""),&std::env::current_exe().map_err(|_|"Connector host unavailable.")?)?;
+            return Ok(serde_json::json!({"ok":true,"ready":true,"message":"Browser extension connected. Return to SavedDesk and choose a platform."}));
         }
         if request["command"] == "connection_status" {
             return connection_status(

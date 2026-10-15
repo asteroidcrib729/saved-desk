@@ -139,6 +139,12 @@ class Worker:
                     from .external_gallery import available as gallery_available
                     self.emit("capabilities", gallery=gallery_available(), youtube_runtime=bool(javascript_runtime() and importlib.util.find_spec("yt_dlp_ejs")), public_platforms=list(PUBLIC_SOURCES), ffmpeg=bool(find_tool("ffmpeg")), ffprobe=bool(find_tool("ffprobe")),
                               live_downloads=True, browser_connection=True)
+                elif command["command"] == "install_gallery_tools":
+                    if command.get("consent") is not True:
+                        raise ValueError("Explicit gallery setup consent is required.")
+                    from .tool_setup import install
+                    python = install(Path(command["destination"]), lambda message,index,count,received=None,total=None: self.emit("tools_progress",message=message,index=index,count=count,received=received,total=total))
+                    self.emit("tools_installed",python=python)
                 elif command["command"] == "fixture_download":
                     self.fixture(command)
                 elif command["command"] == "approve_browser_session":

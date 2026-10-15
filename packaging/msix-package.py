@@ -90,6 +90,11 @@ def stage(target: Path, destination: Path) -> None:
         review_tree(source)
         shutil.copytree(source, destination / name)
     if not (destination / "licenses/WEBVIEW2-LICENSE.txt").is_file(): raise ValueError("Microsoft runtime terms are missing")
+    import importlib.util
+    spec=importlib.util.spec_from_file_location("media_distribution",ROOT/"packaging/audit-media-tools.py")
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    module.review()
+    shutil.copytree(ROOT/"desktop/src-tauri/resources/media-tools",destination/"media-tools")
     (destination / "Assets").mkdir()
     for name in ("Square150x150Logo.png", "Square44x44Logo.png", "StoreLogo.png"):
         shutil.copy2(ROOT / "desktop/src-tauri/icons" / name, destination / "Assets" / name)

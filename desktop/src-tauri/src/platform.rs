@@ -515,7 +515,7 @@ pub fn connector_registered(browser: &str, manifest: &Path, host: &Path) -> bool
         .and_then(|v| Path::new(v).canonicalize().ok());
     value["name"] == "com.saveddesk.connector"
         && value["type"] == "stdio"
-        && value["allowed_origins"] == serde_json::json!([CHROMIUM_ORIGIN])
+        && (if browser=="firefox" {value["allowed_extensions"]==serde_json::json!([FIREFOX_ID])}else{value["allowed_origins"] == serde_json::json!([CHROMIUM_ORIGIN])})
         && host
             .canonicalize()
             .ok()

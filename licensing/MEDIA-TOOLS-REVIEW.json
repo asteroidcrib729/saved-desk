@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "version": "9.0.2",
+  "x264_commit": "c24e06c2e184345ceb33eb20a15d1024d9fd3497",
+  "license": "GPL-3.0-or-later",
+  "distribution": "Separate command-line programs; no FFmpeg or x264 library is linked into SavedDesk.",
+  "source_signature_fingerprint": "FCF986EA15E6E293A5644F10B4322F04D67658D8",
+  "source_lock_sha256": "e72ab48e0b78399dc425d640735891051e55ff4af10d14df84193649d1195c21",
+  "recipe_sha256": "a40c42bdb8762e81e49767a47a5229a22793523564d29c19696e5fba88d3cb15",
+  "configuration": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers\n  built with gcc 16.2.0 (GCC)\n  configuration: --target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ --ar=ar --ranlib=ranlib --strip=strip --pkg-config=pkg-config --prefix='C:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix' --disable-autodetect --enable-network --enable-schannel --disable-doc --disable-debug --disable-ffplay --disable-shared --enable-static --enable-gpl --enable-version3 --enable-libx264 --enable-libdav1d --enable-w32threads --disable-pthreads --disable-mediafoundation --extra-cflags='-IC:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix/include' --extra-ldflags='-LC:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix/lib'\n  libavutil      61.  1.102 / 61.  1.102\n  libavcodec     63.  1.102 / 63.  1.102\n  libavformat    63.  1.102 / 63.  1.102\n  libavdevice    63.  1.102 / 63.  1.102\n  libavfilter    12.  1.102 / 12.  1.102\n  libswscale     10.  1.102 / 10.  1.102\n  libswresample   7.  1.102 /  7.  1.102\n\n  configuration:\n    --target-os=mingw32\n    --arch=x86_64\n    --cc=gcc\n    --cxx=g++\n    --ar=ar\n    --ranlib=ranlib\n    --strip=strip\n    --pkg-config=pkg-config --prefix='C:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix'\n    --disable-autodetect\n    --enable-network\n    --enable-schannel\n    --disable-doc\n    --disable-debug\n    --disable-ffplay\n    --disable-shared\n    --enable-static\n    --enable-gpl\n    --enable-version3\n    --enable-libx264\n    --enable-libdav1d\n    --enable-w32threads\n    --disable-pthreads\n    --disable-mediafoundation\n    --extra-cflags='-IC:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix/include'\n    --extra-ldflags='-LC:/Users/DESKTOP-Q2TMP8U/Downloads/Source-Code/saved-desk/.cache/store-remediation/media-prefix/lib'\n\nExiting with exit code 0\n",
+  "files": [
+    {
+      "path": "ffmpeg.exe",
+      "sha256": "786c2b9da86a2be3781d2a2f092ebd9fe126868509c11cc76040a3f331d172a0",
+      "bytes": 33907200
+    },
+    {
+      "path": "ffprobe.exe",
+      "sha256": "23e810a31262ae049901ca8f5096981300ce8a4dd2091139fd992ebe75d3c223",
+      "bytes": 33700352
+    },
+    {
+      "path": "licenses/COPYING.GPLv2",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "bytes": 18092
+    },
+    {
+      "path": "licenses/COPYING.GPLv3",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147
+    },
+    {
+      "path": "licenses/COPYING.LGPLv2.1",
+      "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+      "bytes": 26517
+    },
+    {
+      "path": "licenses/DAV1D-COPYING.txt",
+      "sha256": "dd92c3c2247c5651606fc23a5e2d6a1ebc5ace9a3e49cbde0e12f05ad1cb1ee5",
+      "bytes": 1317
+    },
+    {
+      "path": "licenses/GCC-COPYING3.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147
+    },
+    {
+      "path": "licenses/GCC-RUNTIME-EXCEPTION.txt",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "bytes": 3324
+    },
+    {
+      "path": "licenses/MINGW-RUNTIME.txt",
+      "sha256": "ecff91ddb5799c8b79a4bdb576921b9c3e2989783fd1944527e8eb9b41a5ff5f",
+      "bytes": 15076
+    },
+    {
+      "path": "licenses/X264-COPYING.txt",
+      "sha256": "32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670",
+      "bytes": 17992
+    }
+  ],
+  "sources": [
+    {
+      "file": "ffmpeg-9.0.2.tar.xz",
+      "url": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "sha256": "8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e",
+      "bytes": 12040788
+    },
+    {
+      "file": "x264-c24e06c2.tar.gz",
+      "url": "https://codeload.github.com/mirror/x264/tar.gz/c24e06c2e184345ceb33eb20a15d1024d9fd3497",
+      "sha256": "090d730e867fc63631782a1287974635d1237d0fa7c6fd1d09fd543620a56689",
+      "bytes": 1035587
+    },
+    {
+      "file": "dav1d-1.5.3.tar.xz",
+      "url": "https://downloads.videolan.org/pub/videolan/dav1d/1.5.3/dav1d-1.5.3.tar.xz",
+      "sha256": "732010aa5ef461fa93355ed2c6c5fedb48ddc4b74e697eaabe8907eaeb943011",
+      "bytes": 1022836
+    },
+    {
+      "file": "w64devkit-2.10.1-source.tar",
+      "url": "https://github.com/skeeto/w64devkit/releases/download/v2.10.1/source.tar",
+      "sha256": "25194ebc451be61915f62bf9170c8925151abf0571c4fbc230e3fe53907efc40",
+      "bytes": 236267520
+    },
+    {
+      "file": "SavedDesk-media-tools-build-records.zip",
+      "sha256": "5a93c1402d16d57be4a427f8223144b5266a194dc4ff86bfc0668f44efdc9259",
+      "bytes": 32740,
+      "url": "SavedDesk controlled build records"
+    }
+  ]
+}

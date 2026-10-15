@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "SavedDesk",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "identifier": "com.saveddesk.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -42,7 +42,8 @@
       "resources/browser-connector/": "browser-connector/",
       "resources/saveddesk-native-host.exe": "saveddesk-native-host.exe",
       "resources/licenses/": "licenses/",
-      "../../packaging/unregister-connector.ps1": "maintenance/unregister-connector.ps1"
+      "../../packaging/unregister-connector.ps1": "maintenance/unregister-connector.ps1",
+      "resources/media-tools/": "media-tools/"
     },
     "windows": {
       "nsis": {

@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 const code = await readFile(new URL("./popup.js", import.meta.url), "utf8");
-async function popup({ firefox = false, store = "0", permit = true, selected = "edge", source = "instagram", userAgent, requestFailures = 0, rejectApproval = false, verification = { ok:true,state:"connected",username:"fixture_user",message:"" } } = {}) {
+async function popup({ firefox = false, store = "0", permit = true, selected = "edge", source = "instagram", userAgent, probeFailure = false, noRequest = false, requestFailures = 0, rejectApproval = false, verification = { ok:true,state:"connected",username:"fixture_user",message:"" } } = {}) {
   const elements = new Map();
   const calls = [];
   const timers = new Map();
@@ -15,11 +15,14 @@ async function popup({ firefox = false, store = "0", permit = true, selected = "
   };
   const api = {
     runtime: {
+      getManifest: () => ({version:"0.2.11"}),
       ...(firefox ? { getBrowserInfo: () => ({ name: "Firefox" }) } : {}),
       sendNativeMessage: async (host, message) => {
         calls.push({ type: "native", host, message });
+        if (message.command === "connector_probe") return probeFailure?{ok:false,message:"Update or reload the extension."}:{ok:true,ready:true};
         if (message.command === "connection_status") return verification;
         if (message.command === "request") {
+          if(noRequest)return {ok:false,message:"No connection request is waiting."};
           if (requestFailures-- > 0) throw new Error("Error when communicating with the native messaging host.");
           return { ok: true, source, browser: selected, nonce: "test-nonce" };
         }
@@ -152,4 +155,18 @@ test("new browser platforms request only their own origin and never claim verifi
 });
 test("unsupported private-app providers cannot request browser-session approval",async()=>{
   for(const source of ["reddit","discord","unsupported"]){const view=await popup({source});assert.equal(view.elements.get("#approve").disabled,true);assert.equal(view.calls.some(c=>c.type==="cookies"),false);}
+});
+
+test("extension check succeeds without an account request or cookie access",async()=>{
+ const view=await popup({noRequest:true});
+ assert.match(view.elements.get("#status").textContent,/Return to SavedDesk/);
+ assert.equal(view.elements.get("#approve").disabled,true);
+ assert.equal(view.calls.some(c=>c.type==="permission"||c.type==="cookies"),false);
+ assert.equal(view.calls.find(c=>c.message?.command==="connector_probe").message.extension_version,"0.2.11");
+});
+test("failed extension handshake reads no cookies and requests no account approval",async()=>{
+ const view=await popup({probeFailure:true});
+ assert.match(view.elements.get("#status").textContent,/Update or reload/);
+ assert.equal(view.elements.get("#approve").disabled,true);
+ assert.equal(view.calls.some(c=>c.message?.command==="request"||c.type==="cookies"),false);
 });

@@ -19,7 +19,7 @@ concurrency:
 jobs:
   build:
     runs-on: windows-2022
-    timeout-minutes: 120
+    timeout-minutes: 180
     defaults:
       run:
         shell: pwsh
@@ -73,6 +73,8 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Audit source and ignore rules
         run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build standalone video tools from verified source
+        run: ./.venv/Scripts/python.exe packaging/build-media-tools.py
       - name: Build and audit worker package
         run: ./packaging/build-worker.ps1
       - name: Python worker and packaging checks

@@ -179,7 +179,19 @@ def collect(webview_mode="offline-installer"):
         record("runtime", webview["name"], webview["version"],
                "Microsoft Edge WebView2 Runtime terms (separate proprietary redistributable)",
                OUT, [webview["license_path"]], webview["source_url"])
-    # gallery-dl and FFmpeg are acquired separately by users, not redistributed.
+    import importlib.util
+    media_spec=importlib.util.spec_from_file_location("media_review",ROOT/"packaging/audit-media-tools.py")
+    media_module=importlib.util.module_from_spec(media_spec);media_spec.loader.exec_module(media_module)
+    try: media=media_module.review()
+    except (OSError,ValueError,KeyError): media=None
+    if media:
+        folder=OUT/"media-tools"
+        record("media-tool","ffmpeg",media["version"],"GPL-3.0-or-later",folder,[folder/"COPYING.GPLv3",folder/"COPYING.GPLv2",folder/"COPYING.LGPLv2.1"],"https://ffmpeg.org/")
+        record("media-tool","libx264",media["x264_commit"],"GPL-2.0-or-later",folder,[folder/"X264-COPYING.txt"],"https://code.videolan.org/videolan/x264")
+        record("media-tool","dav1d","1.5.3","BSD-2-Clause",folder,[folder/"DAV1D-COPYING.txt"],"https://code.videolan.org/videolan/dav1d")
+        record("media-runtime","libgcc","16.2.0","GPL-3.0-or-later WITH GCC-exception-3.1",folder,[folder/"GCC-COPYING3.txt",folder/"GCC-RUNTIME-EXCEPTION.txt"],"https://gcc.gnu.org/")
+        record("media-runtime","mingw-w64","w64devkit-2.10.1","See permissive runtime notices and compiler runtime exception",folder,[folder/"MINGW-RUNTIME.txt"],"https://github.com/skeeto/w64devkit")
+    # gallery-dl remains user-acquired, outside the distributed application.
     # Their old preview records remain historical and do not clear those installers.
     runtime_review = OUT / "RUNTIME-REVIEW.json"
     if runtime_review.is_file():
@@ -195,23 +207,24 @@ def collect(webview_mode="offline-installer"):
     bundle_audit=importlib.util.module_from_spec(spec);spec.loader.exec_module(bundle_audit)
     payload_verified=bundle_audit.verify()
     findings=[] if payload_verified else ['Current worker payload exclusion and own-adapter-source verification is missing or stale.']
+    if not media: findings.append("The separate FFmpeg payload and complete matching source/build review are missing or stale.")
     runtime_recorded=runtime_review.is_file() and not reviewed.get("failures") and bool(reviewed.get("runtime_dlls")) and all(item.get("cpython_distribution_match") is True for item in reviewed["runtime_dlls"]) and len(reviewed.get("external_sources",[]))==7
     if not webview_reviewed: findings.append(f"Bundled Microsoft WebView2 {webview_mode} signature, payload hashes and applicable terms need verification.")
     if not runtime_recorded: findings.append("Microsoft VC runtime redistributables and CPython external DLLs need their redistribution/source records; package metadata alone is insufficient.")
     data = {"project_license":"MIT", "project_version":npm_lock["version"], "inventory_scope":"installed Python/build dependencies, full Windows-filtered Cargo metadata and npm lock; includes build/test dependencies and vendored notices",
             "components":records, "missing_notice_components":missing,
             "source_review_findings":findings, "runtime_provenance_and_terms_recorded":runtime_recorded,
-            "worker_payload_verified":payload_verified, "webview_distribution":webview_mode,
+            "worker_payload_verified":payload_verified, "media_tools_reviewed":media is not None, "webview_distribution":webview_mode,
             "webview_distribution_reviewed":webview_reviewed,
             "webview_prerequisite_reviewed":webview_reviewed and webview_mode == "offline-installer",
             "external_user_tools":[{"name":"gallery-dl","version":"1.32.14","declared_license":"GPL-2.0-only","shipped":False,"source":"https://github.com/mikf/gallery-dl","qualification":"Requests Apache-2.0 combination is not certified; no upstream permission or license change is claimed."},
-                {"name":"FFmpeg","shipped":False,"source":"https://ffmpeg.org/download.html","qualification":"User obtains tools separately; redistributing a chosen build requires its own license and corresponding-source review."}],
+                {"name":"FFmpeg","shipped":True,"separate_process":True,"source":"https://ffmpeg.org/","qualification":"Controlled standalone GPL-3.0-or-later build; matching sources, build recipe and payload are independently verified."}],
             "redistribution_cleared":payload_verified and runtime_recorded and not missing and not findings}
     (OUT / "DEPENDENCIES.json").write_text(json.dumps(data, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")
     lines = ["SavedDesk third-party notices", "Original SavedDesk code: MIT; third-party licenses remain unchanged.",
              "This inventory includes build dependencies; their presence is not a claim that every component is shipped.",
-             "Gallery-dl and FFmpeg are external user installations and are not included in this payload. Historical notices do not certify their old bundles.",
-             "Full verbatim notices are in texts/ beside this file. Matching dependency sources must accompany public release assets.", ""]
+             "Gallery-dl remains a separate user-acquired installation. Independently reviewed FFmpeg/FFprobe programs are included with their own GPL terms and complete corresponding sources. Historical records do not certify old bundles.",
+             "Full verbatim notices are in texts/ and media-tools/ beside this file. Matching dependency sources must accompany public release assets.", ""]
     for item in records:
         lines.extend([f"{item['scope']}: {item['name']} {item['version']}", f"Declared terms: {item['declared_license']}", f"Source: {item['source']}"])
         lines.extend("Notice: "+entry["path"] for entry in item.get("notices",[]))
@@ -220,6 +233,7 @@ def collect(webview_mode="offline-installer"):
     return data
 
 def source_archives(data):
+    import importlib.util
     results = []; failures = []; publisher_checksums = []; publisher_metadata = []
     def python_source(item):
         address=f"https://pypi.org/pypi/{item['name']}/{item['version']}/json"
@@ -272,6 +286,10 @@ def source_archives(data):
             if not path.resolve().is_relative_to(SOURCES.resolve()) or digest(path)!=entry["sha256"]: raise RuntimeError("Runtime source checksum/path mismatch")
             results.append(entry)
         failures.extend(reviewed.get("failures",[]))
+    if data.get("media_tools_reviewed"):
+        spec=importlib.util.spec_from_file_location("source_media_review",ROOT/"packaging/audit-media-tools.py")
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        results.extend(module.review()["sources"])
     report={"archives":results,"publisher_checksums":publisher_checksums,"publisher_metadata":sorted(publisher_metadata,key=lambda p:p["file"]),"download_failures":failures,"source_closure_complete":data["redistribution_cleared"] and not failures,"review_findings":data["source_review_findings"]}
     SOURCES.mkdir(parents=True,exist_ok=True)
     (SOURCES/"SOURCE-PROVENANCE.json").write_text(json.dumps(report,indent=2)+"\n")

@@ -13,6 +13,8 @@ let previewSnapshot: Snapshot = {
 };
 let pendingToken: string | null = null;
 let playerWrites:Promise<void>=Promise.resolve();
+type DownloadToolsStatus={galleryReady:boolean;ffmpegReady:boolean;ffprobeReady:boolean;galleryPython:string;ffmpeg:string};
+let downloadToolsCheck:Promise<DownloadToolsStatus>|null=null;
 
 async function command<T>(name: string, args?: Record<string, unknown>): Promise<T> {
   const { invoke } = await import("@tauri-apps/api/core");
@@ -28,6 +30,8 @@ export const bridge = {
   async cancelGoogleIdentity():Promise<void>{return command('cancel_google_identity');},
   async checkGoogleIdentity():Promise<void>{return command('check_google_identity');},
   async disconnectGoogleIdentity(revoke:boolean):Promise<void>{return command('disconnect_google_identity',{revoke});},
+  async downloadToolsStatus():Promise<DownloadToolsStatus>{return downloadToolsCheck??=(command<DownloadToolsStatus>("get_download_tools_status").finally(()=>{downloadToolsCheck=null;}));},
+  async installGalleryTools(consent:boolean):Promise<{galleryPython:string;ffmpeg:string}>{return command("install_gallery_tools",{consent});},
   async externalTools():Promise<{galleryPython:string;ffmpeg:string}>{return isNative()?command("get_external_tools"):{galleryPython:"",ffmpeg:""};},
   async saveExternalTools(config:{galleryPython:string;ffmpeg:string}):Promise<{galleryPython:string;ffmpeg:string}>{return command("save_external_tools",{config});},
   async chooseExternalTool():Promise<string|null>{return command("choose_external_tool");},
@@ -52,6 +56,7 @@ export const bridge = {
   async openMediaFile(id:number):Promise<void> { return command("open_media_file",{id}); },
   async firefoxProfiles(): Promise<{id: string; name: string}[]> { if (!isNative()) return []; return command("firefox_profiles"); },
   async connectFirefox(source: Source, profileId: string): Promise<void> { return command("connect_firefox", { source, profileId }); },
+  async connectorStatus(browser:string):Promise<{registered:boolean;verified:boolean;message:string}>{return command("get_browser_connector_status",{browser});},
   async setupConnector(browser: string): Promise<void> { if (!isNative()) throw new Error("Connect accounts in the Windows desktop app."); return command("setup_connector", { browser }); },
   async connect(source: Source, browser: string): Promise<void> { if (!isNative()) throw new Error("Connect accounts in the Windows desktop app."); return command("begin_connection", { source, browser }); },
   async cancelConnection(): Promise<void> { return command("cancel_connection"); },

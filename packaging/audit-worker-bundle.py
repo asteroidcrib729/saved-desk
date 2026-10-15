@@ -41,7 +41,7 @@ def inspect(payload=PAYLOAD):
     if actual!=set(expected):problems.append('Adapter contains unexpected or missing files.')
     return {'schema_version':1,'project_version':json.loads((ROOT/'desktop/package.json').read_text())['version'],
         'scope':'Frozen worker archive and complete adjacent installer resource tree',
-        'excluded_redistribution':['gallery-dl','imageio-ffmpeg','FFmpeg/FFprobe executables'],
+        'excluded_redistribution':['gallery-dl','imageio-ffmpeg','FFmpeg/FFprobe executables inside the frozen worker; separate media-tools are independently reviewed'],
         'adapter_source_verified':not any('Adapter' in p for p in problems),'frozen_module_count':len(modules),
         'files':files,'findings':problems,'passed':not problems}
 

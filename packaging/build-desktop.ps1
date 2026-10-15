@@ -13,6 +13,11 @@ if ($RequireSigning -or $env:SAVEDDESK_SIGN_PROVIDER) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'sign-windows.ps1') -Check
     if ($LASTEXITCODE) { throw 'Configure a real signing identity before requesting a signed build.' }
 }
+& (Join-Path $projectRoot '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'audit-media-tools.py') 2>$null
+if ($LASTEXITCODE) {
+    & (Join-Path $projectRoot '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'build-media-tools.py')
+    if ($LASTEXITCODE) { throw 'Controlled media tools build/source review failed.' }
+}
 $localCargo = Join-Path $projectRoot '.tooling/cargo/bin/cargo.exe'
 if (Test-Path -LiteralPath $localCargo) {
     $env:CARGO_HOME = Join-Path $projectRoot '.tooling/cargo'
@@ -43,7 +48,7 @@ function Reset-TargetResources([string]$Configuration) {
     # Tauri copies resources by merging. Remove only known generated staging trees
     # so a removed dependency cannot survive in a later standalone build or bundle.
     $target = [IO.Path]::GetFullPath((Join-Path $projectRoot "desktop/src-tauri/target/$Configuration"))
-    foreach ($name in @('worker','browser-connector','licenses','maintenance','resources')) {
+    foreach ($name in @('worker','browser-connector','media-tools','licenses','maintenance','resources')) {
         $path = [IO.Path]::GetFullPath((Join-Path $target $name))
         if (-not $path.StartsWith($target + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) { throw 'Unexpected target resource path.' }
         if (Test-Path -LiteralPath $path) {
@@ -121,6 +126,7 @@ try {
         Copy-Item -LiteralPath (Join-Path $projectRoot 'desktop/src-tauri/target/debug/saveddesk-native-host.exe') -Destination (Join-Path $projectRoot 'desktop/src-tauri/resources/saveddesk-native-host.exe') -Force
         Copy-Item -LiteralPath (Join-Path $projectRoot 'desktop/src-tauri/resources/browser-connector') -Destination (Join-Path $projectRoot 'desktop/src-tauri/target/debug') -Recurse -Force
         Copy-Item -LiteralPath $licenseOutput -Destination (Join-Path $projectRoot 'desktop/src-tauri/target/debug') -Recurse -Force
+        Copy-Item -LiteralPath (Join-Path $projectRoot 'desktop/src-tauri/resources/media-tools') -Destination (Join-Path $projectRoot 'desktop/src-tauri/target/debug') -Recurse -Force
         $maintenance = Join-Path $projectRoot 'desktop/src-tauri/target/debug/maintenance'
         New-Item -ItemType Directory -Path $maintenance -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'unregister-connector.ps1') -Destination $maintenance

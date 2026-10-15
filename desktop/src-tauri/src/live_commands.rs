@@ -152,6 +152,7 @@ pub async fn connect_firefox(
         return Err("Choose an available Firefox profile.".into());
     }
     let state = state.inner().clone();
+    crate::external_tools::require(&app,data(&state)?,"instagram","",false)?;
     let stop = Arc::new(AtomicBool::new(false));
     {
         let _gate = state
@@ -291,9 +292,27 @@ pub async fn setup_connector(
         if browser=="firefox" { value["allowed_extensions"]=json!([platform::FIREFOX_ID]); } else { value["allowed_origins"]=json!([platform::CHROMIUM_ORIGIN]); }
         std::fs::write(&manifest,serde_json::to_vec(&value).map_err(|_|"Invalid connector registration.")?).map_err(|_|"Connector registration could not be written.")?;
         platform::register(&manifest,&browser)?;
-        app.opener().open_path(platform::shell_path(&directory),None::<&str>).map_err(|_|"Windows could not open the connector folder.")?;
+        let exported=crate::connector_extension::export(&profile,&directory,&browser)?;
+        app.opener().open_path(platform::shell_path(&exported),None::<&str>).map_err(|_|"Windows could not open the connector folder.")?;
         Ok(())
     }).await.map_err(|_|"Connector setup failed.".to_string())?
+}
+
+fn connector_status(app:&tauri::AppHandle,state:&AppState,browser:&str)->Result<Value>{
+    valid_browser(browser)?;
+    let profile=data(state)?;
+    let resources=app.path().resource_dir().map_err(|_|"App resources unavailable.")?;
+    let mut source=resources.join("saveddesk-native-host.exe");
+    if !source.is_file() && cfg!(debug_assertions){source=std::env::current_exe().map_err(|_|"App folder unavailable.")?.with_file_name("saveddesk-native-host.exe");}
+    let host=crate::connector_payload::expected_host(profile,&source)?;
+    let registered=platform::connector_registered(browser,&profile.join(format!("connector-{browser}.json")),&host);
+    let verified=registered && crate::connector_presence::verified(profile,browser,&host);
+    Ok(json!({"registered":registered,"verified":verified,"message":if verified{"Browser extension connection checked. Start a platform connection within five minutes."}else if registered{"Open the SavedDesk extension in the selected browser profile, choose Check connection again, then return here and check the extension connection."}else{"Set up the browser connector first. Signing in on the website alone does not connect SavedDesk."}}))
+}
+#[tauri::command]
+pub async fn get_browser_connector_status(browser:String,app:tauri::AppHandle,state:State<'_,Arc<AppState>>)->Result<Value>{
+    let state=state.inner().clone();
+    tauri::async_runtime::spawn_blocking(move||connector_status(&app,&state,&browser)).await.map_err(|_|"Browser connection check failed.".to_string())?
 }
 
 #[tauri::command]
@@ -306,6 +325,8 @@ pub async fn begin_connection(
     valid_source(&source)?;
     valid_browser(&browser)?;
     let app_state = state.inner().clone();
+    crate::external_tools::require(&app,data(&app_state)?,&source,"",false)?;
+    if connector_status(&app,&app_state,&browser)?["verified"]!=true{return Err("Browser setup is incomplete. Set up the connector, load or update its extension, open its toolbar button and choose Check connection again. Return to SavedDesk and check the extension connection before connecting an account.".into());}
     let nonce = uuid::Uuid::new_v4().to_string();
     let stop = Arc::new(AtomicBool::new(false));
     let mut connection = app_state
@@ -339,7 +360,7 @@ fn connection_loop(
     browser: String,
     stop: Arc<AtomicBool>,
 ) {
-    let deadline = Instant::now() + Duration::from_secs(300);
+    let deadline = Instant::now() + Duration::from_secs(90);
     let result = (|| -> Result<()> {
         while Instant::now() < deadline && !stop.load(Ordering::Relaxed) {
             if !platform::accept(&server) {
@@ -369,6 +390,7 @@ fn connection_loop(
                         store_session(&state,&source,&json!({"account_id":identity["account_id"],"cookies":cookies,"user_agent":user_agent}))?;
                         let db=catalog::open(&state.database)?;
                         db.execute("UPDATE accounts SET account_id=?1,username=?2,browser=?3,state=?4,message='',verified_at=?5 WHERE source=?6",params![identity["account_id"].as_str(),identity["username"].as_str(),browser,if worker_host::browser_source(&source){"session_ready"}else{"connected"},if worker_host::browser_source(&source){None}else{Some(chrono::Utc::now().to_rfc3339())},source]).map_err(|_|"The verified account could not be saved.")?;
+                        if let Some(window)=app.get_webview_window("main"){let _=window.show();let _=window.set_focus();}
                         Ok(())
                     });
                     if let Err(message)=checked { if let Ok(db)=catalog::open(&state.database){let _=db.execute("UPDATE accounts SET state='sign_in_needed',message=?1 WHERE source=?2",params![message,source]);} }
@@ -393,7 +415,7 @@ fn connection_loop(
         Err(if stop.load(Ordering::Relaxed) {
             "Connection cancelled. Your downloads are preserved."
         } else {
-            "Browser permission timed out. Click Connect and try again."
+            "No browser approval arrived. Open the SavedDesk extension in the selected browser profile and approve the platform, or run connector setup again."
         }
         .into())
     })();
@@ -543,6 +565,7 @@ fn download_session(state: &AppState, db: &rusqlite::Connection, source: &str, e
 
 #[tauri::command]
 pub async fn prepare_download(
+    app: tauri::AppHandle,
     request: DownloadRequest,
     state: State<'_, Arc<AppState>>,
 ) -> Result<Preparation> {
@@ -550,6 +573,7 @@ pub async fn prepare_download(
     tauri::async_runtime::spawn_blocking(move||{
         let db=catalog::open(&app_state.database)?;
         crate::storage::download_ready(&db)?;
+        crate::external_tools::require(&app,data(&app_state)?,&request.source,&request.target,true)?;
         let mut video=catalog::settings(&db)?;video.quality=request.quality.clone();video.profile=request.profile.clone();if let Some(advanced)=request.advanced {video.advanced=advanced;}video.validate()?;
         let (account,username,_)=download_session(&app_state,&db,&request.source,None)?;
         let target=canonical(&request.source,&request.target,&username)?;

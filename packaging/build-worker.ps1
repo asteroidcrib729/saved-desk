@@ -39,6 +39,9 @@ New-Item -ItemType Directory -Force -Path $adapterPackage | Out-Null
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'external-adapter/entry.py') -Destination $adapterRoot -Force
 Get-ChildItem -LiteralPath (Join-Path $projectRoot 'backend/src/social_downloader') -File -Filter '*.py' | Copy-Item -Destination $adapterPackage -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'LICENSE') -Destination (Join-Path $adapterRoot 'LICENSE.txt') -Force
+$setupRoot = Join-Path $outputRoot '_internal/setup'
+New-Item -ItemType Directory -Force -Path $setupRoot | Out-Null
+Copy-Item -LiteralPath (Join-Path $projectRoot 'packaging/gallery-tools-lock.json') -Destination $setupRoot -Force
 $runtimeRoot = Join-Path $outputRoot '_internal/runtime'
 New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
 Copy-Item -LiteralPath $NodePath -Destination (Join-Path $runtimeRoot 'node.exe') -Force

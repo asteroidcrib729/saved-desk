@@ -9,7 +9,7 @@ permissions:
 jobs:
   windows:
     runs-on: windows-2022
-    timeout-minutes: 45
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -36,6 +36,8 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Audit source and ignore rules
         run: ./.venv/Scripts/python.exe packaging/audit-repository.py
+      - name: Build standalone video tools from verified source
+        run: ./.venv/Scripts/python.exe packaging/build-media-tools.py
       - name: Build and audit worker package
         shell: pwsh
         run: ./packaging/build-worker.ps1

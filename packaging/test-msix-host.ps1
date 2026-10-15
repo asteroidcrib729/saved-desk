@@ -19,6 +19,28 @@ $certPath='Cert:\CurrentUser\TrustedPeople\'+$signing.certificate_thumbprint
 Add-Type -Path (Join-Path $PSScriptRoot 'msix-test-activation.cs')
 $data=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'com.saveddesk.desktop'))
 $media=Join-Path $evidence 'media';$state=Join-Path $evidence 'library.json'
+function Close-TestConnectorFolders {
+ $prefix=[IO.Path]::GetFullPath((Join-Path $data 'browser-extensions'))+[IO.Path]::DirectorySeparatorChar
+ $version=(Get-Content -LiteralPath (Join-Path $root 'desktop/package.json') -Raw | ConvertFrom-Json).version
+ try{$shell=New-Object -ComObject Shell.Application}catch{return}
+ foreach($window in @($shell.Windows())){
+  try{
+   $uri=[uri]$window.LocationURL
+   if(-not $uri.IsFile -or [IO.Path]::GetFileName($window.FullName) -ine 'explorer.exe'){continue}
+   $path=[IO.Path]::GetFullPath([uri]::UnescapeDataString($uri.LocalPath))
+   if($path.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase) -and (Split-Path -Leaf $path) -match '^[0-9a-f]{64}$'){
+    $manifest=Join-Path $path 'manifest.json'
+    if((Test-Path -LiteralPath $manifest) -and (Get-Content -LiteralPath $manifest -Raw | ConvertFrom-Json).version -eq $version){$window.Quit()}
+   }
+  }catch{}
+ }
+}
+function Move-ProfileWithRetry([string]$Source,[string]$Destination){
+ for($n=0;$n -lt 60;$n++){
+  try{Move-Item -LiteralPath $Source -Destination $Destination -ErrorAction Stop;return}
+  catch{if($n -eq 59){throw};Start-Sleep -Milliseconds 500}
+ }
+}
 function Stop-TestApp {
  if($script:app -and -not $script:app.HasExited){& taskkill.exe /PID $script:app.Id /T /F | Out-Null;$script:app.WaitForExit(15000) | Out-Null}
  $script:app=$null
@@ -47,6 +69,7 @@ function App-Step([string]$Mode){
   if($Mode -eq 'seed'){
    & (Join-Path $root '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'msix-test-native-host.py') (Join-Path $data 'connector-edge.json')
    if($LASTEXITCODE){throw 'External browser native-host launch test failed.'}
+   Close-TestConnectorFolders
   }
   $engines=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -and $_.ExecutablePath.StartsWith((Join-Path $install 'resources/webview2')+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)})
   if(-not $engines.Count){throw 'The installed app did not use its bundled Fixed Version runtime.'}
@@ -101,6 +124,7 @@ try {
  $report.passed=$true
 } catch {$report.error=$_.Exception.Message;$report.failure_location=$_.InvocationInfo.PositionMessage;$report.stack=$_.ScriptStackTrace;Write-Warning $report.error} finally {
  Stop-TestApp
+ Close-TestConnectorFolders
  try{if($installed){$package=Get-AppxPackage -Name SavedDesk.MsixPreview;if($package){Remove-AppxPackage -Package $package.PackageFullName}}}catch{$report.passed=$false;$report.package_cleanup_error=$_.Exception.Message}
  try{foreach($entry in $registry){if(Test-Path -LiteralPath $entry.path){Remove-Item -LiteralPath $entry.path};if($entry.existed){New-Item -Path $entry.path -Force | Out-Null;$key=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($entry.path.Substring(6),$true);try{foreach($v in $entry.values){$key.SetValue($v.name,$v.value,[Microsoft.Win32.RegistryValueKind]$v.kind)}}finally{$key.Dispose()}}}
  }catch{$report.passed=$false;$report.registry_cleanup_error=$_.Exception.Message}
@@ -108,8 +132,12 @@ try {
  foreach($entry in $backups){
   try{
   if($entry.moved -or -not $entry.existed){
-   if(Test-Path -LiteralPath $entry.profile){Move-Item -LiteralPath $entry.profile -Destination (Join-Path $evidence ('isolated-profile-'+$id+'-'+[Array]::IndexOf($backups,$entry)))}
-   if($entry.moved){Move-Item -LiteralPath $entry.backup -Destination $entry.profile}
+   if(Test-Path -LiteralPath $entry.profile){
+    $isolated=[IO.Path]::GetFullPath((Join-Path $evidence ('isolated-profile-'+$id+'-'+[Array]::IndexOf($backups,$entry))))
+    if(-not $isolated.StartsWith($evidence+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Unexpected isolated profile destination.'}
+    Move-ProfileWithRetry $entry.profile $isolated
+   }
+   if($entry.moved){Move-ProfileWithRetry $entry.backup $entry.profile}
   }
   foreach($file in $entry.hashes){if((Get-FileHash -LiteralPath (Join-Path $entry.profile $file.relative)).Hash -ne $file.sha256){throw 'Owner profile restoration checksum mismatch.'}}
   }catch{$restoreErrors+=$_.Exception.Message}

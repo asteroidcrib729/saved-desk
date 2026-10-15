@@ -126,11 +126,11 @@ pub async fn check_readiness(
             })();
             match probe {
                 Ok((ffmpeg, ffprobe, youtube, gallery)) => {
-                    checks.push(check("gallery", "Gallery tools", if gallery {"ready"} else {"blocked"}, if gallery {"The separately installed gallery environment is available."} else {"Select a supported gallery Python environment in Settings -> Download tools."}, "none"));
+                    checks.push(check("gallery", "Gallery tools", if gallery {"ready"} else {"blocked"}, if gallery {"The separately installed gallery environment is available."} else {"Use Set up gallery downloads in Settings -> Download tools, or select an existing supported environment."}, "none"));
                     checks.push(check("youtube", "YouTube support", if youtube {"ready"} else {"blocked"}, if youtube {"The JavaScript runtime and YouTube support scripts are installed."} else {"YouTube support is incomplete. Repair the app installation."}, "none"));
                     checks.push(check("worker", "Download engine", "ready", "The local download engine started and responded correctly.", "none"));
-                    checks.push(check("ffmpeg", "Video conversion", if ffmpeg { "ready" } else { "warning" },
-                        if ffmpeg { "FFmpeg starts correctly. Compatible MP4 conversion is available." } else { "FFmpeg is unavailable. Select its separately installed executable in Settings -> Download tools before downloading videos." }, "none"));
+                    checks.push(check("ffmpeg", "Video conversion", if ffmpeg { "ready" } else { "blocked" },
+                        if ffmpeg { "FFmpeg starts correctly. Compatible MP4 conversion is available." } else { "FFmpeg is unavailable. Repair the included video tools or select an existing FFmpeg installation in Settings -> Download tools before downloading videos." }, "none"));
                     checks.push(check("ffprobe", "Video inspection", if ffprobe { "ready" } else { "warning" },
                         if ffprobe { "The video inspection tool starts correctly." } else { "FFprobe is unavailable. Some video inspection features will be limited; original downloads remain available." }, "none"));
                 }
@@ -150,9 +150,9 @@ pub async fn check_readiness(
             let manifest = state.database.parent().ok_or("App data is unavailable.")?.join(format!("connector-{browser}.json"));
             let packaged = resources.join("browser-connector/chromium/manifest.json").is_file() && host.is_file();
             let registered_host = crate::connector_payload::expected_host(state.database.parent().ok_or("App data is unavailable.")?, &host);
-            let registered = packaged && registered_host.map(|path| platform::connector_registered(&browser, &manifest, &path)).unwrap_or(false);
+            let registered = packaged && registered_host.map(|path| platform::connector_registered(&browser, &manifest, &path) && crate::connector_presence::verified(state.database.parent().unwrap(),&browser,&path)).unwrap_or(false);
             checks.push(check("connector", "Browser connection", if registered { "ready" } else { "warning" },
-                if registered { "The browser host is registered for this app. Extension installation and account approval must still be checked in your browser." }
+                if registered { "The extension and native host completed a recent verified handshake. Account approval is a separate step." }
                 else if packaged { "Set up the connector for this browser in Accounts, then load or reload the extension." }
                 else { "The connector package is missing. Repair the app installation before connecting this browser." }, "accounts"));
         }

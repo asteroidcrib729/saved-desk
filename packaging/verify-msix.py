@@ -16,7 +16,7 @@ with zipfile.ZipFile(package) as z:
  if identity['Name']!=r['identity_name'] or identity['Publisher']!=r['publisher'] or identity['Version']!=r['version'] or identity['ProcessorArchitecture']!='x64':raise SystemExit('MSIX identity/version/architecture mismatch')
  for entry in r['files']:
   if hashlib.sha256(z.read(names[entry['path']])).hexdigest()!=entry['sha256']:raise SystemExit('Archived payload differs: '+entry['path'])
- if any(n.endswith(('/ffmpeg.exe','/ffprobe.exe')) for n in names):raise SystemExit('Excluded tool executable in MSIX')
+ if any(n.endswith(('/ffmpeg.exe','/ffprobe.exe')) and n not in {'media-tools/ffmpeg.exe','media-tools/ffprobe.exe'} for n in names):raise SystemExit('Excluded tool executable in MSIX')
  required={'AppxManifest.xml','AppxBlockMap.xml','[Content_Types].xml'}
  if not required.issubset(names):raise SystemExit('Missing MSIX package structure')
  allowed={p['path'] for p in r['files']}|required|{'AppxSignature.p7x','AppxMetadata/CodeIntegrity.cat'}

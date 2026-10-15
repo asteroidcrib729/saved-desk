@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 license = "MIT"
 name = "saveddesk-worker"
-version = "0.2.10"
+version = "0.2.11"
 description = "Structured, on-demand media worker for SavedDesk"
 requires-python = ">=3.10"
 dependencies = ["requests==2.34.2", "yt-dlp==2026.8.19", "yt-dlp-ejs==0.8.0"]
