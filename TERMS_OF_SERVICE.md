@@ -54,7 +54,7 @@ Moving files, changing folders or uninstalling the application can leave data on
 
 ## 6. External tools and distribution
 
-Some functionality requires separately installed tools, including Python/gallery-dl and FFmpeg. Obtain those tools from sources you trust and comply with their licenses and terms. Their providers are responsible for their own software and services.
+Gallery functionality requires separately acquired Python/gallery-dl tools. With your explicit consent, guided setup downloads pinned archives directly from their publishers and verifies them before local installation. These tools retain their own terms. Separately reviewed FFmpeg/FFprobe programs are included with their applicable GPL notices and matching source/build records. Original SavedDesk code remains MIT; component license rights take precedence over conflicting application terms.
 
 Bundled dependencies have separate notices and applicable license terms. Review the project's licensing directory, installed notices and [Windows installer terms](licensing/INSTALLER-TERMS.txt). These terms do not relicense third-party software or remove any redistribution obligations, including conditions applicable specifically to Microsoft runtime components.
 

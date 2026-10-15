@@ -2,6 +2,8 @@
 
 Last reviewed: 10 October 2026. Applies to SavedDesk 0.2.10's Windows x64 NSIS `.exe` installer. Installation is per Windows user. This document describes the setup process's return value, not application, downloader, FFmpeg, or browser-connector exit codes.
 
+For the 0.2.11 MSIX resubmission, upload the MSIX package through the packaged-app submission. The EXE switches and return codes below do not apply to MSIX deployment. See the [resubmission instructions](development-plans/store-resubmission-0.2.11.md).
+
 ## Partner Center configuration
 
 Use these values for the current installer:

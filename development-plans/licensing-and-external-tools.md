@@ -1,3 +1,7 @@
+# Current follow-up: 0.2.11 Store remediation
+
+[Development plan 06](development-plan-06.md) supersedes the former FFmpeg exclusion and first-run/connector readiness assumptions. Gallery-dl remains a separate user acquisition; original source remains MIT. The material below retains its historical version/test scope.
+
 # Licensing architecture and external tools
 
 **Documentation reviewed: 9 October 2026; current app: 0.2.10.** The README includes complete separately installed gallery-Python/FFmpeg setup. Current distribution excludes these tools; neither MIT nor upstream licenses changed.

@@ -103,3 +103,7 @@ The project repository and published policy pages may be hosted by GitHub or ano
 We will update this policy when application behavior changes and revise the date above. New uses of Google user data or additional permissions will be disclosed before being introduced, with renewed consent where required. Planned provider integrations and hosting services are not enabled merely by being mentioned in development plans.
 
 For application usage and licensing information, see the [Terms of Service](TERMS_OF_SERVICE.md) and [project README](README.md).
+
+## Separate download tools setup (0.2.11)
+
+Gallery setup runs only after explicit consent. It requests pinned software archives directly from Python.org and files.pythonhosted.org (PyPI), whose services receive normal connection details such as your IP address. The setup checks archive hashes and local package versions; it does not need or transmit platform cookies, passwords, Google tokens or download history. The separate runtime, packages, installation hash inventory and selected path remain on your computer. An extension-readiness check stores a short-lived Windows-user-protected receipt containing browser family, extension version, host hash and time; it contains no account session. Existing local-data retention and removal controls apply.

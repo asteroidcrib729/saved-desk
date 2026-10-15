@@ -1,6 +1,6 @@
 # Code signing policy
 
-**Last updated:** 10 October 2026
+**Last updated:** 15 October 2026
 
 **Project:** [SavedDesk](https://github.com/asteroidcrib729/saved-desk)
 
@@ -8,7 +8,7 @@
 
 ## Current status
 
-SignPath Foundation declined SavedDesk's application twice because it does not yet have sufficient public adoption and visibility. No Foundation signing integration is active. The separate Microsoft Store MSIX route is being prepared; it does not sign the existing EXE. Current Windows preview installers are **unsigned**; no SignPath sponsorship, certificate, independent security certification or SmartScreen reputation is claimed.
+SignPath Foundation declined SavedDesk's application twice because it does not yet have sufficient public adoption and visibility. No Foundation signing integration is active. The Microsoft Store reviewed the 0.2.10 MSIX and reported download/account-connection failures. A corrected 0.2.11 candidate is being prepared for resubmission; Store certification and Store signing remain pending. This route does not sign the existing EXE. Current Windows preview installers are **unsigned**; no SignPath sponsorship, certificate, independent security certification or SmartScreen reputation is claimed.
 
 If the application is approved and signing is operational, the acknowledgement will be: **Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org)**. This describes the intended future arrangement, not the current previews.
 

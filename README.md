@@ -2,7 +2,7 @@
 
 I built SavedDesk to keep supported social-media saves in one local Windows library. You can download posts and collections, search your saved content, view images, play videos and audio, and manage the files on your computer.
 
-**Current application: 0.2.10. User guide reviewed: 10 October 2026.** The GitHub-built Windows installer has passed installation, upgrade and uninstall checks on this system. The maintainer has published it as a publicly accessible unsigned prerelease. [Current GitHub-build verification and preview policy](development-plans/signpath-and-public-preview.md) records its exact hash and limitations; [earlier local-build verification](development-plans/scope-and-lifecycle-0.2.10.md) retains its own evidence.
+**Current source: 0.2.11 Store remediation candidate. Guide reviewed: 15 October 2026.** Microsoft reported missing video-tool setup and incomplete browser connection during certification of 0.2.10. Version 0.2.11 adds included source-built video tools, guided separate gallery setup and verified extension readiness. See [Store remediation and exact validation scope](development-plans/development-plan-06.md). Store publication/signing remains subject to Microsoft approval.
 
 ## Contents
 
@@ -31,13 +31,13 @@ I built SavedDesk to keep supported social-media saves in one local Windows libr
 
 Open the [SavedDesk Releases page](https://github.com/asteroidcrib729/saved-desk/releases) and download the Windows x64 installer named **SavedDesk_<version>_x64-setup.exe**. Use the installer asset, rather than GitHub's automatically generated source ZIP. A source ZIP contains development files and cannot be installed as the desktop app.
 
-The [source repository](https://github.com/asteroidcrib729/saved-desk) is public. No packaged release has been published yet. In this checkout, the tested installer is:
+The [source repository](https://github.com/asteroidcrib729/saved-desk) is public. The published 0.2.10 unsigned preview is historical; its local installer is:
 
 ~~~text
 release-artifacts/github-v0.2.10-37960062238/SavedDesk_0.2.10_x64-setup.exe
 ~~~
 
-The GitHub-built 0.2.10 asset set is currently a draft. Its exact installer passed host installation, upgrade and uninstall checks after download and checksum verification. A documented unsigned-preview exception permits maintainer-approved publication as a prerelease; it does not claim signing or complete production acceptance. See the [Code signing policy](CODE_SIGNING_POLICY.md) and [preview evidence and publication instructions](development-plans/signpath-and-public-preview.md). Previews through 0.2.3 must not be distributed.
+The 0.2.10 preview was published as an unsigned prerelease. Its earlier host installation/upgrade/uninstall checks do not establish the later Store first-run acceptance. Do not submit that package again for the corrected 0.2.11 functionality. Previews through 0.2.3 remain prohibited from distribution. See the [Code signing policy](CODE_SIGNING_POLICY.md).
 
 If a release supplies checksums, compare the downloaded installer with its entry in SHA256SUMS.txt:
 
@@ -55,7 +55,7 @@ The GitHub-built 0.2.10 installer SHA-256 is:
 
 I also provide a separate Windows x64 MSIX build. The local testing package uses a separate test identity. The Store build uses the public identity confirmed in Partner Center: FarazHussain.SavedDesk, publisher CN=F14492EE-882F-4921-8253-B73CEB32823A. Its unsigned package is intended for review; Windows requires appropriate package trust before normal sideload installation. A locally signed preview and public test certificate, when supplied, are for deliberate local testing only. Do not treat that certificate as a trusted public publisher certificate.
 
-MSIX includes the complete Microsoft Fixed Version WebView2 runtime, so it does not run the EXE installer's runtime prerequisite. It includes the same reviewed worker, connector and dependency notices; gallery-dl and FFmpeg remain separately configured download tools. It requires Windows 10 build 19041 or later, x64. Fixed Version WebView2 updates ship through new app packages.
+MSIX includes Microsoft Fixed Version WebView2 and separately reviewed FFmpeg/FFprobe executables, so public video downloads need no manually installed video converter. Gallery tools remain a separately acquired user installation, available through guided setup. The package includes the worker, connector and applicable notices. Windows 10 build 19041 or later, x64, is required. Fixed Version WebView2 and bundled media updates ship through new app packages.
 
 For local builds from source:
 
@@ -85,7 +85,7 @@ Upload an identity-correct package through an MSIX/AppX submission, not the EXE/
 
 MSIX connector setup installs a hash-verified native-host copy under the existing profile\connector-bin folder, because an unpackaged browser cannot execute it directly from WindowsApps. The packaged worker and app remain inside MSIX.
 
-Close the other edition before using MSIX: both editions share the existing catalog and settings. After an MSIX update, repeat **Accounts -> Set up browser connector**, since Windows changes the package installation path. Before removal, unregister this installation's connector using packaging/unregister-connector.ps1 with the exact native-host parent directory recorded in your connector manifest; then uninstall through Windows Settings -> Apps. Package removal retains local SavedDesk data and downloaded media. The EXE's /S parameter and process exit codes do not apply to MSIX.
+Close the other edition before using MSIX: both editions share the existing catalog and settings. After an MSIX update, repeat **Accounts -> Prepare connector and open extension folder**, since Windows changes the package installation path. Before removal, unregister this installation's connector using packaging/unregister-connector.ps1 with the exact native-host parent directory recorded in your connector manifest; then uninstall through Windows Settings -> Apps. Package removal retains local SavedDesk data and downloaded media. The EXE's /S parameter and process exit codes do not apply to MSIX.
 
 ### Requirements
 
@@ -96,10 +96,10 @@ Close the other edition before using MSIX: both editions share the existing cata
 | Writable save folder and enough free space | Stores downloaded media; preparation/conversion can temporarily need additional space |
 | Internet access | Platform requests and account connection; existing local media can be browsed offline |
 | Separate gallery Python environment | Instagram, X, Pinterest and TikTok photo downloads; Instagram/X account verification |
-| Separate FFmpeg installation | Video preparation, compatibility conversion and video previews |
+| Included FFmpeg/FFprobe | Automatic video preparation, compatibility conversion and inspection |
 | A supported signed-in browser profile | Required for Instagram/X and YouTube account playlists; optional public-link approvals elsewhere |
 
-Linux, macOS and native ARM64 installers are not supplied by this project. The packaged app does not need Node, Rust, npm or the development checkout on the user's PC. Its built-in worker is packaged, but gallery features still require the separate Python environment below. FFmpeg and gallery-dl are not bundled.
+Linux, macOS and native ARM64 installers are not supplied by this project. The packaged app does not need Node, Rust, npm or the development checkout on the user's PC. Its built-in worker is packaged, but gallery features still require the separate Python environment below. FFmpeg/FFprobe are included as separately reviewed programs. Gallery-dl remains a user-acquired installation available through guided setup.
 
 ### Install, upgrade or uninstall
 
@@ -123,34 +123,25 @@ Open **Settings > Save location > Choose folder**. Choose a writable directory w
 
 SavedDesk opens and saves downloaded media only within the currently selected folder. Selecting a new folder does not move existing downloads. To relocate them, move the existing folders yourself, preserving their subfolders, then choose **Find moved files**. The full recovery procedure is under [Save location](#save-location).
 
-### 2. Install the separate gallery environment
+### 2. Set up additional gallery downloads
 
-Use the [official Python Windows downloads](https://www.python.org/downloads/windows/) to install Python 3.14. Open a new PowerShell window and ensure python resolves to that installation. The following creates a user-owned environment outside SavedDesk's installation folder and installs the versions currently supported by the app:
+Public YouTube/Facebook/TikTok video links and Discord attachment links do not require account connection. Instagram, X, Pinterest and TikTok photo posts additionally need the separate gallery environment.
 
-~~~powershell
-python --version
-python -m venv "$env:LOCALAPPDATA\SavedDeskTools"
-& "$env:LOCALAPPDATA\SavedDeskTools\Scripts\python.exe" -m pip install gallery-dl==1.32.14 requests==2.34.2 yt-dlp==2026.8.19 yt-dlp-ejs==0.8.0
-~~~
+1. Open **Settings > Download tools** and select **Set up gallery downloads**.
+2. Review the download sources and local installation notice. Tick the consent checkbox, then select **Download and set up tools**.
+3. Keep SavedDesk open while progress is displayed. It downloads pinned Python and gallery-dl/Requests/yt-dlp dependencies directly from Python.org and PyPI, verifies each SHA-256 hash, extracts into an owned staging folder and checks actual installed versions.
+4. Wait for **Gallery downloads are ready**. The correct interpreter is saved automatically. No system Python, PowerShell command or file picker is required.
+5. If acquisition or verification fails, existing settings stay unchanged. Check your connection and retry. Existing environments remain available under **Use existing tools or change an override**.
 
-If python opens the Microsoft Store or is unavailable, use the full path of your installed Python interpreter in place of python for the first two commands. Do not use an arbitrary interpreter without the required packages.
+These tools are installed outside the app package under the local data folder's tools/gallery-<manifest> directory. They retain their own licenses; this user acquisition does not certify redistribution of an arbitrary gallery-dl/Requests environment. Pause downloads and cancel pending account connections before changing tools.
 
-In **Settings > Download tools > Gallery Python environment > Choose file**, select:
+### 3. Use the included video tools
 
-~~~text
-%LOCALAPPDATA%\SavedDeskTools\Scripts\python.exe
-~~~
+Version 0.2.11 includes source-built FFmpeg 9.0.2 and FFprobe as separate programs. They are selected automatically, including inside MSIX. Compatible streams are copied where possible; libx264/AAC conversion remains available when required.
 
-The same versions are recorded in [external-tool requirements](packaging/requirements-external.txt). This environment is required for Instagram, X, Pinterest and TikTok photo posts. It also handles Instagram/X account verification. YouTube/Facebook/TikTok video and Discord adapters use the packaged worker's existing routes.
+Use **Check download tools** to verify startup. An existing deliberately selected FFmpeg override remains in use; select **Use included tools** to restore the default. Keep FFprobe alongside any custom FFmpeg override. A damaged or missing included payload requires repairing SavedDesk, rather than repeatedly retrying failed downloads.
 
-### 3. Select FFmpeg
-
-1. Open the [official FFmpeg download page](https://ffmpeg.org/download.html) and use one of its Windows build suppliers.
-2. Extract the downloaded package into a permanent folder outside SavedDesk's installation.
-3. Keep ffmpeg.exe and, when supplied, ffprobe.exe together in the package's bin folder.
-4. In **Settings > Download tools > FFmpeg executable > Choose file**, select ffmpeg.exe.
-
-SavedDesk runs the selected external tools; it does not copy them into its installer or update them for you. If you move/remove a tool, select its new location. Obtain executable tools from sources you trust.
+The release source archive includes exact FFmpeg/libx264 sources, toolchain/runtime sources, effective build records and applicable license notices. These programs keep their GPL terms; SavedDesk's original code remains MIT.
 
 ### 4. Check local setup
 
@@ -208,7 +199,7 @@ SavedDesk distinguishes **verified account identity**, **browser-session approva
 ### Instagram and X
 
 1. Sign in to the platform in the browser profile you intend to use. Verify that this profile can open the desired content.
-2. Install/select the gallery Python environment in Settings.
+2. Use Settings > Download tools > Set up gallery downloads, or select an already supported environment.
 3. Open **Accounts > Browser connections and legacy approvals** and choose your browser.
 4. For regular Firefox, choose the correct **Firefox profile** and follow the direct route below. For other supported browsers, [set up the connector](#set-up-the-browser-connector).
 5. On the Instagram or X card, click **Connect using this browser**.
@@ -236,6 +227,8 @@ Public video links do not require Google identity sign-in. For Watch Later, Like
 The two-video Watch Later workflow is owner-confirmed. An approved playlist session does not establish general private-video download support. Unavailable entries, provider challenges, expired sessions and extraction changes may still cause failures.
 
 ### Optional Google identity sign-in
+
+Open **Accounts > Optional Google identity (advanced)** to access these developer-configured controls. They are separate from the normal YouTube download connection.
 
 The **Google identity for YouTube** card verifies your Google identity. It is separate from the YouTube browser approval above and does not replace it. The current app requests identity scopes, not a YouTube private-media/download scope.
 
@@ -290,12 +283,12 @@ Chrome, Edge, Brave, Vivaldi and Chromium use the companion **SavedDesk Browser 
 ### Chromium-family setup
 
 1. Install/open the native SavedDesk app.
-2. Open **Accounts**, choose the browser, then expand **First time? Set up the browser connector**.
-3. Click **Set up connector and open its folder**. This registers the native messaging host for the selected browser under your current Windows user and opens the packaged extension folder.
+2. Open **Accounts**, choose the browser, then expand **Set up or repair the browser connection**.
+3. Click **Prepare connector and open extension folder**. This registers the native messaging host for the selected browser under your current Windows user and exports a verified extension copy to a normal user-readable folder outside WindowsApps and opens it.
 4. In the same browser/profile, open its Extensions page: edge://extensions for Edge, chrome://extensions for Chrome, or the equivalent page for Brave/Vivaldi/Chromium.
-5. Enable **Developer mode**, choose **Load unpacked**, and select the opened **chromium** folder.
+5. Enable **Developer mode**, choose **Load unpacked**, and select the opened folder containing **manifest.json**.
 6. Pin **SavedDesk Browser Connector** to the toolbar.
-7. Return to SavedDesk, click **Connect using this browser** on one platform card, then open the connector toolbar popup.
+7. Open the SavedDesk toolbar popup and choose **Check connection again**. Return to SavedDesk and choose **Check extension connection**. This handshake reads no account cookies.\n8. Click **Connect using this browser** on one platform card, then reopen the toolbar popup and approve the selected platform. Website sign-in alone does not complete this connection.
 8. Click **Approve connection** for the named platform and accept its optional site-permission prompt.
 9. Wait for SavedDesk's result before starting another connection.
 
@@ -303,9 +296,9 @@ Chrome's unpacked-extension process is described in its [official extension tuto
 
 ### Firefox temporary connector
 
-1. Choose Firefox in Accounts, expand the setup instructions and click **Set up connector and open its folder**.
+1. Choose Firefox in Accounts, expand the setup instructions and click **Prepare connector and open extension folder**.
 2. Open about:debugging, choose **This Firefox**, then **Load Temporary Add-on**.
-3. Select manifest.json in the opened **firefox** folder.
+3. Select **manifest.json** in the opened extension folder.
 4. Open the SavedDesk toolbar popup after starting a connection in the app and approve the named platform.
 
 Temporary add-ons must be loaded again after Firefox restarts. Mozilla documents this in [Your first extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension). Direct regular-profile connection avoids this temporary add-on requirement.
@@ -316,7 +309,7 @@ Each platform needs its own approval. Use the exact browser profile where the co
 
 A disabled **Approve connection** button usually means no valid request is waiting. Cancel an old request in SavedDesk, start a new **Connect using this browser** request, and reopen the popup. **Check connection again** retries the pending desktop request.
 
-After an app update, reload the connector on the browser's Extensions page. If native-host communication fails, run **Set up connector and open its folder** again and make sure the connector is installed in that browser/profile. Managed-browser policy can block extensions or native messaging.
+After an app update, reload the connector on the browser's Extensions page. If native-host communication fails, run **Prepare connector and open extension folder** again and make sure the connector is installed in that browser/profile. Managed-browser policy can block extensions or native messaging.
 
 Moving/removing an unpacked extension's source folder breaks its installation; keep the folder in place or reload it from the current packaged location. Closing a Google identity authorization does not approve a YouTube browser session.
 
@@ -448,7 +441,7 @@ If matches remain missing, check the new folder/subfolders or re-download the ta
 
 ### Download tools
 
-**Gallery Python environment** selects python.exe from the supported separate environment. **FFmpeg executable** selects ffmpeg.exe. **Choose file** saves a selection; **Clear** removes that selection, not the program itself. **Setup instructions** explains installation.
+**Gallery downloads** provides a consent-based setup for the separate gallery environment. It obtains pinned Python and package archives from their publishers, verifies hashes, checks installed versions and saves the path only after success. **Use existing tools or change an override** retains the manual interpreter picker for an environment you already maintain.
 
 Selections persist locally. Changes can be refused while downloads/the worker are busy. Tools are neither bundled, copied nor silently substituted with the worker's embedded interpreter.
 
@@ -547,7 +540,7 @@ The app has no implemented cloud library sync, catalog encryption, portable reco
 | --- | --- |
 | Missing runtime / app does not launch | Rerun the intended current installer so it can detect/install WebView2; inspect setup errors rather than copying only saveddesk.exe |
 | Gallery Python unavailable / account verification cannot start | Select the separate environment's python.exe, verify the supported packages, then Check setup |
-| FFmpeg unavailable / video preparation fails | Select the extracted ffmpeg.exe; keep ffprobe.exe alongside when available and Check setup |
+| FFmpeg unavailable / video preparation fails | Use included tools in Settings > Download tools and Check download tools; repair the app if its bundled files are missing |
 | Connector native-host error | Choose the correct browser, rerun connector setup, reload the extension and start a new connection request |
 | Approve connection is disabled | Start Connect using this browser in SavedDesk first; reopen popup or Check connection again |
 | Permission received but not connected | Read the app's verification result; confirm the profile/account and gallery setup. Browser permission alone is not verified identity. |
@@ -599,7 +592,7 @@ Source, tests, branding, configuration and dependency locks belong in Git. Downl
 
 ## Verification, releases and planned work
 
-For 0.2.10, 272 automated cases plus native-app and exact-installer checks passed. Controlled Google lifecycle tests preserve the live owner grant. Licensing/source review and installer lifecycle pass for the current hash; historical live seven-platform results are not reassigned to this build. The owner's X bookmarks session lasted approximately two to three hours with 15-20 GB; this is owner-reported usage, not a measured leak/throughput benchmark.
+Historical 0.2.10 verification: 272 automated cases plus native-app and exact-installer checks passed. Controlled Google lifecycle tests preserve the live owner grant. Licensing/source review and installer lifecycle pass for the current hash; historical live seven-platform results are not reassigned to this build. The owner's X bookmarks session lasted approximately two to three hours with 15-20 GB; this is owner-reported usage, not a measured leak/throughput benchmark.
 
 - [Current build and lifecycle verification](development-plans/scope-and-lifecycle-0.2.10.md)
 - [Publication scope and residual cleanup](development-plans/publication-scope-and-cleanup.md)
@@ -616,13 +609,13 @@ Source publication is complete. Trusted signing and browser-store connector deli
 
 ## Code signing policy
 
-I am applying to SignPath Foundation; approval and signing integration are pending. The current Windows preview is unsigned. I maintain, review and approve releases as SavedDesk's sole maintainer. The [full Code signing policy](CODE_SIGNING_POLICY.md) explains roles, privacy, unsigned prereleases and the intended signing process. It must also be linked from each download/release page.
+SignPath Foundation declined my application twice; no SignPath integration or sponsorship is active. Microsoft Store signing is a separate submission route. Current GitHub preview installers remain unsigned. I maintain, review and approve releases as the sole maintainer; see the [Code signing policy](CODE_SIGNING_POLICY.md).
 
 If approved and operational: **Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org)**. This is a conditional acknowledgement, not a claim that the current preview is signed or sponsored.
 
 ## License, policies and support
 
-I license original SavedDesk code, documentation and branding under [MIT](LICENSE). Third-party components retain their own terms in [third-party notices](licensing/THIRD_PARTY_NOTICES.txt). Starting with 0.2.4, gallery-dl and FFmpeg are excluded from the installer and acquired separately by the user. This does not relicense them or permit redistribution of an arbitrary tool environment.
+I license original SavedDesk code, documentation and branding under [MIT](LICENSE). Third-party licenses remain unchanged. From 0.2.11, independently reviewed standalone FFmpeg/FFprobe programs are included under GPL-3.0-or-later with matching source/build records; no FFmpeg library is linked into SavedDesk. Gallery-dl remains separately obtained by the user. See [third-party notices](licensing/THIRD_PARTY_NOTICES.txt) and [media source-build review](licensing/MEDIA-TOOLS-REVIEW.json).
 
 Downloaded content retains its owner's rights. Use supported routes only for content you have permission or another lawful basis to download and store.
 

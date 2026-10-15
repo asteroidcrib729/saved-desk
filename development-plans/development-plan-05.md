@@ -1,3 +1,7 @@
+# Current follow-up: 0.2.11 Store remediation
+
+[Development plan 06](development-plan-06.md) supersedes the former FFmpeg exclusion and first-run/connector readiness assumptions. Gallery-dl remains a separate user acquisition; original source remains MIT. The material below retains its historical version/test scope.
+
 # Development plan 05: MSIX packaging and Microsoft Store submission
 
 Started 10 October 2026 at the owner's request. This adds a Windows x64 MSIX build beside the existing NSIS EXE. The published v0.2.10 EXE and tag remain immutable. The EXE's process exit codes in INSTALLER_EXIT_CODES.md do not apply to Windows MSIX deployment.
