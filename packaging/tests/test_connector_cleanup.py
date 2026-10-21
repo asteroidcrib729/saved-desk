@@ -23,8 +23,11 @@ class ConnectorCleanupTests(unittest.TestCase):
         with winreg.CreateKey(winreg.HKEY_CURRENT_USER,self.leaf) as key:
             winreg.SetValueEx(key,"",0,winreg.REG_SZ,str(self.manifest))
 
-    def run_cleanup(self,*extra,check=True,registry_base=None):
-        return subprocess.run(["powershell.exe","-NoProfile","-NonInteractive","-ExecutionPolicy","Bypass","-File",str(SCRIPT),"-TestMode","-ConnectorDirectory",str(self.root),"-RegistryBase",registry_base or "HKCU:\\"+self.registry,*extra],capture_output=True,text=True,encoding="utf-8-sig",errors="replace",check=check,timeout=30,creationflags=subprocess.CREATE_NO_WINDOW)
+    def run_cleanup(self,*extra,check=True,registry_base=None,script=SCRIPT):
+        result=subprocess.run(["powershell.exe","-NoProfile","-NonInteractive","-ExecutionPolicy","Bypass","-File",str(script),"-TestMode","-ConnectorDirectory",str(self.root),"-RegistryBase",registry_base or "HKCU:\\"+self.registry,*extra],capture_output=True,text=True,encoding="utf-8-sig",errors="replace",check=False,timeout=30,creationflags=subprocess.CREATE_NO_WINDOW)
+        if check and result.returncode:
+            self.fail(f"PowerShell cleanup exited {result.returncode}.\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}")
+        return result
 
     def exists(self):
         try:
@@ -41,6 +44,22 @@ class ConnectorCleanupTests(unittest.TestCase):
         self.assertEqual(self.keep.read_bytes(),b"synthetic-library-keep")
         self.assertEqual((self.root/"session-instagram.dpapi").read_bytes(),b"synthetic-protected-account-keep")
         self.assertFalse(report["libraryAndAccountDataRemoved"])
+
+    def test_cleanup_succeeds_without_get_filehash_cmdlet(self):
+        wrapper=Path(self.temp.name)/"without-filehash.ps1"
+        script=str(SCRIPT).replace("'","''")
+        wrapper.write_text(
+            "Import-Module Microsoft.PowerShell.Management\n"
+            "Import-Module Microsoft.PowerShell.Utility\n"
+            "$global:PSModuleAutoLoadingPreference='None'\n"
+            "Remove-Item Function:\\Get-FileHash -ErrorAction SilentlyContinue\n"
+            "if(Get-Command Get-FileHash -ErrorAction SilentlyContinue){throw 'Hash cmdlet must be unavailable in this fixture.'}\n"
+            f"& '{script}' @args\n"
+            "if(-not $?){exit 1}\n",encoding="utf-8")
+        report=json.loads(self.run_cleanup("-Remove",script=wrapper).stdout)
+        self.assertTrue(report["removed"]);self.assertFalse(self.exists());self.assertFalse(self.host.exists())
+        self.assertEqual(self.keep.read_bytes(),b"synthetic-library-keep")
+        self.assertEqual((self.root/"session-instagram.dpapi").read_bytes(),b"synthetic-protected-account-keep")
 
     def test_other_installation_registration_is_preserved(self):
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER,self.leaf,0,winreg.KEY_SET_VALUE) as key:

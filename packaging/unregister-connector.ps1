@@ -37,6 +37,16 @@ function Assert-OwnedPath([string]$Path) {
     }
     return $absolute
 }
+function Get-OwnedFileHash([string]$Path) {
+    # Windows PowerShell child processes may not expose Get-FileHash.
+    $absolute=Assert-OwnedPath $Path
+    $sha=[Security.Cryptography.SHA256]::Create()
+    try {
+        $stream=[IO.File]::OpenRead($absolute)
+        try { return [BitConverter]::ToString($sha.ComputeHash($stream)).Replace('-','').ToLowerInvariant() }
+        finally { $stream.Dispose() }
+    } finally { $sha.Dispose() }
+}
 function Read-OwnedManifest([string]$Path) {
     $null=Assert-OwnedPath $Path
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
@@ -88,7 +98,7 @@ if ($Remove) {
             $hostFile=Join-Path $folder.FullName 'saveddesk-native-host.exe'
             if ($folder.Name -match '^[0-9a-f]{64}$' -and (Test-Path -LiteralPath $hostFile -PathType Leaf)) {
                 $null=Assert-OwnedPath $hostFile
-                if ((Get-FileHash -LiteralPath $hostFile -Algorithm SHA256).Hash.ToLowerInvariant() -eq $folder.Name) { Remove-OwnedFile $hostFile }
+                if ((Get-OwnedFileHash $hostFile) -eq $folder.Name) { Remove-OwnedFile $hostFile }
                 else { $preserved.Add($hostFile) }
             }
             Remove-EmptyDirectory $folder.FullName
