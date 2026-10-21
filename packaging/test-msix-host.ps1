@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$ReviewDirectory,[switch]$Run)
+param([Parameter(Mandatory=$true)][string]$ReviewDirectory,[switch]$Run,[switch]$FreshGuest)
 $ErrorActionPreference='Stop'
 $root=[IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
 $assets=[IO.Path]::GetFullPath($ReviewDirectory)
@@ -15,12 +15,21 @@ $evidence=[IO.Path]::GetFullPath($signing.test_directory)
 if(-not $evidence.StartsWith((Join-Path $root '.cache/msix-host')+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Unexpected QA directory.'}
 $id=[Guid]::NewGuid().ToString();$backups=@();$registry=@();$app=$null;$installed=$false;$certAdded=$false
 $report=@{schema=1;passed=$false;clean_machine=$false;environment='Existing Windows host; isolated app profile';package_sha256=$signing.package_sha256;checks=@();owner_data_restored=$false}
+$os=Get-CimInstance Win32_OperatingSystem
+$report.windows_build=[int]$os.BuildNumber;$report.windows_product_type=[int]$os.ProductType
+$report.source_store_package_sha256=$signing.source_store_package_sha256;$report.source_version=$signing.source_version
+if($FreshGuest){
+ $machine=Get-CimInstance Win32_ComputerSystem
+ if($env:SAVEDDESK_FRESH_GUEST -ne '1' -or $machine.Model -notmatch 'Virtual|VMware|Hyper-V|QEMU' -or $os.ProductType -ne 1){throw 'Fresh-guest evidence requires an explicitly prepared disposable Windows client VM.'}
+ $report.clean_machine=$true;$report.environment='Fresh disposable Windows client guest'
+}
 $certPath='Cert:\CurrentUser\TrustedPeople\'+$signing.certificate_thumbprint
 Add-Type -Path (Join-Path $PSScriptRoot 'msix-test-activation.cs')
 $data=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'com.saveddesk.desktop'))
+$connector=[IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'SavedDesk Browser Connector'))
 $media=Join-Path $evidence 'media';$state=Join-Path $evidence 'library.json'
 function Close-TestConnectorFolders {
- $prefix=[IO.Path]::GetFullPath((Join-Path $data 'browser-extensions'))+[IO.Path]::DirectorySeparatorChar
+ $prefix=[IO.Path]::GetFullPath((Join-Path $connector 'browser-extensions'))+[IO.Path]::DirectorySeparatorChar
  $version=(Get-Content -LiteralPath (Join-Path $root 'desktop/package.json') -Raw | ConvertFrom-Json).version
  try{$shell=New-Object -ComObject Shell.Application}catch{return}
  foreach($window in @($shell.Windows())){
@@ -67,7 +76,7 @@ function App-Step([string]$Mode){
   & $driver (Join-Path $PSScriptRoot 'guest-smoke.mjs') "http://127.0.0.1:$port" $Mode $media $state
   if($LASTEXITCODE){throw "Installed MSIX app check failed: $Mode"}
   if($Mode -eq 'seed'){
-   & (Join-Path $root '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'msix-test-native-host.py') (Join-Path $data 'connector-edge.json')
+   & (Join-Path $root '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'msix-test-native-host.py') (Join-Path $connector 'connector-edge.json')
    if($LASTEXITCODE){throw 'External browser native-host launch test failed.'}
    Close-TestConnectorFolders
   }
@@ -83,8 +92,8 @@ try {
  # Trust is checked before owner profiles or registrations are touched.
  Add-AppxPackage -Path $signing.package
  $installed=$true;$report.checks+='signed-local-package-installation'
- foreach($profile in @($data,[IO.Path]::GetFullPath((Join-Path $env:APPDATA 'com.saveddesk.desktop'))) | Select-Object -Unique){
-  if([IO.Path]::GetFileName($profile) -ne 'com.saveddesk.desktop'){throw 'Unexpected profile path.'}
+ foreach($profile in @($data,[IO.Path]::GetFullPath((Join-Path $env:APPDATA 'com.saveddesk.desktop')),$connector) | Select-Object -Unique){
+  if($profile -notin @($data,[IO.Path]::GetFullPath((Join-Path $env:APPDATA 'com.saveddesk.desktop')),$connector)){throw 'Unexpected profile path.'}
   if((Get-Item -LiteralPath (Split-Path $profile)).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Refuse redirected profile parents.'}
   $backup=$profile+'.msix-test-backup-'+$id
   if(Test-Path -LiteralPath $backup){throw 'Profile backup exists.'}
@@ -111,13 +120,17 @@ try {
  Add-AppxPackage -Path $signing.upgrade_test_package
  if((Get-AppxPackage -Name SavedDesk.MsixPreview).Version.ToString() -ne $signing.upgrade_test_version){throw 'MSIX upgrade version mismatch.'}
  App-Step 'verify';$report.checks+='msix-upgrade-catalog-settings-player-history-duplicates'
- # MSIX does not execute the NSIS uninstall hook. Exercise the explicit owned cleanup.
+ # Observe ordinary Windows removal BEFORE running any manual connector cleanup.
  $edge='HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\com.saveddesk.connector'
- $hostManifest=Get-Content -LiteralPath (Join-Path $data 'connector-edge.json') -Raw | ConvertFrom-Json
- & (Join-Path $PSScriptRoot 'unregister-connector.ps1') -InstallDirectory (Split-Path -Parent $hostManifest.path)
- if(Test-Path -LiteralPath $edge){throw 'Owned browser registration cleanup failed.'}
+ $hostManifest=Get-Content -LiteralPath (Join-Path $connector 'connector-edge.json') -Raw | ConvertFrom-Json
  $package=Get-AppxPackage -Name SavedDesk.MsixPreview;Remove-AppxPackage -Package $package.PackageFullName;$installed=$false
  if(Get-AppxPackage -Name SavedDesk.MsixPreview){throw 'MSIX registration remains after uninstall.'}
+ $report.uninstall_remnants=@{connector_registration=(Test-Path -LiteralPath $edge);connector_manifest=(Test-Path -LiteralPath (Join-Path $connector 'connector-edge.json'));connector_host=(Test-Path -LiteralPath $hostManifest.path);cleanup_tool=(Test-Path -LiteralPath (Join-Path $connector 'Remove-SavedDesk-Connector.ps1'))}
+ if($report.uninstall_remnants.Values -contains $false){throw 'Observed uninstall behavior differs from the disclosed shared-connector retention contract.'}
+ $report.checks+='ordinary-msix-uninstall-observed-before-manual-cleanup'
+ & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $connector 'Remove-SavedDesk-Connector.ps1') -ConnectorDirectory $connector -InstallDirectory (Split-Path -Parent $hostManifest.path) -Remove | Set-Content -LiteralPath (Join-Path $evidence 'post-uninstall-cleanup.json') -Encoding UTF8
+ if($LASTEXITCODE -or (Test-Path -LiteralPath $edge) -or (Test-Path -LiteralPath $hostManifest.path)){throw 'Post-uninstall owned connector cleanup failed.'}
+ $report.checks+='exported-helper-cleans-connector-after-package-removal'
  if(-not (Test-Path -LiteralPath (Join-Path $data 'prototype-catalog.db'))){throw 'MSIX removal unexpectedly deleted retained data.'}
  foreach($file in $files){if((Get-FileHash -LiteralPath $file.path).Hash -ne $file.sha){throw 'MSIX lifecycle changed media.'}}
  $report.checks+='msix-removal-registration-removed-media-retained'

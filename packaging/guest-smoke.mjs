@@ -89,7 +89,7 @@ try {
         const checked=await toolsStatus();
         assert(checked.galleryReady&&checked.ffmpegReady&&checked.ffprobeReady,'Packaged gallery setup did not pass its real startup checks.');
         await writeFile(statePath+'.gallery-setup.json',JSON.stringify({passed:true,galleryPython:installed.galleryPython,mediaAutomatic:true},null,2));
-        await invoke('setup_connector',{browser:'edge'});
+        await invoke('setup_connector',{browser:'edge',consent:true});
         await writeFile(statePath,JSON.stringify({total:snapshot.total,settings,player:{volume:0.37,muted:true},jobs:snapshot.jobs.map(j=>j.id),galleryPython:installed.galleryPython,mediaAutomatic:true},null,2));
     } else {
         const expected=JSON.parse((await readFile(statePath,'utf8')).replace(/^\uFEFF/,''));

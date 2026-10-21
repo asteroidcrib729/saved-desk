@@ -1,6 +1,6 @@
 # SavedDesk Terms of Service
 
-**Last updated:** 9 October 2026  
+**Last updated:** 21 October 2026  
 **Maintainer:** Faraz Hussain  
 **Support email:** [farazhussain5000@gmail.com](mailto:farazhussain5000@gmail.com)
 
@@ -50,7 +50,7 @@ New videos are finalized in a supported playable format when possible. This may 
 
 The app's reviewed deletion actions can permanently remove content and records. Review the scope and file counts before confirming. These actions are limited to eligible files inside the selected save folder; files outside it and unrelated copies may remain.
 
-Moving files, changing folders or uninstalling the application can leave data on your computer. Uninstall does not automatically erase retained account files or downloaded content. The Privacy Policy explains disconnect, revocation and local cleanup.
+Moving files, changing folders or uninstalling the application can leave data on your computer, including downloaded content, backups, legacy account files and shared browser connector artifacts/registrations. Windows manages fresh MSIX package-private data separately. Connector setup discloses retention and requires acknowledgement; its in-app removal control and exported cleanup helper are described in the README and Privacy Policy. Disconnect, revocation and deliberate library deletion are separate actions.
 
 ## 6. External tools and distribution
 

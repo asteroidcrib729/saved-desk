@@ -51,6 +51,8 @@ $runtimeManifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $runtime
 if ($env:SAVEDDESK_SIGN_PROVIDER) {
     & (Join-Path $PSScriptRoot 'sign-windows.ps1') -Path (Join-Path $outputRoot 'saveddesk-worker.exe')
 }
+& $PythonPath (Join-Path $PSScriptRoot 'check-worker-version.py') (Join-Path $outputRoot 'saveddesk-worker.exe')
+if ($LASTEXITCODE -ne 0) { throw 'The frozen worker must report this checkout version before it is audited.' }
 & $PythonPath (Join-Path $PSScriptRoot 'audit-worker-bundle.py') --write
 if ($LASTEXITCODE -ne 0) { throw 'Worker payload exclusion/source audit failed.' }
 Write-Output "Worker packaged: $outputRoot"

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "project_version": "0.2.11",
+  "project_version": "0.2.12",
   "scope": "Frozen worker archive and complete adjacent installer resource tree",
   "excluded_redistribution": [
     "gallery-dl",
@@ -302,7 +302,7 @@
     },
     {
       "path": "_internal/base_library.zip",
-      "sha256": "3a2f7efb001646de4f7e1f55586c3f19789df897a1a694a943ba0e367ace3459",
+      "sha256": "e76ff7cc3cc3d852ed4f6b720a694a8615026ebc3d1fb38e7c47393bb81a70ff",
       "bytes": 1394319
     },
     {
@@ -337,7 +337,7 @@
     },
     {
       "path": "_internal/external-adapter/social_downloader/__init__.py",
-      "sha256": "8b1d4846231b102018ece1faf5ddd7ba65eff03d39aa47352435b9280147f24f",
+      "sha256": "b97f8b815aa79ed66a3ff7e97c07d8c3f981471e0c7daad87d16b899c0df4786",
       "bytes": 109
     },
     {
@@ -5882,7 +5882,7 @@
     },
     {
       "path": "saveddesk-worker.exe",
-      "sha256": "d6a3aec2dfbebfa6ef91fd62a442af4146c7f7b90b397a99d4000854d2605fd0",
+      "sha256": "b3e4d8f11fca4a619e60edd38f47cb78a3b42507dba3092efce3573d113d4132",
       "bytes": 11322406
     }
   ],

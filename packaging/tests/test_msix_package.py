@@ -8,8 +8,18 @@ class MsixTests(unittest.TestCase):
   root=ET.fromstring(m.manifest("SavedDesk.MsixPreview",'CN=Test & Publisher',"Faraz & Test", "0.2.10.0"))
   self.assertEqual(root.find("{*}Identity").attrib["Publisher"],"CN=Test & Publisher")
   self.assertEqual(root.find("{*}Properties/{*}RegistryWriteVirtualization").text,"disabled")
-  self.assertEqual(root.find("{*}Properties/{*}FileSystemWriteVirtualization").text,"disabled")
+  self.assertIsNone(root.find("{*}Properties/{*}FileSystemWriteVirtualization"))
+  m.validate_connector_manifest(root)
   self.assertEqual({c.attrib["Name"] for c in root.find("{*}Capabilities")},{"runFullTrust","unvirtualizedResources"})
+ def test_broad_filesystem_access_and_registry_scope_expansion_are_rejected(self):
+  root=ET.fromstring(m.manifest("SavedDesk.Test","CN=Test","Test","0.2.12.0"))
+  props=root.find("{*}Properties")
+  broad=ET.SubElement(props,"{http://schemas.microsoft.com/appx/manifest/desktop/windows10/6}FileSystemWriteVirtualization");broad.text="disabled"
+  with self.assertRaises(ValueError):m.validate_connector_manifest(root)
+  props.remove(broad)
+  key=root.find("{*}Properties/{*}RegistryWriteVirtualization/{*}ExcludedKeys/{*}ExcludedKey")
+  key.text="HKEY_CURRENT_USER\\Software"
+  with self.assertRaises(ValueError):m.validate_connector_manifest(root)
  def test_reject_invalid_store_identity_and_version(self):
   for name,publisher,version in [("bad name","CN=Test","0.2.10.0"),("SavedDesk.Test","not a publisher","0.2.10.0"),("SavedDesk.Test","CN=Test","0.2.10"),("SavedDesk.Test","CN=Test","0.2.10.1"),("SavedDesk.Test","CN=Test","0.2.65536.0")]:
    with self.subTest(version=version,name=name),self.assertRaises(ValueError): m.manifest(name,publisher,"Test",version)

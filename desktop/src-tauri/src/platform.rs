@@ -19,6 +19,22 @@ pub fn shell_path(path: &Path) -> String {
     }
 }
 
+#[cfg(debug_assertions)]
+pub fn connector_test_scope() -> Result<Option<String>,String> {
+    match std::env::var("SAVEDDESK_TEST_REGISTRY_SCOPE") {
+        Ok(value) if std::env::var_os("SAVEDDESK_TEST_DATA_DIR").is_some() && value.len()==36 && uuid::Uuid::parse_str(&value).is_ok() => Ok(Some(value)),
+        Ok(_) => Err("Invalid isolated connector registry scope.".into()),
+        Err(_) => Ok(None),
+    }
+}
+fn connector_key(prefix:&str)->Result<String,String> {
+    #[cfg(debug_assertions)]
+    if let Some(scope)=connector_test_scope()? {
+        return Ok(format!(r"Software\SavedDesk\CertificationTests\{scope}\{prefix}\NativeMessagingHosts\com.saveddesk.connector"));
+    }
+    Ok(format!(r"Software\{prefix}\NativeMessagingHosts\com.saveddesk.connector"))
+}
+
 #[cfg(windows)]
 pub fn sid() -> Result<String, String> {
     use windows_sys::Win32::{
@@ -65,7 +81,12 @@ pub fn sid() -> Result<String, String> {
 pub fn pipe_name() -> Result<String, String> {
     let mut name = format!(r"\\.\pipe\SavedDesk-{}", sid()?);
     #[cfg(debug_assertions)]
-    if let Ok(suffix) = std::env::var("SAVEDDESK_TEST_PIPE_SUFFIX") {
+    if let Some(suffix) = std::env::var("SAVEDDESK_TEST_PIPE_SUFFIX").ok().or_else(|| {
+        std::env::var_os("SAVEDDESK_TEST_DATA_DIR").map(|root| {
+            use sha2::{Digest,Sha256};
+            format!("fixture-{:x}",Sha256::digest(root.to_string_lossy().as_bytes()))
+        })
+    }) {
         if suffix.len() > 80
             || !suffix
                 .chars()
@@ -160,7 +181,7 @@ pub fn server() -> Result<std::fs::File, String> {
     server_at(&pipe_name()?)
 }
 #[cfg(windows)]
-fn server_at(name: &str) -> Result<std::fs::File, String> {
+pub(crate) fn server_at(name: &str) -> Result<std::fs::File, String> {
     use std::os::windows::io::FromRawHandle;
     use windows_sys::Win32::{
         Foundation::*,
@@ -219,7 +240,7 @@ pub fn accept(file: &std::fs::File) -> bool {
 pub fn connect() -> Result<std::fs::File, String> {
     connect_at(&pipe_name()?, Duration::from_secs(1))
 }
-fn connect_at(name: &str, timeout: Duration) -> Result<std::fs::File, String> {
+pub(crate) fn connect_at(name: &str, timeout: Duration) -> Result<std::fs::File, String> {
     let deadline=Instant::now()+timeout;
     loop {
         match std::fs::OpenOptions::new().read(true).write(true).open(name) {
@@ -301,9 +322,7 @@ pub fn register(manifest: &Path, browser: &str) -> Result<(), String> {
         let mut key = std::ptr::null_mut();
         if RegCreateKeyExW(
             HKEY_CURRENT_USER,
-            wide(&format!(
-                "Software\\{prefix}\\NativeMessagingHosts\\com.saveddesk.connector"
-            ))
+            wide(&connector_key(prefix)?)
             .as_ptr(),
             0,
             std::ptr::null(),
@@ -468,9 +487,8 @@ pub fn connector_registered(browser: &str, manifest: &Path, host: &Path) -> bool
         "chromium" => "Chromium",
         _ => return false,
     };
-    let key = wide(&format!(
-        r"Software\{prefix}\NativeMessagingHosts\com.saveddesk.connector"
-    ));
+    let Ok(key)=connector_key(prefix) else {return false;};
+    let key=wide(&key);
     let mut value = vec![0u16; 32768];
     let mut bytes = (value.len() * 2) as u32;
     let result = unsafe {

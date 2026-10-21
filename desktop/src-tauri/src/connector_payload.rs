@@ -2,7 +2,7 @@
 use std::path::{Path, PathBuf};
 use sha2::{Digest, Sha256};
 
-fn packaged() -> bool {
+pub(crate) fn packaged() -> bool {
     #[cfg(windows)]
     {
         #[link(name = "kernel32")]

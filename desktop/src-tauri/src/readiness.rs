@@ -147,9 +147,11 @@ pub async fn check_readiness(
             if !host.is_file() && cfg!(debug_assertions) {
                 host = std::env::current_exe().map_err(|_| "App folder is unavailable.")?.with_file_name("saveddesk-native-host.exe");
             }
-            let manifest = state.database.parent().ok_or("App data is unavailable.")?.join(format!("connector-{browser}.json"));
+            let private=state.database.parent().ok_or("App data is unavailable.")?;
+            let connector=crate::connector_storage::directory(&app,private)?;
+            let manifest = connector.join(format!("connector-{browser}.json"));
             let packaged = resources.join("browser-connector/chromium/manifest.json").is_file() && host.is_file();
-            let registered_host = crate::connector_payload::expected_host(state.database.parent().ok_or("App data is unavailable.")?, &host);
+            let registered_host = crate::connector_payload::expected_host(&connector, &host);
             let registered = packaged && registered_host.map(|path| platform::connector_registered(&browser, &manifest, &path) && crate::connector_presence::verified(state.database.parent().unwrap(),&browser,&path)).unwrap_or(false);
             checks.push(check("connector", "Browser connection", if registered { "ready" } else { "warning" },
                 if registered { "The extension and native host completed a recent verified handshake. Account approval is a separate step." }

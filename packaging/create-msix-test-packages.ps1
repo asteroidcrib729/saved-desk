@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$ReviewDirectory)
+param([Parameter(Mandatory=$true)][string]$ReviewDirectory,[string]$StoreReviewDirectory)
 $ErrorActionPreference='Stop'
 $root=[IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
 $reviewPath=[IO.Path]::GetFullPath($ReviewDirectory)
@@ -6,6 +6,26 @@ if(-not $reviewPath.StartsWith((Join-Path $root 'release-artifacts')+[IO.Path]::
 $review=Get-Content -LiteralPath (Join-Path $reviewPath 'msix-review.json') -Raw | ConvertFrom-Json
 if($review.identity_name -ne 'SavedDesk.MsixPreview' -or $review.publisher -ne 'CN=SavedDesk MSIX Preview'){throw 'This script signs local previews only, never a Store identity.'}
 $unsigned=Join-Path $reviewPath $review.package
+$storeSourceHash=$null
+if($StoreReviewDirectory){
+ $storePath=[IO.Path]::GetFullPath($StoreReviewDirectory)
+ if(-not $storePath.StartsWith((Join-Path $root 'release-artifacts')+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Use reviewed project Store assets.'}
+ & (Join-Path $root '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'verify-msix.py') $storePath
+ if($LASTEXITCODE){throw 'Store package archive verification failed.'}
+ $storeReview=Get-Content -LiteralPath (Join-Path $storePath 'msix-review.json') -Raw | ConvertFrom-Json
+ if(-not $storeReview.store_identity_confirmed -or $storeReview.version -ne $review.version){throw 'Store source identity/version is not bound to this preview.'}
+ $storePayload=@($storeReview.files | Where-Object path -ne 'AppxManifest.xml' | Sort-Object path | ForEach-Object {$_.path+' '+$_.sha256})
+ $previewPayload=@($review.files | Where-Object path -ne 'AppxManifest.xml' | Sort-Object path | ForEach-Object {$_.path+' '+$_.sha256})
+ if(($storePayload -join "`n") -cne ($previewPayload -join "`n")){throw 'Preview and Store application payloads differ.'}
+ Add-Type -AssemblyName System.IO.Compression.FileSystem
+ $archive=[IO.Compression.ZipFile]::OpenRead((Join-Path $storePath $storeReview.package))
+ try {$reader=[IO.StreamReader]::new($archive.GetEntry('AppxManifest.xml').Open());try{[xml]$storeManifest=$reader.ReadToEnd()}finally{$reader.Dispose()}}finally{$archive.Dispose()}
+ [xml]$previewManifest=Get-Content -LiteralPath (Join-Path $review.staging 'AppxManifest.xml') -Raw
+ $storeManifest.Package.Identity.Name=$previewManifest.Package.Identity.Name
+ $storeManifest.Package.Identity.Publisher=$previewManifest.Package.Identity.Publisher
+ if($storeManifest.OuterXml -cne $previewManifest.OuterXml){throw 'Store and preview manifests differ beyond their isolated test identity.'}
+ $storeSourceHash=$storeReview.package_sha256
+}
 if((Get-FileHash -LiteralPath $unsigned).Hash.ToLowerInvariant() -ne $review.package_sha256){throw 'Reviewed MSIX checksum mismatch.'}
 $sdk=Get-ChildItem 'C:/Program Files (x86)/Windows Kits/10/bin' -Directory | Where-Object {$_.Name -match '^10\.0\.\d+\.0$' -and (Test-Path (Join-Path $_.FullName 'x64/signtool.exe'))} | Sort-Object {[version]$_.Name} -Descending | Select-Object -First 1
 $sign=Join-Path $sdk.FullName 'x64/signtool.exe';$pack=Join-Path $sdk.FullName 'x64/makeappx.exe'
@@ -40,7 +60,7 @@ try {
   & $sign sign /fd SHA256 /sha1 $certificate.Thumbprint /s My $path | Out-Null
   if($LASTEXITCODE){throw 'Local MSIX signing failed.'}
  }
- @{schema=1;local_test_only=$true;publicly_trusted=$false;store_submission_ready=$false;certificate_thumbprint=$certificate.Thumbprint;certificate_subject=$certificate.Subject;certificate_expires=$certificate.NotAfter.ToUniversalTime().ToString('o');certificate_file=$cer;certificate_sha256=(Get-FileHash -LiteralPath $cer).Hash.ToLowerInvariant();package=$signed;package_sha256=(Get-FileHash -LiteralPath $signed).Hash.ToLowerInvariant();upgrade_test_package=$upgrade;upgrade_test_sha256=(Get-FileHash -LiteralPath $upgrade).Hash.ToLowerInvariant();upgrade_test_version=$upgradeVersion;test_directory=$test;private_key_exported=$false} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $reviewPath 'local-test-signing.json') -Encoding UTF8
+ @{schema=1;source_store_package_sha256=$storeSourceHash;source_version=$review.version;local_test_only=$true;publicly_trusted=$false;store_submission_ready=$false;certificate_thumbprint=$certificate.Thumbprint;certificate_subject=$certificate.Subject;certificate_expires=$certificate.NotAfter.ToUniversalTime().ToString('o');certificate_file=$cer;certificate_sha256=(Get-FileHash -LiteralPath $cer).Hash.ToLowerInvariant();package=$signed;package_sha256=(Get-FileHash -LiteralPath $signed).Hash.ToLowerInvariant();upgrade_test_package=$upgrade;upgrade_test_sha256=(Get-FileHash -LiteralPath $upgrade).Hash.ToLowerInvariant();upgrade_test_version=$upgradeVersion;test_directory=$test;private_key_exported=$false} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $reviewPath 'local-test-signing.json') -Encoding UTF8
  Write-Output "Local test MSIX and public certificate: $reviewPath"
 } finally {
  if($certificate){Remove-Item -LiteralPath ("Cert:\CurrentUser\My\"+$certificate.Thumbprint) -DeleteKey}

@@ -273,6 +273,7 @@ pub async fn connect_firefox(
 #[tauri::command]
 pub async fn setup_connector(
     browser: String,
+    consent: Option<bool>,
     app: tauri::AppHandle,
     state: State<'_, Arc<AppState>>,
 ) -> Result<()> {
@@ -285,7 +286,11 @@ pub async fn setup_connector(
         if !host.is_file() { return Err("The browser connector host is missing. Repair the app installation.".into()); }
         let directory=resources.join("browser-connector").join(if browser=="firefox"{"firefox"}else{"chromium"});
         if !directory.join("manifest.json").is_file() { return Err("The companion connector package is missing. Repair the app installation.".into()); }
-        let profile=data(&app_state)?;
+        let private=data(&app_state)?;
+        if crate::connector_payload::packaged() && consent!=Some(true) { return Err("Approve the shared browser connector folder and uninstall disclosure before setup.".into()); }
+        let profile=crate::connector_storage::directory(&app,private)?;
+        crate::connector_storage::prepare(&profile)?;
+        crate::connector_storage::export_cleanup(&profile,&resources)?;
         let host=crate::connector_payload::install_host(&profile,&host)?;
         let manifest=profile.join(format!("connector-{browser}.json"));
         let mut value=json!({"name":"com.saveddesk.connector","description":"SavedDesk selected-platform browser connector","path":platform::shell_path(&host),"type":"stdio"});
@@ -300,13 +305,13 @@ pub async fn setup_connector(
 
 fn connector_status(app:&tauri::AppHandle,state:&AppState,browser:&str)->Result<Value>{
     valid_browser(browser)?;
-    let profile=data(state)?;
+    let profile=crate::connector_storage::directory(app,data(state)?)?;
     let resources=app.path().resource_dir().map_err(|_|"App resources unavailable.")?;
     let mut source=resources.join("saveddesk-native-host.exe");
     if !source.is_file() && cfg!(debug_assertions){source=std::env::current_exe().map_err(|_|"App folder unavailable.")?.with_file_name("saveddesk-native-host.exe");}
-    let host=crate::connector_payload::expected_host(profile,&source)?;
+    let host=crate::connector_payload::expected_host(&profile,&source)?;
     let registered=platform::connector_registered(browser,&profile.join(format!("connector-{browser}.json")),&host);
-    let verified=registered && crate::connector_presence::verified(profile,browser,&host);
+    let verified=registered && crate::connector_presence::verified(data(state)?,browser,&host);
     Ok(json!({"registered":registered,"verified":verified,"message":if verified{"Browser extension connection checked. Start a platform connection within five minutes."}else if registered{"Open the SavedDesk extension in the selected browser profile, choose Check connection again, then return here and check the extension connection."}else{"Set up the browser connector first. Signing in on the website alone does not connect SavedDesk."}}))
 }
 #[tauri::command]

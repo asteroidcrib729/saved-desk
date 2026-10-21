@@ -1,5 +1,5 @@
 """Verify the actual MSIX archive against the recorded staging inventory."""
-import argparse,hashlib,json,zipfile
+import argparse,hashlib,json,zipfile,runpy
 from pathlib import Path
 from urllib.parse import unquote
 from xml.etree import ElementTree as ET
@@ -13,6 +13,7 @@ with zipfile.ZipFile(package) as z:
  names={unquote(n):n for n in z.namelist()}
  if len(names)!=len(z.namelist()):raise SystemExit('Colliding decoded MSIX part names')
  m=ET.fromstring(z.read(names['AppxManifest.xml']));identity=m.find('{*}Identity').attrib
+ runpy.run_path(str(Path(__file__).with_name('msix-package.py')))['validate_connector_manifest'](m)
  if identity['Name']!=r['identity_name'] or identity['Publisher']!=r['publisher'] or identity['Version']!=r['version'] or identity['ProcessorArchitecture']!='x64':raise SystemExit('MSIX identity/version/architecture mismatch')
  for entry in r['files']:
   if hashlib.sha256(z.read(names[entry['path']])).hexdigest()!=entry['sha256']:raise SystemExit('Archived payload differs: '+entry['path'])

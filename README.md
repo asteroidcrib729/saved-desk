@@ -2,7 +2,7 @@
 
 I built SavedDesk to keep supported social-media saves in one local Windows library. You can download posts and collections, search your saved content, view images, play videos and audio, and manage the files on your computer.
 
-**Current source: 0.2.11 Store remediation candidate. Guide reviewed: 15 October 2026.** Microsoft reported missing video-tool setup and incomplete browser connection during certification of 0.2.10. Version 0.2.11 adds included source-built video tools, guided separate gallery setup and verified extension readiness. See [Store remediation and exact validation scope](development-plans/development-plan-06.md). Store publication/signing remains subject to Microsoft approval.
+**Current source: 0.2.12 Store capability reconsideration candidate. Guide reviewed: 21 October 2026.** Microsoft denied the 0.2.11 restricted-capability justification under 10.6.3. I retained Windows 10/11 support, removed the AppData filesystem exception, added narrow connector registry exclusions, and added visible retention consent and connector cleanup. A registry-only compatibility fallback is retained for older supported Windows builds. See the [current implementation plan](development-plans/development-plan-08.md) and [reviewer procedure and expanded justification](development-plans/store-resubmission-0.2.12.md). Publication and capability approval remain Microsoft's decision; exact-package Windows 10/11 evidence is required before resubmission.
 
 ## Contents
 
@@ -108,9 +108,11 @@ The workflow installs locked dependencies, runs Python, packaging, connector, fr
 
 Upload an identity-correct package through an MSIX/AppX submission, not the EXE/MSI Package URL form. Microsoft supplies signing for Store MSIX distribution. The local-preview package must not be submitted under a guessed identity. See the [MSIX plan, testing limits and precise Store steps](development-plans/development-plan-05.md).
 
-MSIX connector setup installs a hash-verified native-host copy under the existing profile\connector-bin folder, because an unpackaged browser cannot execute it directly from WindowsApps. The packaged worker and app remain inside MSIX.
+MSIX connector setup installs a hash-verified native-host copy under Documents/SavedDesk Browser Connector/connector-bin, because an unpackaged browser cannot execute it directly from WindowsApps. The packaged worker and app remain inside MSIX.
 
-Close the other edition before using MSIX: both editions share the existing catalog and settings. After an MSIX update, repeat **Accounts -> Prepare connector and open extension folder**, since Windows changes the package installation path. Before removal, unregister this installation's connector using packaging/unregister-connector.ps1 with the exact native-host parent directory recorded in your connector manifest; then uninstall through Windows Settings -> Apps. Package removal retains local SavedDesk data and downloaded media. The EXE's /S parameter and process exit codes do not apply to MSIX.
+Close the other edition before using MSIX. Existing legacy EXE profiles may still be visible, while a fresh Store install uses Windows package-private AppData rules. Connector setup requires acknowledgement and exports its browser-visible host, manifests, extension and cleanup helper to **Documents/SavedDesk Browser Connector**. It keeps AppData filesystem virtualization enabled. The manifest declares six owned native-messaging registry exclusions where supported and retains a registry-only compatibility fallback for older builds. Effective isolation requires build-specific verification. The browser-launched host communicates through same-user IPC and cannot open the catalog or account files directly.
+
+Before uninstalling, open **Accounts > Browser connector storage and removal**, acknowledge removal and choose **Remove browser connector**. Remove its extension in the browser separately, then uninstall through Windows Settings > Apps. If the app is already removed, open Documents/SavedDesk Browser Connector and run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Remove-SavedDesk-Connector.ps1 -Remove`. The helper checks ownership, preserves changed or unrelated files and does not erase the library, account files, downloads or backups. Without explicit cleanup, the shared folder and its browser registrations can remain. Package-private data follows Windows removal rules; legacy/shared app data and user-selected media can remain. The EXE's /S parameter and process exit codes do not apply to MSIX.
 
 ### Requirements
 
@@ -138,7 +140,7 @@ The current preview installer has no trusted publisher signature; Windows may di
 
 For an upgrade, run the newer installer with the same Windows account and retain the current installation location. Your catalog, settings, volume preference, history and downloaded media are kept. A future updated connector may need to be reloaded in the browser.
 
-To uninstall, use **Windows Settings > Apps**, locate SavedDesk and choose **Uninstall**. Uninstall removes program files and its matching native-host registrations, while retaining downloaded content and application data. Remove the browser extension separately if you no longer use it. See [complete data removal](#storage-privacy-backup-and-removal).
+To uninstall the EXE edition, use **Windows Settings > Apps**, locate SavedDesk and choose **Uninstall**. Its installer removes program files and matching native-host registrations, while retaining downloaded content and application data. The MSIX edition's separate connector-removal steps are documented above. Remove the browser extension separately if you no longer use it. See [complete data removal](#storage-privacy-backup-and-removal).
 
 ## First-run setup
 
@@ -555,7 +557,7 @@ Changing or renaming the development checkout does not move this installed data.
 
 For a manual backup, finish/pause jobs, close SavedDesk, and copy the selected download folder plus the application-data directory to storage you control. Closing the app first avoids copying an actively changing SQLite database; retain any database sidecars present. Keep backups private. This is a manual backup, not portable encrypted recovery: protected credentials may require reconnection under a different Windows user/machine, and file paths may need repair.
 
-For complete removal, disconnect browser approvals and, if desired, explicitly revoke Google access before uninstalling. Close the app, uninstall, remove its browser extension, then deliberately delete the app-data directory, chosen downloads and any backups you no longer want. Other external tools remain separate installations. Removing local files does not remove the original platform content.
+For complete removal, disconnect browser approvals and, if desired, explicitly revoke Google access. Use Accounts > Browser connector storage and removal before uninstalling, or run the exported Documents/SavedDesk Browser Connector cleanup helper afterward. Close the app, uninstall, remove its browser extension, then deliberately delete any retained legacy app-data directory, chosen downloads and backups you no longer want. Keep a legacy profile used by another installed EXE edition. Other external tools remain separate installations. Removing local files does not remove the original platform content.
 
 The app has no implemented cloud library sync, catalog encryption, portable recovery or automatic updater. Platform traffic follows your connection/download requests; the connector sends only the approved platform session to the local app. Do not send credentials, private media or complete personal catalogs in public bug reports. See the [Privacy Policy](PRIVACY_POLICY.md) for the complete current data handling.
 

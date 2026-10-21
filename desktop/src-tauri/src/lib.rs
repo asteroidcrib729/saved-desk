@@ -3,6 +3,8 @@ mod catalog;
 mod connector_payload;
 mod connector_presence;
 mod connector_extension;
+mod connector_storage;
+mod connector_status;
 mod external_tools;
 mod deletion;
 mod live_commands;
@@ -329,7 +331,7 @@ pub fn run() {
                 .map_err(std::io::Error::other)?;
             let recovery_db=catalog::open(&database).map_err(std::io::Error::other)?;
             if let Ok(root)=storage::root(&recovery_db) { deletion::recover(&recovery_db,&root).map_err(std::io::Error::other)?; }
-            app.manage(Arc::new(AppState {
+            let state=Arc::new(AppState {
                 auth: auth::Controller::default(),
                 database,
                 pending: Mutex::new(HashMap::new()),
@@ -339,7 +341,10 @@ pub fn run() {
                 connection: Mutex::new(None),
                 live_pending: Mutex::new(HashMap::new()),
                 active: Mutex::new(HashMap::new()),
-            }));
+            });
+            #[cfg(windows)]
+            connector_status::start(app.handle().clone(),state.clone()).map_err(std::io::Error::other)?;
+            app.manage(state);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -370,6 +375,9 @@ pub fn run() {
             open_item,
             open_job_folder,
             live_commands::setup_connector,
+            connector_storage::get_connector_maintenance,
+            connector_storage::open_connector_folder,
+            connector_storage::remove_browser_connector,
             live_commands::get_browser_connector_status,
             live_commands::begin_connection,
             live_commands::cancel_connection,

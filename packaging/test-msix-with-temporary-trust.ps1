@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$ReviewDirectory,[switch]$Run)
+param([Parameter(Mandatory=$true)][string]$ReviewDirectory,[switch]$Run,[switch]$FreshGuest)
 $ErrorActionPreference='Stop'
 if(-not $Run){throw 'Use -Run only after authorizing temporary local-machine preview trust and Windows UAC.'}
 $root=[IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
@@ -29,7 +29,9 @@ try {
  $record=Get-Content -LiteralPath $status -Raw | ConvertFrom-Json
  if(-not $record.ready){throw ('Trust helper failed: '+$record.error)}
  $runner=Join-Path $PSScriptRoot 'test-msix-host.ps1'
- & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File $runner -ReviewDirectory $review -Run
+ $runnerArguments=@('-NoProfile','-ExecutionPolicy','Bypass','-File',$runner,'-ReviewDirectory',$review,'-Run')
+ if($FreshGuest){$runnerArguments+='-FreshGuest'}
+ & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @runnerArguments
  if($LASTEXITCODE){throw 'MSIX host acceptance failed; inspect msix-host.json.'}
  $passed=$true
 } finally {

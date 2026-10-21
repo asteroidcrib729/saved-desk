@@ -1,6 +1,6 @@
 # SavedDesk Privacy Policy
 
-**Last updated:** 9 October 2026  
+**Last updated:** 21 October 2026  
 **Maintainer:** Faraz Hussain  
 **Privacy and support email:** [farazhussain5000@gmail.com](mailto:farazhussain5000@gmail.com)
 
@@ -80,7 +80,9 @@ Local library records and files remain until you remove them. There is no automa
 - **Disconnect Google identity** removes the local Google grant while retaining the Desktop client setup, downloaded files and independent browser approvals.
 - **Revoke Google access** additionally requests revocation at Google. If remote revocation cannot be confirmed, review or remove the application's access through [Google Account connections](https://myaccount.google.com/connections). Local disconnect and remote revocation are different actions.
 - **Reset Google identity setup** removes its local OAuth configuration. It does not revoke a remote grant or remove browser approvals.
-- Uninstalling SavedDesk does not automatically erase your library, selected download folder or retained application data.
+- Uninstalling does not erase your selected download folder, backups or retained legacy/shared application data. Fresh MSIX package-private data follows Windows package-removal rules.
+- Store browser connector setup requires acknowledgement and exports only connector artifacts to Documents/SavedDesk Browser Connector. Its host relays messages to the running app instead of directly reading the private catalog or account files. The shared folder and matching browser registrations can remain after uninstall.
+- Accounts > Browser connector storage and removal provides deliberate connector cleanup. A Remove-SavedDesk-Connector.ps1 helper exported to that folder can also run after uninstall with the -Remove option. Cleanup checks ownership, keeps changed/unrelated files and does not delete library or account data. Remove the SavedDesk extension separately from the browser.
 
 For a complete local removal, first disconnect the accounts you no longer want SavedDesk to use, revoke Google access if desired, and close the app. You can then remove SavedDesk's application-data directory and the downloaded files you intend to delete. Keep any files you want to retain, and handle backups separately. Deleting local files does not delete original content from a platform or wipe copies held by other software.
 

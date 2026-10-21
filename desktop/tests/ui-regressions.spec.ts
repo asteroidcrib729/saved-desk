@@ -43,6 +43,9 @@ async function fixture(page: Page, options: { active?: boolean; repairBlocked?: 
         if (command === "install_gallery_tools"){if(!args.consent)throw new Error("Consent required");qa.authCalls.push("install_gallery_tools");qa.galleryReady=true;qa.toolSettings.galleryPython="C:\\FixtureTools\\python.exe";return {...qa.toolSettings};}
         if (command === "begin_connection"){qa.authCalls.push("begin_connection");return;}
         if (command === "setup_connector"){qa.authCalls.push("setup_connector");return;}
+        if (command === "get_connector_maintenance")return {directory:"C:\\Users\\Fixture\\Documents\\SavedDesk Browser Connector",packaged:true,cleanupTool:"Remove-SavedDesk-Connector.ps1"};
+        if (command === "open_connector_folder"){qa.authCalls.push(command);return;}
+        if (command === "remove_browser_connector"){qa.authCalls.push(command);return {message:"The owned browser connector registrations and files were removed. Your library and saved accounts are unchanged."};}
         if (command === "get_external_tools") return {...qa.toolSettings};
         if (command === "choose_external_tool") return "C:\\FixtureTools\\python.exe";
         if (command === "save_external_tools") {qa.toolSettings={...args.config};return {...qa.toolSettings};}
@@ -1049,6 +1052,21 @@ test("missing extension sends account connection to setup without entering a pen
  await expect(page.getByRole("button",{name:"Prepare connector and open extension folder"})).toBeVisible();
  expect(await qa(page,"authCalls")).not.toContain("begin_connection");
 });
+test("connector setup requires retention acknowledgement and removal preserves account state",async({page})=>{
+ await fixture(page,{active:false});await page.getByRole("button",{name:"Accounts",exact:true}).click();
+ await page.getByText("Set up or repair the browser connection",{exact:true}).click();
+ const setup=page.getByRole("button",{name:"Prepare connector and open extension folder",exact:true});
+ await expect(setup).toBeDisabled();
+ await expect(page.getByText(/Browser connector files and registrations can remain after SavedDesk is uninstalled/)).toBeVisible();
+ await page.getByRole("checkbox",{name:/I allow browser connector setup/}).check();await expect(setup).toBeEnabled();
+ await setup.click();expect(await qa(page,"authCalls")).toContain("setup_connector");
+ await page.getByText("Browser connector storage and removal",{exact:true}).click();
+ const remove=page.getByRole("button",{name:"Remove browser connector",exact:true});await expect(remove).toBeDisabled();
+ await page.getByRole("checkbox",{name:/I want to remove this app/}).check();await remove.click();
+ expect(await qa(page,"authCalls")).toContain("remove_browser_connector");
+ expect(await qa(page,"auth")).toBeTruthy();await expect(remove).toBeDisabled();
+});
+
 test("Google identity is optional and not exposed as the primary download connection",async({page})=>{
  await fixture(page,{active:false});await page.getByRole("button",{name:"Accounts",exact:true}).click();
  await expect(page.getByRole("button",{name:"Sign in with Google",exact:true})).not.toBeVisible();

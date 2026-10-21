@@ -6,6 +6,10 @@ from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 ROOT = Path(__file__).resolve().parents[1]
 PREVIEW_NAME = "SavedDesk.MsixPreview"
+CONNECTOR_REGISTRY_KEYS = tuple(
+    "HKEY_CURRENT_USER\\Software\\" + browser + "\\NativeMessagingHosts\\com.saveddesk.connector"
+    for browser in ("Google\\Chrome", "Microsoft\\Edge", "BraveSoftware\\Brave-Browser", "Vivaldi", "Chromium", "Mozilla")
+)
 
 def digest(path: Path) -> str:
     with path.open("rb") as stream:
@@ -24,19 +28,21 @@ def checked_identity(name: str, publisher: str, version: str) -> None:
 
 def manifest(name: str, publisher: str, display: str, version: str) -> str:
     checked_identity(name, publisher, version)
+    exclusions = "".join(f"<virtualization:ExcludedKey>{escape(key)}</virtualization:ExcludedKey>" for key in CONNECTOR_REGISTRY_KEYS)
     return f'''<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
  xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6"
+ xmlns:virtualization="http://schemas.microsoft.com/appx/manifest/virtualization/windows10"
  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
- IgnorableNamespaces="uap uap10 desktop6 rescap">
+ IgnorableNamespaces="uap uap10 desktop6 rescap virtualization">
  <Identity Name={quoteattr(name)} Publisher={quoteattr(publisher)} Version={quoteattr(version)} ProcessorArchitecture="x64" />
  <Properties>
   <DisplayName>SavedDesk</DisplayName><PublisherDisplayName>{escape(display)}</PublisherDisplayName>
   <Description>A local library for supported social media downloads.</Description><Logo>Assets\\StoreLogo.png</Logo>
   <desktop6:RegistryWriteVirtualization>disabled</desktop6:RegistryWriteVirtualization>
-  <desktop6:FileSystemWriteVirtualization>disabled</desktop6:FileSystemWriteVirtualization>
+  <virtualization:RegistryWriteVirtualization><virtualization:ExcludedKeys>{exclusions}</virtualization:ExcludedKeys></virtualization:RegistryWriteVirtualization>
  </Properties>
  <Resources><Resource Language="en-US" /></Resources>
  <Dependencies><TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" /></Dependencies>
@@ -49,6 +55,29 @@ def manifest(name: str, publisher: str, display: str, version: str) -> str:
  <Capabilities><rescap:Capability Name="runFullTrust" /><rescap:Capability Name="unvirtualizedResources" /></Capabilities>
 </Package>
 '''
+
+def validate_connector_manifest(root) -> None:
+    """Reject broad filesystem exceptions and registry scope drift in real archives."""
+    props = root.find("{*}Properties")
+    if props is None or props.findall("{*}FileSystemWriteVirtualization"):
+        raise ValueError("MSIX must retain default AppData filesystem virtualization")
+    ns = "http://schemas.microsoft.com/appx/manifest/virtualization/windows10"
+    keys = [node.text for node in props.findall(f"{{{ns}}}RegistryWriteVirtualization/{{{ns}}}ExcludedKeys/{{{ns}}}ExcludedKey")]
+    if len(keys) != len(CONNECTOR_REGISTRY_KEYS) or set(keys) != set(CONNECTOR_REGISTRY_KEYS):
+        raise ValueError("MSIX registry exclusions must match the six owned native-messaging keys")
+    legacy = props.find("{http://schemas.microsoft.com/appx/manifest/desktop/windows10/6}RegistryWriteVirtualization")
+    if legacy is None or legacy.text != "disabled":
+        raise ValueError("The documented Windows 10 registry-only fallback is missing")
+    family = root.find("{*}Dependencies/{*}TargetDeviceFamily")
+    if family is None or family.attrib.get("MinVersion") != "10.0.19041.0":
+        raise ValueError("Preserve Windows 10 2004 and Windows 11 compatibility")
+    capabilities = root.find("{*}Capabilities")
+    if capabilities is None or {c.attrib.get("Name") for c in capabilities} != {"runFullTrust", "unvirtualizedResources"}:
+        raise ValueError("Unexpected MSIX capability request")
+    app = root.find("{*}Applications/{*}Application")
+    uap10 = "http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+    if app is None or app.attrib.get("Id") != "SavedDesk" or app.attrib.get("Executable") != "saveddesk.exe" or app.attrib.get(f"{{{uap10}}}RuntimeBehavior") != "packagedClassicApp" or app.attrib.get(f"{{{uap10}}}TrustLevel") != "mediumIL":
+        raise ValueError("Unexpected MSIX entry point or execution model")
 
 def assert_x64(path: Path) -> None:
     with path.open("rb") as stream:
@@ -103,6 +132,8 @@ def stage(target: Path, destination: Path) -> None:
     (destination / "Documentation").mkdir()
     for name in ("README.md", "PRIVACY_POLICY.md", "TERMS_OF_SERVICE.md", "CODE_SIGNING_POLICY.md"):
         shutil.copy2(ROOT / name, destination / "Documentation" / name)
+    version = json.loads((ROOT / "desktop/package.json").read_text())["version"]
+    shutil.copy2(ROOT / f"development-plans/store-resubmission-{version}.md", destination / "Documentation/CAPABILITY-JUSTIFICATION.md")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -139,10 +170,12 @@ if __name__ == "__main__":
               "store_submission_ready": False, "staging": str(staging), "package": package.name,
               "package_sha256": digest(package), "package_bytes": package.stat().st_size,
               "runtime": pinned, "restricted_capabilities": ["runFullTrust", "unvirtualizedResources"],
+              "virtualization": {"appdata_write_virtualization": "enabled", "windows_11_registry_exclusions": list(CONNECTOR_REGISTRY_KEYS), "windows_10_registry_fallback": "disabled for native messaging; only the six owned keys are written", "shared_connector_folder": "Documents/SavedDesk Browser Connector"},
               "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "source_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip()), "files": files}
     (output / "msix-review.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     shutil.copy2(staging / "AppxManifest.xml", output / "AppxManifest.xml")
+    shutil.copy2(staging / "Documentation/CAPABILITY-JUSTIFICATION.md", output / "CAPABILITY-JUSTIFICATION.md")
     subprocess.run([sys.executable, str(ROOT / "packaging/verify-msix.py"), str(output)], check=True)
     (output / "SHA256SUMS.txt").write_text("".join(f"{digest(p)}  {p.name}\n" for p in sorted(output.iterdir()) if p.is_file()), encoding="ascii")
     print("MSIX review assets:", output)
