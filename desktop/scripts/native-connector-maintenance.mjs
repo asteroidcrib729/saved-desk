@@ -5,7 +5,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { resolve } from "node:path";
 import { tmpdir } from "node:os";
-import { randomUUID,createHash } from "node:crypto";
+import { randomUUID,createHash,createHmac } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 const project=resolve(import.meta.dirname,"../..");
 const id=randomUUID(),data=resolve(tmpdir(),"saveddesk-certification-"+id);
@@ -16,27 +16,26 @@ const env={...process.env,SAVEDDESK_TEST_DATA_DIR:data,SAVEDDESK_TEST_PIPE_SUFFI
 const app=spawn(resolve(project,"desktop/src-tauri/target/debug/saveddesk.exe"),[],{env,windowsHide:true,stdio:["ignore","pipe","pipe"]});
 let output="",browser,db;for(const stream of [app.stdout,app.stderr])stream.on("data",chunk=>output=(output+chunk).slice(-4000));
 const checks=[];
+let pairing;
 async function message(value,allowed=true){
- return new Promise((done,reject)=>{
-  const child=spawn(resolve(project,"desktop/src-tauri/target/debug/saveddesk-native-host.exe"),[allowed?"chrome-extension://chjglnciihblkjnhnpinocknamjoecim/":"chrome-extension://unapproved/"],{env,windowsHide:true,stdio:["pipe","pipe","pipe"]});
-  let bytes=Buffer.alloc(0);const timer=setTimeout(()=>{child.kill();reject(new Error("Native status deadline exceeded"));},10000);
-  child.on("error",reject);child.stdout.on("data",chunk=>bytes=Buffer.concat([bytes,chunk]));child.stdin.on("error",()=>{});
-  child.on("exit",()=>{clearTimeout(timer);try{if(bytes.length<4){done(null);return;}expect(bytes.readUInt32LE(0)).toBe(bytes.length-4);done(JSON.parse(bytes.subarray(4).toString()));}catch(error){reject(error);}});
-  const body=Buffer.from(JSON.stringify(value)),length=Buffer.alloc(4);length.writeUInt32LE(body.length);child.stdin.end(Buffer.concat([length,body]));
- });
+ const [,port,,token]=pairing.split(".");
+ const body=JSON.stringify(value),nonce=Math.floor(Date.now()/1000)+"-"+randomUUID().replaceAll("-",""),signature=createHmac("sha256",token).update(nonce+"\n"+body).digest("hex");
+ const response=await fetch("http://127.0.0.1:"+port+"/connector",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"SavedDesk edge."+nonce+"."+signature,...(!allowed?{Origin:"https://unapproved.test"}:{})},body});
+ if(!allowed){expect(response.status).toBe(403);return null;}
+ return response.json();
 }
+
 try {
  for(let n=0;n<180;n++){if(app.exitCode!==null)throw new Error("Isolated app exited: "+output);try{await fetch(`http://127.0.0.1:${port}/json/version`);break;}catch{await new Promise(done=>setTimeout(done,250));}}
  browser=await chromium.connectOverCDP(`http://127.0.0.1:${port}`);const page=browser.contexts()[0].pages()[0];
  await expect(page.getByRole("heading",{name:"Library",exact:true})).toBeVisible({timeout:30000});
  const invoke=(name,args={})=>page.evaluate(({name,args})=>window.__TAURI_INTERNALS__.invoke(name,args),{name,args});
  const metadata=await invoke("get_connector_maintenance");expect(resolve(metadata.directory)).toBe(resolve(data));
- await invoke("setup_connector",{browser:"edge",consent:true});
- const manifest=JSON.parse(await readFile(resolve(data,"connector-edge.json"),"utf8"));expect(manifest.name).toBe("com.saveddesk.connector");
+ pairing=(await invoke("setup_connector",{browser:"edge",consent:true})).pairingCode;
  checks.push("isolated-selected-browser-setup-and-cleanup-helper-export");
- const probe=await message({protocol_version:1,command:"connector_probe",browser:"edge",extension_version:"0.2.12"});expect(probe.ok).toBe(true);expect(probe.ready).toBe(true);
+ const probe=await message({protocol_version:1,command:"connector_probe",browser:"edge",extension_version:"0.2.13"});expect(probe.ok).toBe(true);expect(probe.ready).toBe(true);
  expect((await invoke("get_browser_connector_status",{browser:"edge"})).verified).toBe(true);
- checks.push("external-host-probe-through-private-app-status-pipe");
+ checks.push("authenticated-loopback-probe-without-registry-registration");
  db=new DatabaseSync(resolve(data,"prototype-catalog.db"));
  db.prepare("INSERT INTO accounts(source,account_id,username,browser,state,message) VALUES('x','fixture','fixture-user','edge','sign_in_needed','Synthetic status only') ON CONFLICT(source) DO UPDATE SET account_id='fixture',username='fixture-user',browser='edge',state='sign_in_needed',message='Synthetic status only'").run();
  const secret=resolve(data,"session-x.dpapi");await writeFile(secret,"synthetic-account-keep");
@@ -51,8 +50,8 @@ try {
  expect(createHash("sha256").update(await readFile(secret)).digest("hex")).toBe(before);
  expect(db.prepare("SELECT username FROM accounts WHERE source='x'").get().username).toBe("fixture-user");
  expect((await invoke("get_browser_connector_status",{browser:"edge"})).registered).toBe(false);
- checks.push("native-cleanup-removes-owned-test-registration-and-keeps-library-and-account-data");
- const report={passed:true,app_version:"0.2.12",checks,data,evidence,uses_real_browser_registration:false,packaged_msix_test:false};
+ checks.push("unpairing-keeps-library-and-account-data");
+ const report={passed:true,app_version:"0.2.13",checks,data,evidence,uses_real_browser_registration:false,packaged_msix_test:false};
  await writeFile(resolve(evidence,"report.json"),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 }catch(error){await writeFile(resolve(evidence,"failure.json"),JSON.stringify({passed:false,error:String(error),output,checks},null,2));throw error;}
 finally{

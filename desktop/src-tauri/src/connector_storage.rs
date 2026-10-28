@@ -44,29 +44,15 @@ pub async fn open_connector_folder(app:tauri::AppHandle,state:State<'_,Arc<AppSt
     app.opener().open_path(crate::platform::shell_path(&root),None::<&str>).map_err(|_|"The connector folder could not be opened.".into())
 }
 #[tauri::command]
-pub async fn remove_browser_connector(app:tauri::AppHandle,state:State<'_,Arc<AppState>>)->Result<Value,String> {
+pub async fn remove_browser_connector(state:State<'_,Arc<AppState>>)->Result<Value,String> {
     let state=state.inner().clone();
     tauri::async_runtime::spawn_blocking(move|| {
-        if state.connection.lock().map_err(|_|"Connection state unavailable.")?.is_some() {return Err("Complete or cancel your browser connection before removing its connector.".into());}
-        let root=directory(&app,state.database.parent().ok_or("App data unavailable.")?)?;
-        if !root.exists() {return Ok(json!({"message":"No shared browser connector files were found. Your library is unchanged."}));}
-        prepare(&root)?;
-        let resources=app.path().resource_dir().map_err(|_|"App resources unavailable.")?;
-        let host=crate::connector_payload::expected_host(&root,&resources.join("saveddesk-native-host.exe"))?;
-        let mut command=std::process::Command::new("powershell.exe");
-        command.args(["-NoProfile","-NonInteractive","-ExecutionPolicy","Bypass","-File"]).arg(crate::platform::shell_path(&resources.join("maintenance/unregister-connector.ps1")))
-            .arg("-ConnectorDirectory").arg(crate::platform::shell_path(&root)).arg("-InstallDirectory").arg(crate::platform::shell_path(host.parent().ok_or("Connector host unavailable.")?)).arg("-Remove");
-        #[cfg(windows)] {use std::os::windows::process::CommandExt;command.creation_flags(0x08000000);}
-        #[cfg(debug_assertions)]
-        if let Some(scope)=crate::platform::connector_test_scope()? {
-            command.arg("-TestMode").arg("-RegistryBase").arg(format!(r"HKCU:\Software\SavedDesk\CertificationTests\{scope}"));
-        }
-        let output=command.output().map_err(|_|"The connector cleanup tool could not start.")?;
-        if !output.status.success() {return Err("Connector cleanup could not finish. Close its browser popup and try again. Your library was not removed.".into());}
-        let value:Value=serde_json::from_str(String::from_utf8_lossy(&output.stdout).trim_start_matches('\u{feff}').trim()).map_err(|_|"The connector cleanup result could not be checked.")?;
-        let changed=value["preservedChangedArtifacts"].as_array().map_or(0,Vec::len);
-        Ok(json!({"message":if changed==0 {"The owned browser connector registrations and files were removed. Remove its browser extension separately. Your library and saved accounts are unchanged."} else {"Connector cleanup preserved changed files for your review. Open its folder to check them. Your library and saved accounts are unchanged."}}))
-    }).await.map_err(|_|"Connector cleanup did not finish.".to_string())?
+        let pending=state.connection.lock().map_err(|_|"Connection state unavailable.")?;
+        if pending.is_some() {return Err("Complete or cancel your account connection before removing browser pairing.".into());}
+        let private=state.database.parent().ok_or("App data unavailable.")?;
+        state.connector.remove(private)?;
+        Ok(json!({"message":"Browser pairing removed. Remove the browser extension and exported files separately. Legacy native-host registrations from older releases are unused; their optional cleanup tool can be run explicitly outside SavedDesk. Your library and saved accounts are unchanged."}))
+    }).await.map_err(|_|"Browser pairing removal did not finish.".to_string())?
 }
 #[cfg(test)] mod tests {
     use super::*;

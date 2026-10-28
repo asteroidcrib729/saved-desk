@@ -2,7 +2,7 @@
 
 I built SavedDesk to keep supported social-media saves in one local Windows library. You can download posts and collections, search your saved content, view images, play videos and audio, and manage the files on your computer.
 
-**Current source: 0.2.12 Store capability reconsideration candidate. Guide reviewed: 21 October 2026.** Microsoft denied the 0.2.11 restricted-capability justification under 10.6.3. I retained Windows 10/11 support, removed the AppData filesystem exception, added narrow connector registry exclusions, and added visible retention consent and connector cleanup. A registry-only compatibility fallback is retained for older supported Windows builds. See the [current implementation plan](development-plans/development-plan-08.md) and [reviewer procedure and expanded justification](development-plans/store-resubmission-0.2.12.md). Publication and capability approval remain Microsoft's decision; exact-package Windows 10/11 evidence is required before resubmission.
+**Current source: 0.2.13 registry-free browser connection candidate. Guide reviewed: 28 October 2026.** After the repeated Store denial, I removed unvirtualizedResources and all virtualization overrides. Browser approval now uses private pairing and mutually authenticated requests over 127.0.0.1, with no browser registry registration. See [plan 09](development-plans/development-plan-09.md), [reviewer instructions](development-plans/store-resubmission-0.2.13.md), and the [verification record](development-plans/store-verification-0.2.13.md). Microsoft certification remains a separate decision.
 
 ## Contents
 
@@ -110,9 +110,9 @@ Upload an identity-correct package through an MSIX/AppX submission, not the EXE/
 
 MSIX connector setup installs a hash-verified native-host copy under Documents/SavedDesk Browser Connector/connector-bin, because an unpackaged browser cannot execute it directly from WindowsApps. The packaged worker and app remain inside MSIX.
 
-Close the other edition before using MSIX. Existing legacy EXE profiles may still be visible, while a fresh Store install uses Windows package-private AppData rules. Connector setup requires acknowledgement and exports its browser-visible host, manifests, extension and cleanup helper to **Documents/SavedDesk Browser Connector**. It keeps AppData filesystem virtualization enabled. The manifest declares six owned native-messaging registry exclusions where supported and retains a registry-only compatibility fallback for older builds. Effective isolation requires build-specific verification. The browser-launched host communicates through same-user IPC and cannot open the catalog or account files directly.
+Close the other edition before using MSIX. Existing legacy EXE profiles may still be visible, while fresh Store installations use normal package-private AppData behavior. The 0.2.13 package retains default registry and filesystem virtualization; it requests only runFullTrust. Explicit connector setup exports the extension to **Documents/SavedDesk Browser Connector**, then displays a private pairing code. It installs no native-host registration or shared host executable. Existing downloads and saved platform sessions keep their established paths.
 
-Before uninstalling, open **Accounts > Browser connector storage and removal**, acknowledge removal and choose **Remove browser connector**. Remove its extension in the browser separately, then uninstall through Windows Settings > Apps. If the app is already removed, open Documents/SavedDesk Browser Connector and run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Remove-SavedDesk-Connector.ps1 -Remove`. The helper checks ownership, preserves changed or unrelated files and does not erase the library, account files, downloads or backups. Without explicit cleanup, the shared folder and its browser registrations can remain. Package-private data follows Windows removal rules; legacy/shared app data and user-selected media can remain. The EXE's /S parameter and process exit codes do not apply to MSIX.
+Before uninstalling, use **Accounts > Browser connector storage and removal > Remove browser connector** to revoke pairing. Remove the browser extension and exported folder separately, then uninstall through Windows Settings > Apps. Only older installations may have unused native-host registrations; the optional legacy cleanup helper is described below. Package-private data follows Windows removal rules; retained legacy/shared data and selected media can remain. EXE /S switches and exit codes do not apply to MSIX.
 
 ### Requirements
 
@@ -307,38 +307,36 @@ Regular Firefox profiles can connect directly: choose Firefox, select the signed
 
 Chrome, Edge, Brave, Vivaldi and Chromium use the companion **SavedDesk Browser Connector**. Browser-store distribution is not available yet; the current route is unpacked Chromium or temporary Firefox installation.
 
-### Chromium-family setup
+### Chromium-family browsers
 
-1. Install/open the native SavedDesk app.
-2. Open **Accounts**, choose the browser, then expand **Set up or repair the browser connection**.
-3. Click **Prepare connector and open extension folder**. This registers the native messaging host for the selected browser under your current Windows user and exports a verified extension copy to a normal user-readable folder outside WindowsApps and opens it.
-4. In the same browser/profile, open its Extensions page: edge://extensions for Edge, chrome://extensions for Chrome, or the equivalent page for Brave/Vivaldi/Chromium.
-5. Enable **Developer mode**, choose **Load unpacked**, and select the opened folder containing **manifest.json**.
-6. Pin **SavedDesk Browser Connector** to the toolbar.
-7. Open the SavedDesk toolbar popup and choose **Check connection again**. Return to SavedDesk and choose **Check extension connection**. This handshake reads no account cookies.\n8. Click **Connect using this browser** on one platform card, then reopen the toolbar popup and approve the selected platform. Website sign-in alone does not complete this connection.
-8. Click **Approve connection** for the named platform and accept its optional site-permission prompt.
-9. Wait for SavedDesk's result before starting another connection.
+1. Install and open SavedDesk. In **Accounts**, choose the intended browser.
+2. Expand **Set up or repair the browser connection**, acknowledge pairing/export consent and click **Prepare connector and open extension folder**.
+3. Open the browser's Extensions page: edge://extensions for Edge, chrome://extensions for Chrome, or its equivalent for Brave/Vivaldi/Chromium.
+4. Turn on **Developer mode**, choose **Load unpacked**, and select the opened folder containing **manifest.json**. Replace an older unpacked SavedDesk copy before loading the updated one.
+5. Pin **SavedDesk Browser Connector**. Copy the private pairing code displayed in SavedDesk into the extension's pairing field and choose **Pair with SavedDesk**. Accept permission to reach 127.0.0.1; this address stays on your PC.
+6. Choose **Check connection again** in the popup, then **Check extension connection** in SavedDesk. This handshake reads no account cookies.
+7. Click **Connect using this browser** for one platform. Reopen the popup, approve the named platform and accept only that platform's site-permission request.
+8. Wait for SavedDesk's account result. Website sign-in alone does not connect the app.
 
-Chrome's unpacked-extension process is described in its [official extension tutorial](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world). Merely unzipping a connector release asset does not register the native host; use the app's setup button.
+Pairing survives app and browser restarts. Keep SavedDesk open while connecting. The code is a secret: paste it only into the extension, never into a website, issue, log or screenshot. The app and extension authenticate each other's messages; the secret itself never travels over the connection. Cookies are transferred only after a matching platform request and explicit approval, and are never kept in extension storage.
 
-### Firefox temporary connector
+### Firefox
 
-1. Choose Firefox in Accounts, expand the setup instructions and click **Prepare connector and open extension folder**.
-2. Open about:debugging, choose **This Firefox**, then **Load Temporary Add-on**.
-3. Select **manifest.json** in the opened extension folder.
-4. Open the SavedDesk toolbar popup after starting a connection in the app and approve the named platform.
+Accessible regular Firefox profiles still support direct, selected-platform approval without an add-on. For a custom/portable profile, prepare the connector, open about:debugging → **This Firefox** → **Load Temporary Add-on**, and select **manifest.json** in the exported folder. Pair its popup using the code from SavedDesk, then approve the platform as above.
 
-Temporary add-ons must be loaded again after Firefox restarts. Mozilla documents this in [Your first extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension). Direct regular-profile connection avoids this temporary add-on requirement.
+Temporary add-ons must be loaded again after Firefox restarts. Containers and partitioned sessions remain unsupported and receive an explanation rather than silently choosing a different session.
 
-### Reconnecting and troubleshooting the connector
+### Reconnecting and removing browser pairing
 
-Each platform needs its own approval. Use the exact browser profile where the content is accessible. The extension requests only the selected platform's session; it does not request passwords or general browser history.
+Each platform needs its own approval. Use the exact signed-in profile. A disabled **Approve connection** button means no valid matching request is waiting; check pairing, start **Connect using this browser** in SavedDesk and choose **Check connection again**.
 
-A disabled **Approve connection** button usually means no valid request is waiting. Cancel an old request in SavedDesk, start a new **Connect using this browser** request, and reopen the popup. **Check connection again** retries the pending desktop request.
+After updating the app, load the matching updated extension. The old native-messaging extension cannot use the new transport. Run setup to open the new folder and pair it. Moving/removing the source folder breaks an unpacked extension; reload it from its current folder.
 
-After an app update, reload the connector on the browser's Extensions page. If native-host communication fails, run **Prepare connector and open extension folder** again and make sure the connector is installed in that browser/profile. Managed-browser policy can block extensions or native messaging.
+If the saved local port is busy, close another SavedDesk instance. If necessary, use **Remove browser connector**, then prepare and pair again. A refused or unauthenticated connection never grants account access. Managed policies may block unpacked extensions or local connections.
 
-Moving/removing an unpacked extension's source folder breaks its installation; keep the folder in place or reload it from the current packaged location. Closing a Google identity authorization does not approve a YouTube browser session.
+**Remove browser connector** invalidates the app's pairing codes and stops the listener, preserving downloads, history and saved platform sessions. **Forget pairing** in the extension removes only that profile's code; use the app's removal control to invalidate other copies. Remove exported files and the extension separately. Normal MSIX uninstall manages private storage; selected media folders and exported files can remain.
+
+Upgrading from 0.2.12 or earlier can leave unused native-host registrations or host copies. They are not required by 0.2.13. The exported **Remove-SavedDesk-Connector.ps1** is an optional, ownership-checking legacy cleanup tool you may deliberately run outside SavedDesk with **-Remove**. The Store app does not launch it to bypass virtualization.
 
 ## Add a download
 
@@ -568,7 +566,7 @@ The app has no implemented cloud library sync, catalog encryption, portable reco
 | Missing runtime / app does not launch | Rerun the intended current installer so it can detect/install WebView2; inspect setup errors rather than copying only saveddesk.exe |
 | Gallery Python unavailable / account verification cannot start | Select the separate environment's python.exe, verify the supported packages, then Check setup |
 | FFmpeg unavailable / video preparation fails | Use included tools in Settings > Download tools and Check download tools; repair the app if its bundled files are missing |
-| Connector native-host error | Choose the correct browser, rerun connector setup, reload the extension and start a new connection request |
+| Browser pairing error | Keep SavedDesk open, load its matching updated extension, pair the selected browser and start a new connection request |
 | Approve connection is disabled | Start Connect using this browser in SavedDesk first; reopen popup or Check connection again |
 | Permission received but not connected | Read the app's verification result; confirm the profile/account and gallery setup. Browser permission alone is not verified identity. |
 | Private Instagram collection cannot be accessed | Connect the account that owns the saved collection; another account's saved-collection URL is not interchangeable |

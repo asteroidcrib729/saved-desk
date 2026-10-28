@@ -1,5 +1,8 @@
 # Development plan 08 — Store capability reconsideration, 0.2.12
 
+> Historical record: registry exceptions and reconsideration are superseded by [plan 09](development-plan-09.md) and the [0.2.13 reviewer procedure](store-resubmission-0.2.13.md). Do not use this older manifest or justification for the new submission.
+
+
 The 21 October 2026 certification report for Product 9P60HCD8JXTX denied `unvirtualizedResources` under 10.6.3. This plan addresses the requested virtualization evaluation, minimum scope, normal uninstall remnants, and user disclosure. Windows 10 2004 and Windows 11 support remain required by the owner. No approval is promised before Microsoft reviews the new submission.
 
 ## Section 01 — Architecture

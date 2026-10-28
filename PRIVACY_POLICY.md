@@ -1,6 +1,7 @@
 # SavedDesk Privacy Policy
 
-**Last updated:** 21 October 2026  
+**Last updated:** 28 October 2026
+
 **Maintainer:** Faraz Hussain  
 **Privacy and support email:** [farazhussain5000@gmail.com](mailto:farazhussain5000@gmail.com)
 
@@ -43,7 +44,7 @@ SavedDesk follows the [Google API Services User Data Policy](https://developers.
 
 ## 4. Browser-session approval and the connector
 
-When you request a supported platform connection, the connector asks for access to that platform and reads its cookies from the selected browser profile. It transfers the approved session to the local SavedDesk native host on your computer. Regular Firefox profiles may instead use the application's direct, platform-scoped session reader.
+When you request a supported platform connection, the connector asks for access to that platform and reads its cookies from the selected browser profile. It transfers the approved session directly to the running SavedDesk app over a mutually authenticated local loopback connection. Regular Firefox profiles may instead use the application's direct, platform-scoped session reader.
 
 The connection is initiated by you. SavedDesk does not import unrelated websites' cookies or your browsing history as part of this approval. The connector may provide browser user-agent information needed for platform requests. Approval of cookies is separate from verified Google identity and does not guarantee access to a particular resource.
 
@@ -81,8 +82,8 @@ Local library records and files remain until you remove them. There is no automa
 - **Revoke Google access** additionally requests revocation at Google. If remote revocation cannot be confirmed, review or remove the application's access through [Google Account connections](https://myaccount.google.com/connections). Local disconnect and remote revocation are different actions.
 - **Reset Google identity setup** removes its local OAuth configuration. It does not revoke a remote grant or remove browser approvals.
 - Uninstalling does not erase your selected download folder, backups or retained legacy/shared application data. Fresh MSIX package-private data follows Windows package-removal rules.
-- Store browser connector setup requires acknowledgement and exports only connector artifacts to Documents/SavedDesk Browser Connector. Its host relays messages to the running app instead of directly reading the private catalog or account files. The shared folder and matching browser registrations can remain after uninstall.
-- Accounts > Browser connector storage and removal provides deliberate connector cleanup. A Remove-SavedDesk-Connector.ps1 helper exported to that folder can also run after uninstall with the -Remove option. Cleanup checks ownership, keeps changed/unrelated files and does not delete library or account data. Remove the SavedDesk extension separately from the browser.
+- Store browser connector setup requires acknowledgement and exports only connector artifacts to Documents/SavedDesk Browser Connector. New setup creates no native-host registrations. The exported extension folder can remain after uninstall.
+- Accounts > Browser connector storage and removal provides deliberate connector cleanup. For installations upgraded from 0.2.12 or earlier, an optional Remove-SavedDesk-Connector.ps1 helper can be deliberately run outside the app with the -Remove option to clean up legacy resources. Cleanup checks ownership, keeps changed/unrelated files and does not delete library or account data. Remove the SavedDesk extension separately from the browser.
 
 For a complete local removal, first disconnect the accounts you no longer want SavedDesk to use, revoke Google access if desired, and close the app. You can then remove SavedDesk's application-data directory and the downloaded files you intend to delete. Keep any files you want to retain, and handle backups separately. Deleting local files does not delete original content from a platform or wipe copies held by other software.
 
@@ -108,4 +109,10 @@ For application usage and licensing information, see the [Terms of Service](TERM
 
 ## Separate download tools setup (0.2.11)
 
-Gallery setup runs only after explicit consent. It requests pinned software archives directly from Python.org and files.pythonhosted.org (PyPI), whose services receive normal connection details such as your IP address. The setup checks archive hashes and local package versions; it does not need or transmit platform cookies, passwords, Google tokens or download history. The separate runtime, packages, installation hash inventory and selected path remain on your computer. An extension-readiness check stores a short-lived Windows-user-protected receipt containing browser family, extension version, host hash and time; it contains no account session. Existing local-data retention and removal controls apply.
+Gallery setup runs only after explicit consent. It requests pinned software archives directly from Python.org and files.pythonhosted.org (PyPI), whose services receive normal connection details such as your IP address. The setup checks archive hashes and local package versions; it does not need or transmit platform cookies, passwords, Google tokens or download history. The separate runtime, packages, installation hash inventory and selected path remain on your computer. An extension-readiness check keeps a short-lived in-memory browser handshake result; it contains no account session. Existing local-data retention and removal controls apply.
+
+## Local browser pairing (0.2.13 and later)
+
+The optional companion extension connects only to SavedDesk on the same PC using 127.0.0.1. Setup requires your consent and a private pairing code copied from the app. The app protects pairing configuration with Windows current-user DPAPI. The extension keeps the code in its local browser-profile storage; transferred platform cookies are never stored there. Messages use mutual HMAC authentication and one-use challenges. The pairing secret itself is not transmitted.
+
+Removing browser pairing in SavedDesk invalidates the codes and stops the listener while preserving platform sessions and downloaded files. Forget pairing removes that extension profile's code. Neither action revokes a platform website sign-in. Exported files and browser add-ons may remain after uninstall. New setup creates no native-host registry registrations. Optional cleanup of older connector resources is described in the README.

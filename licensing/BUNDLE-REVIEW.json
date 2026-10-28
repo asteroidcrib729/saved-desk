@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "project_version": "0.2.12",
+  "project_version": "0.2.13",
   "scope": "Frozen worker archive and complete adjacent installer resource tree",
   "excluded_redistribution": [
     "gallery-dl",
@@ -302,7 +302,7 @@
     },
     {
       "path": "_internal/base_library.zip",
-      "sha256": "e76ff7cc3cc3d852ed4f6b720a694a8615026ebc3d1fb38e7c47393bb81a70ff",
+      "sha256": "1efb622bdda640c0b72d9b52d4250d4ca3bd4d061260dd3e99bf7cdf88d986ae",
       "bytes": 1394319
     },
     {
@@ -337,7 +337,7 @@
     },
     {
       "path": "_internal/external-adapter/social_downloader/__init__.py",
-      "sha256": "b97f8b815aa79ed66a3ff7e97c07d8c3f981471e0c7daad87d16b899c0df4786",
+      "sha256": "fbcacb0d655372c422430a8f5914df1677b2a21ab40b1cafbfa1c07a3a1e51c2",
       "bytes": 109
     },
     {
@@ -397,8 +397,8 @@
     },
     {
       "path": "_internal/external-adapter/social_downloader/public_downloads.py",
-      "sha256": "09f027fad580de51829266c4b9e8e5f908a8ccb65d13c663c57ffa871af30d57",
-      "bytes": 21783
+      "sha256": "ded690849eef6e7e2c8ebe474a72717d72aa3b96ae00219b92b956af3c8a0399",
+      "bytes": 23060
     },
     {
       "path": "_internal/external-adapter/social_downloader/test_support.py",
@@ -5882,8 +5882,8 @@
     },
     {
       "path": "saveddesk-worker.exe",
-      "sha256": "b3e4d8f11fca4a619e60edd38f47cb78a3b42507dba3092efce3573d113d4132",
-      "bytes": 11322406
+      "sha256": "73ff424a48686f0beecf3600c7a6f4eca90e9dda52ad11ab4d7cb65b2be9b0e0",
+      "bytes": 11323264
     }
   ],
   "findings": [],

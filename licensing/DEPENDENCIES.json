@@ -1,6 +1,6 @@
 {
   "project_license": "MIT",
-  "project_version": "0.2.12",
+  "project_version": "0.2.13",
   "inventory_scope": "installed Python/build dependencies, full Windows-filtered Cargo metadata and npm lock; includes build/test dependencies and vendored notices",
   "components": [
     {

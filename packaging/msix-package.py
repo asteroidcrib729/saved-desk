@@ -6,10 +6,6 @@ from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 ROOT = Path(__file__).resolve().parents[1]
 PREVIEW_NAME = "SavedDesk.MsixPreview"
-CONNECTOR_REGISTRY_KEYS = tuple(
-    "HKEY_CURRENT_USER\\Software\\" + browser + "\\NativeMessagingHosts\\com.saveddesk.connector"
-    for browser in ("Google\\Chrome", "Microsoft\\Edge", "BraveSoftware\\Brave-Browser", "Vivaldi", "Chromium", "Mozilla")
-)
 
 def digest(path: Path) -> str:
     with path.open("rb") as stream:
@@ -28,21 +24,16 @@ def checked_identity(name: str, publisher: str, version: str) -> None:
 
 def manifest(name: str, publisher: str, display: str, version: str) -> str:
     checked_identity(name, publisher, version)
-    exclusions = "".join(f"<virtualization:ExcludedKey>{escape(key)}</virtualization:ExcludedKey>" for key in CONNECTOR_REGISTRY_KEYS)
     return f'''<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
- xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6"
- xmlns:virtualization="http://schemas.microsoft.com/appx/manifest/virtualization/windows10"
  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
- IgnorableNamespaces="uap uap10 desktop6 rescap virtualization">
+ IgnorableNamespaces="uap uap10 rescap">
  <Identity Name={quoteattr(name)} Publisher={quoteattr(publisher)} Version={quoteattr(version)} ProcessorArchitecture="x64" />
  <Properties>
   <DisplayName>SavedDesk</DisplayName><PublisherDisplayName>{escape(display)}</PublisherDisplayName>
   <Description>A local library for supported social media downloads.</Description><Logo>Assets\\StoreLogo.png</Logo>
-  <desktop6:RegistryWriteVirtualization>disabled</desktop6:RegistryWriteVirtualization>
-  <virtualization:RegistryWriteVirtualization><virtualization:ExcludedKeys>{exclusions}</virtualization:ExcludedKeys></virtualization:RegistryWriteVirtualization>
  </Properties>
  <Resources><Resource Language="en-US" /></Resources>
  <Dependencies><TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" /></Dependencies>
@@ -52,27 +43,22 @@ def manifest(name: str, publisher: str, display: str, version: str) -> str:
     Square150x150Logo="Assets\\Square150x150Logo.png" Square44x44Logo="Assets\\Square44x44Logo.png" />
   </Application>
  </Applications>
- <Capabilities><rescap:Capability Name="runFullTrust" /><rescap:Capability Name="unvirtualizedResources" /></Capabilities>
+ <Capabilities><rescap:Capability Name="runFullTrust" /></Capabilities>
 </Package>
 '''
 
 def validate_connector_manifest(root) -> None:
-    """Reject broad filesystem exceptions and registry scope drift in real archives."""
-    props = root.find("{*}Properties")
-    if props is None or props.findall("{*}FileSystemWriteVirtualization"):
-        raise ValueError("MSIX must retain default AppData filesystem virtualization")
-    ns = "http://schemas.microsoft.com/appx/manifest/virtualization/windows10"
-    keys = [node.text for node in props.findall(f"{{{ns}}}RegistryWriteVirtualization/{{{ns}}}ExcludedKeys/{{{ns}}}ExcludedKey")]
-    if len(keys) != len(CONNECTOR_REGISTRY_KEYS) or set(keys) != set(CONNECTOR_REGISTRY_KEYS):
-        raise ValueError("MSIX registry exclusions must match the six owned native-messaging keys")
-    legacy = props.find("{http://schemas.microsoft.com/appx/manifest/desktop/windows10/6}RegistryWriteVirtualization")
-    if legacy is None or legacy.text != "disabled":
-        raise ValueError("The documented Windows 10 registry-only fallback is missing")
+    """Require default registry/filesystem virtualization and the sole desktop capability."""
+    if root.find("{*}Properties") is None:
+        raise ValueError("MSIX properties are missing")
+    for node in root.iter():
+        if node.tag.split("}")[-1] in {"RegistryWriteVirtualization","FileSystemWriteVirtualization","ExcludedKey","ExcludedDirectory"}:
+            raise ValueError("MSIX must retain default registry and filesystem virtualization")
     family = root.find("{*}Dependencies/{*}TargetDeviceFamily")
     if family is None or family.attrib.get("MinVersion") != "10.0.19041.0":
         raise ValueError("Preserve Windows 10 2004 and Windows 11 compatibility")
     capabilities = root.find("{*}Capabilities")
-    if capabilities is None or {c.attrib.get("Name") for c in capabilities} != {"runFullTrust", "unvirtualizedResources"}:
+    if capabilities is None or {c.attrib.get("Name") for c in capabilities} != {"runFullTrust"}:
         raise ValueError("Unexpected MSIX capability request")
     app = root.find("{*}Applications/{*}Application")
     uap10 = "http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
@@ -169,8 +155,8 @@ if __name__ == "__main__":
               "architecture": "x64", "signature": "unsigned", "store_identity_confirmed": args.store_identity_confirmed,
               "store_submission_ready": False, "staging": str(staging), "package": package.name,
               "package_sha256": digest(package), "package_bytes": package.stat().st_size,
-              "runtime": pinned, "restricted_capabilities": ["runFullTrust", "unvirtualizedResources"],
-              "virtualization": {"appdata_write_virtualization": "enabled", "windows_11_registry_exclusions": list(CONNECTOR_REGISTRY_KEYS), "windows_10_registry_fallback": "disabled for native messaging; only the six owned keys are written", "shared_connector_folder": "Documents/SavedDesk Browser Connector"},
+              "runtime": pinned, "restricted_capabilities": ["runFullTrust"],
+              "virtualization": {"appdata_write_virtualization": "enabled", "registry_write_virtualization": "enabled", "connector_transport": "authenticated IPv4 loopback; no browser registry registration", "shared_connector_folder": "Documents/SavedDesk Browser Connector"},
               "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "source_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip()), "files": files}
     (output / "msix-review.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

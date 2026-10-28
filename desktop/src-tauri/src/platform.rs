@@ -27,14 +27,6 @@ pub fn connector_test_scope() -> Result<Option<String>,String> {
         Err(_) => Ok(None),
     }
 }
-fn connector_key(prefix:&str)->Result<String,String> {
-    #[cfg(debug_assertions)]
-    if let Some(scope)=connector_test_scope()? {
-        return Ok(format!(r"Software\SavedDesk\CertificationTests\{scope}\{prefix}\NativeMessagingHosts\com.saveddesk.connector"));
-    }
-    Ok(format!(r"Software\{prefix}\NativeMessagingHosts\com.saveddesk.connector"))
-}
-
 #[cfg(windows)]
 pub fn sid() -> Result<String, String> {
     use windows_sys::Win32::{
@@ -237,9 +229,6 @@ pub fn accept(file: &std::fs::File) -> bool {
                 == windows_sys::Win32::Foundation::ERROR_PIPE_CONNECTED
     }
 }
-pub fn connect() -> Result<std::fs::File, String> {
-    connect_at(&pipe_name()?, Duration::from_secs(1))
-}
 pub(crate) fn connect_at(name: &str, timeout: Duration) -> Result<std::fs::File, String> {
     let deadline=Instant::now()+timeout;
     loop {
@@ -303,52 +292,6 @@ pub fn read_timed(
         if Instant::now() >= end {
             return Err("Browser authorization timed out. Try again.".into());
         }
-    }
-}
-
-#[cfg(windows)]
-pub fn register(manifest: &Path, browser: &str) -> Result<(), String> {
-    use windows_sys::Win32::{Foundation::*, System::Registry::*};
-    let prefix = match browser {
-        "edge" => "Microsoft\\Edge",
-        "chrome" => "Google\\Chrome",
-        "brave" => "BraveSoftware\\Brave-Browser",
-        "vivaldi" => "Vivaldi",
-        "chromium" => "Chromium",
-        "firefox" => "Mozilla",
-        _ => return Err("Choose a supported browser.".into()),
-    };
-    unsafe {
-        let mut key = std::ptr::null_mut();
-        if RegCreateKeyExW(
-            HKEY_CURRENT_USER,
-            wide(&connector_key(prefix)?)
-            .as_ptr(),
-            0,
-            std::ptr::null(),
-            0,
-            KEY_SET_VALUE,
-            std::ptr::null(),
-            &mut key,
-            std::ptr::null_mut(),
-        ) != ERROR_SUCCESS
-        {
-            return Err("Browser connector registration failed.".into());
-        }
-        let value = wide(&shell_path(manifest));
-        let result = RegSetValueExW(
-            key,
-            std::ptr::null(),
-            0,
-            REG_SZ,
-            value.as_ptr().cast(),
-            (value.len() * 2) as u32,
-        );
-        RegCloseKey(key);
-        if result != ERROR_SUCCESS {
-            return Err("Browser connector registration failed.".into());
-        }
-        Ok(())
     }
 }
 
@@ -473,73 +416,4 @@ mod tests {
         );
         assert_eq!(client.join().unwrap()["ok"], true);
     }
-}
-
-// Read only our selected-browser registration; never read another manifest or session.
-#[cfg(windows)]
-pub fn connector_registered(browser: &str, manifest: &Path, host: &Path) -> bool {
-    use windows_sys::Win32::{Foundation::ERROR_SUCCESS, System::Registry::*};
-    let prefix = match browser {
-        "edge" => r"Microsoft\Edge",
-        "chrome" => r"Google\Chrome",
-        "brave" => r"BraveSoftware\Brave-Browser",
-        "vivaldi" => "Vivaldi",
-        "chromium" => "Chromium",
-        _ => return false,
-    };
-    let Ok(key)=connector_key(prefix) else {return false;};
-    let key=wide(&key);
-    let mut value = vec![0u16; 32768];
-    let mut bytes = (value.len() * 2) as u32;
-    let result = unsafe {
-        RegGetValueW(
-            HKEY_CURRENT_USER,
-            key.as_ptr(),
-            std::ptr::null(),
-            RRF_RT_REG_SZ,
-            std::ptr::null_mut(),
-            value.as_mut_ptr().cast(),
-            &mut bytes,
-        )
-    };
-    if result != ERROR_SUCCESS || bytes < 2 || bytes % 2 != 0 || bytes as usize > value.len() * 2 {
-        return false;
-    }
-    let count = bytes as usize / 2;
-    if value[count - 1] != 0 {
-        return false;
-    }
-    let Ok(path) = String::from_utf16(&value[..count - 1]) else {
-        return false;
-    };
-    let Ok(expected) = manifest.canonicalize() else {
-        return false;
-    };
-    if Path::new(&path).canonicalize().ok().as_ref() != Some(&expected) {
-        return false;
-    }
-    let Ok(file) = std::fs::File::open(&expected) else {
-        return false;
-    };
-    let mut buffer = Vec::new();
-    if file.take(16385).read_to_end(&mut buffer).is_err() || buffer.len() > 16384 {
-        return false;
-    }
-    let Ok(value) = serde_json::from_slice::<serde_json::Value>(&buffer) else {
-        return false;
-    };
-    let registered_host = value["path"]
-        .as_str()
-        .and_then(|v| Path::new(v).canonicalize().ok());
-    value["name"] == "com.saveddesk.connector"
-        && value["type"] == "stdio"
-        && (if browser=="firefox" {value["allowed_extensions"]==serde_json::json!([FIREFOX_ID])}else{value["allowed_origins"] == serde_json::json!([CHROMIUM_ORIGIN])})
-        && host
-            .canonicalize()
-            .ok()
-            .is_some_and(|expected| registered_host == Some(expected))
-}
-#[cfg(not(windows))]
-pub fn connector_registered(_browser: &str, _manifest: &Path, _host: &Path) -> bool {
-    false
 }

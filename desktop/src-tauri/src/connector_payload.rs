@@ -25,6 +25,7 @@ pub fn expected_host(data: &Path, source: &Path) -> Result<PathBuf, String> {
     if packaged() { cached_path(data, source) } else { Ok(source.to_owned()) }
 }
 
+#[cfg(test)]
 fn safe_directory(path: &Path) -> Result<(), String> {
     if !path.exists() { std::fs::create_dir(path).map_err(|_| "The connector folder could not be created.")?; }
     let meta = std::fs::symlink_metadata(path).map_err(|_| "The connector folder is unavailable.")?;
@@ -36,6 +37,7 @@ fn safe_directory(path: &Path) -> Result<(), String> {
     Ok(())
 }
 
+#[cfg(test)]
 fn stage_host(data: &Path, source: &Path) -> Result<PathBuf, String> {
     let target = cached_path(data, source)?;
     safe_directory(data)?;
@@ -65,10 +67,6 @@ fn stage_host(data: &Path, source: &Path) -> Result<PathBuf, String> {
     })();
     if temporary.exists() { let _ = std::fs::remove_file(&temporary); }
     result
-}
-
-pub fn install_host(data: &Path, source: &Path) -> Result<PathBuf, String> {
-    if packaged() { stage_host(data, source) } else { Ok(source.to_owned()) }
 }
 
 #[cfg(test)]

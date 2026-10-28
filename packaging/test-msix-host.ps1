@@ -76,8 +76,6 @@ function App-Step([string]$Mode){
   & $driver (Join-Path $PSScriptRoot 'guest-smoke.mjs') "http://127.0.0.1:$port" $Mode $media $state
   if($LASTEXITCODE){throw "Installed MSIX app check failed: $Mode"}
   if($Mode -eq 'seed'){
-   & (Join-Path $root '.venv/Scripts/python.exe') (Join-Path $PSScriptRoot 'msix-test-native-host.py') (Join-Path $connector 'connector-edge.json')
-   if($LASTEXITCODE){throw 'External browser native-host launch test failed.'}
    Close-TestConnectorFolders
   }
   $engines=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -and $_.ExecutablePath.StartsWith((Join-Path $install 'resources/webview2')+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)})
@@ -121,26 +119,37 @@ try {
  if((Get-AppxPackage -Name SavedDesk.MsixPreview).Version.ToString() -ne $signing.upgrade_test_version){throw 'MSIX upgrade version mismatch.'}
  App-Step 'verify';$report.checks+='msix-upgrade-catalog-settings-player-history-duplicates'
  # Observe ordinary Windows removal BEFORE running any manual connector cleanup.
- $edge='HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\com.saveddesk.connector'
- $hostManifest=Get-Content -LiteralPath (Join-Path $connector 'connector-edge.json') -Raw | ConvertFrom-Json
  $package=Get-AppxPackage -Name SavedDesk.MsixPreview;Remove-AppxPackage -Package $package.PackageFullName;$installed=$false
  if(Get-AppxPackage -Name SavedDesk.MsixPreview){throw 'MSIX registration remains after uninstall.'}
- $report.uninstall_remnants=@{connector_registration=(Test-Path -LiteralPath $edge);connector_manifest=(Test-Path -LiteralPath (Join-Path $connector 'connector-edge.json'));connector_host=(Test-Path -LiteralPath $hostManifest.path);cleanup_tool=(Test-Path -LiteralPath (Join-Path $connector 'Remove-SavedDesk-Connector.ps1'))}
- if($report.uninstall_remnants.Values -contains $false){throw 'Observed uninstall behavior differs from the disclosed shared-connector retention contract.'}
+ $report.uninstall_remnants=@{connector_manifest_created=(Test-Path -LiteralPath (Join-Path $connector 'connector-edge.json'));connector_host_copy_created=(Test-Path -LiteralPath (Join-Path $connector 'connector-bin'));exported_extensions_remain=(Test-Path -LiteralPath (Join-Path $connector 'browser-extensions'));legacy_cleanup_tool_remains=(Test-Path -LiteralPath (Join-Path $connector 'Remove-SavedDesk-Connector.ps1'))}
+ if($report.uninstall_remnants.connector_manifest_created -or $report.uninstall_remnants.connector_host_copy_created){throw 'New pairing unexpectedly created native-host resources.'}
+ if(-not $report.uninstall_remnants.exported_extensions_remain){throw 'Exported extension folder unexpectedly disappeared.'}
  $report.checks+='ordinary-msix-uninstall-observed-before-manual-cleanup'
- & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $connector 'Remove-SavedDesk-Connector.ps1') -ConnectorDirectory $connector -InstallDirectory (Split-Path -Parent $hostManifest.path) -Remove | Set-Content -LiteralPath (Join-Path $evidence 'post-uninstall-cleanup.json') -Encoding UTF8
- if($LASTEXITCODE -or (Test-Path -LiteralPath $edge) -or (Test-Path -LiteralPath $hostManifest.path)){throw 'Post-uninstall owned connector cleanup failed.'}
- $report.checks+='exported-helper-cleans-connector-after-package-removal'
+ $report.checks+='registry-free-connector-and-pairing-removal'
  if(-not (Test-Path -LiteralPath (Join-Path $data 'prototype-catalog.db'))){throw 'MSIX removal unexpectedly deleted retained data.'}
  foreach($file in $files){if((Get-FileHash -LiteralPath $file.path).Hash -ne $file.sha){throw 'MSIX lifecycle changed media.'}}
  $report.checks+='msix-removal-registration-removed-media-retained'
+ $report.lifecycle_passed=$true
+ $publicResult=Get-Content -LiteralPath ($state+'.public-video.json') -Raw | ConvertFrom-Json
+ $report.public_video_passed=[bool]$publicResult.passed
+ if(-not $report.public_video_passed){throw ('Installed lifecycle passed, but public video acceptance failed: '+$publicResult.error)}
  $report.passed=$true
 } catch {$report.error=$_.Exception.Message;$report.failure_location=$_.InvocationInfo.PositionMessage;$report.stack=$_.ScriptStackTrace;Write-Warning $report.error} finally {
  Stop-TestApp
  Close-TestConnectorFolders
  try{if($installed){$package=Get-AppxPackage -Name SavedDesk.MsixPreview;if($package){Remove-AppxPackage -Package $package.PackageFullName}}}catch{$report.passed=$false;$report.package_cleanup_error=$_.Exception.Message}
- try{foreach($entry in $registry){if(Test-Path -LiteralPath $entry.path){Remove-Item -LiteralPath $entry.path};if($entry.existed){New-Item -Path $entry.path -Force | Out-Null;$key=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($entry.path.Substring(6),$true);try{foreach($v in $entry.values){$key.SetValue($v.name,$v.value,[Microsoft.Win32.RegistryValueKind]$v.kind)}}finally{$key.Dispose()}}}
- }catch{$report.passed=$false;$report.registry_cleanup_error=$_.Exception.Message}
+ try{
+  foreach($entry in $registry){
+   $exists=Test-Path -LiteralPath $entry.path
+   if($exists -ne $entry.existed){throw 'Browser native-host registry presence changed during registry-free testing.'}
+   if($exists){
+    $key=Get-Item -LiteralPath $entry.path
+    $values=@($key.GetValueNames() | ForEach-Object {@{name=$_;kind=$key.GetValueKind($_).ToString();value=$key.GetValue($_,$null,[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)}})
+    if(($values | ConvertTo-Json -Depth 5 -Compress) -cne ($entry.values | ConvertTo-Json -Depth 5 -Compress)){throw 'Browser native-host registry contents changed.'}
+   }
+  }
+  $report.browser_registry_unchanged=$true
+ }catch{$report.passed=$false;$report.registry_verification_error=$_.Exception.Message}
  $restoreErrors=@()
  foreach($entry in $backups){
   try{

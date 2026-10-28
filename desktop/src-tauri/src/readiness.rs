@@ -143,20 +143,12 @@ pub async fn check_readiness(
         if browser == "firefox" {
             checks.push(check("connector", "Browser connection", "pending", "Regular Firefox profiles can connect directly. Use Accounts to choose and approve your profile.", "accounts"));
         } else {
-            let mut host = resources.join("saveddesk-native-host.exe");
-            if !host.is_file() && cfg!(debug_assertions) {
-                host = std::env::current_exe().map_err(|_| "App folder is unavailable.")?.with_file_name("saveddesk-native-host.exe");
-            }
-            let private=state.database.parent().ok_or("App data is unavailable.")?;
-            let connector=crate::connector_storage::directory(&app,private)?;
-            let manifest = connector.join(format!("connector-{browser}.json"));
-            let packaged = resources.join("browser-connector/chromium/manifest.json").is_file() && host.is_file();
-            let registered_host = crate::connector_payload::expected_host(&connector, &host);
-            let registered = packaged && registered_host.map(|path| platform::connector_registered(&browser, &manifest, &path) && crate::connector_presence::verified(state.database.parent().unwrap(),&browser,&path)).unwrap_or(false);
-            checks.push(check("connector", "Browser connection", if registered { "ready" } else { "warning" },
-                if registered { "The extension and native host completed a recent verified handshake. Account approval is a separate step." }
-                else if packaged { "Set up the connector for this browser in Accounts, then load or reload the extension." }
-                else { "The connector package is missing. Repair the app installation before connecting this browser." }, "accounts"));
+            let packaged=resources.join("browser-connector/chromium/manifest.json").is_file();
+            let paired=state.connector.status(&browser)["verified"]==true;
+            checks.push(check("connector","Browser connection",if paired{"ready"}else{"warning"},
+                if paired{"The browser extension completed a recent authenticated local handshake. Platform approval is a separate step."}
+                else if packaged{"Prepare and pair the updated extension in Accounts, then check its connection."}
+                else{"The connector extension is missing. Repair the app installation."},"accounts"));
         }
         checks.push(check("runtime", "App interface", "ready", "The Windows desktop interface is running. This check does not contact Instagram or X.", "none"));
         Ok(Report { checks, free_bytes })

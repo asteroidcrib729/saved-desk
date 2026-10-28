@@ -1,5 +1,6 @@
 // Run through the guarded fresh-guest or owner-authorized host installer harness.
 import { readFile, writeFile } from 'node:fs/promises';
+import { createHmac,randomUUID } from 'node:crypto';
 const [endpoint,mode,folder,statePath] = process.argv.slice(2);
 if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(endpoint) || !['seed','verify'].includes(mode)) throw Error('Invalid guest test invocation');
 const delay = ms => new Promise(resolve => setTimeout(resolve,ms));
@@ -28,6 +29,23 @@ async function toolsStatus(){
  }
  throw Error('Startup tool check remained busy for 30 seconds.');
 }
+async function connectorProbe(code) {
+ const [,port,browser,secret]=code.split(".");
+ const body=JSON.stringify({protocol_version:1,command:"connector_probe",browser,extension_version:"0.2.13"});
+ const nonce=Math.floor(Date.now()/1000)+"-"+randomUUID().replaceAll("-","");
+ const signature=createHmac("sha256",secret).update(nonce+"\n"+body).digest("hex");
+ console.log("Checking signed connector probe: "+mode);
+ const response=await fetch("http://127.0.0.1:"+port+"/connector",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"SavedDesk "+browser+"."+nonce+"."+signature},body,signal:AbortSignal.timeout(5000)}).catch(error=>{throw Error("Signed connector probe transport failed ("+mode+"): "+(error.cause?.code||error.name));});
+ assert(response.status===200,"Installed package refused its scoped pairing challenge.");
+ const text=await response.text();
+ assert(response.headers.get("X-SavedDesk-Proof")===createHmac("sha256",secret).update(nonce+"\n"+text).digest("hex"),"Installed app response proof did not match.");
+ assert(JSON.parse(text).ok,"Installed connector probe failed.");
+ console.log("Checking connector replay rejection: "+mode);
+ const replay=await fetch("http://127.0.0.1:"+port+"/connector",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"SavedDesk "+browser+"."+nonce+"."+signature},body,signal:AbortSignal.timeout(5000)}).catch(error=>{throw Error("Connector replay transport failed ("+mode+"): "+(error.cause?.code||error.name));});
+ assert(replay.status===403,"Installed connector accepted a repeated signed challenge.");
+ await replay.arrayBuffer();
+ console.log("Connector probe and replay checks passed: "+mode);
+}
 try {
     let snapshot;
     for(let i=0;i<60;i++){try{snapshot=await invoke('get_snapshot');break;}catch{await delay(250);}}
@@ -50,9 +68,11 @@ try {
         snapshot=await invoke('run_prototype',{token:draft.token,mode:'new_only'});
         assert(snapshot.jobs.some(j=>j.state==='completed'&&j.saved===3),'Installed packaged worker did not complete three local transfers.');
         // The owner-supplied public link must work before any account or gallery setup.
-        const live={platform:'youtube',authenticated:false,startedAt:new Date().toISOString(),passed:false};
+        const publicTarget=process.env.SAVEDDESK_ACCEPTANCE_YOUTUBE_URL || 'https://www.youtube.com/shorts/Y8_t4EXP1XM';
+        if(!/^https:\/\/www\.youtube\.com\/(shorts\/[A-Za-z0-9_-]{11}|watch\?v=[A-Za-z0-9_-]{11})$/.test(publicTarget))throw Error('Use one explicit public YouTube video as the acceptance fixture.');
+        const live={platform:'youtube',target:publicTarget,authenticated:false,startedAt:new Date().toISOString(),passed:false};
         try{
-          const draft=await invoke('prepare_download',{request:{source:'youtube',target:'https://www.youtube.com/shorts/Y8_t4EXP1XM',title:'Store public video acceptance',quality:'720',profile:'original'}});
+          const draft=await invoke('prepare_download',{request:{source:'youtube',target:publicTarget,title:'Store public video acceptance',quality:'720',profile:'original'}});
           const id=await invoke('start_download',{token:draft.token,mode:'new_only'});
           const end=Date.now()+300000;
           let job;
@@ -82,15 +102,16 @@ try {
           live.playback=played;
           await call('Runtime.evaluate',{expression:"document.getElementById('store-playback-video').pause();document.getElementById('store-playback-test').remove();"});
           live.passed=true;
-        }catch(error){live.error=String(error);throw error;}
+        }catch(error){live.error=String(error);console.error("Public acceptance failed; continuing independent lifecycle checks: "+live.error);}
         finally{await writeFile(statePath+'.public-video.json',JSON.stringify(live,null,2));}
         snapshot=await invoke('get_snapshot');
         const installed=await invoke('install_gallery_tools',{consent:true});
         const checked=await toolsStatus();
         assert(checked.galleryReady&&checked.ffmpegReady&&checked.ffprobeReady,'Packaged gallery setup did not pass its real startup checks.');
         await writeFile(statePath+'.gallery-setup.json',JSON.stringify({passed:true,galleryPython:installed.galleryPython,mediaAutomatic:true},null,2));
-        await invoke('setup_connector',{browser:'edge',consent:true});
-        await writeFile(statePath,JSON.stringify({total:snapshot.total,settings,player:{volume:0.37,muted:true},jobs:snapshot.jobs.map(j=>j.id),galleryPython:installed.galleryPython,mediaAutomatic:true},null,2));
+        const pairing=await invoke('setup_connector',{browser:'edge',consent:true});
+        await connectorProbe(pairing.pairingCode);
+        await writeFile(statePath,JSON.stringify({pairingCode:pairing.pairingCode,total:snapshot.total,settings,player:{volume:0.37,muted:true},jobs:snapshot.jobs.map(j=>j.id),galleryPython:installed.galleryPython,mediaAutomatic:true},null,2));
     } else {
         const expected=JSON.parse((await readFile(statePath,'utf8')).replace(/^\uFEFF/,''));
         assert(snapshot.total===expected.total && expected.total>0,'Upgrade did not retain the library.');
@@ -113,8 +134,11 @@ try {
           assert(tools.ffmpegReady&&tools.ffprobeReady&&tools.galleryReady,'Upgrade lost included media tools or the separate gallery installation.');
           assert(tools.galleryPython===expected.galleryPython,'Upgrade changed the separate gallery interpreter path.');
           assert(tools.ffmpeg.toLowerCase().includes('windowsapps'),'Upgrade persisted an old automatic video tool path.');
+          const paired=await invoke('setup_connector',{browser:'edge',consent:true});
+          assert(paired.pairingCode===expected.pairingCode,'Upgrade changed the saved pairing code.');
+          await connectorProbe(paired.pairingCode);
           const connector=await invoke('get_browser_connector_status',{browser:'edge'});
-          assert(connector.registered&&connector.verified,'The external native-host handshake was not retained through the unchanged-binary upgrade fixture.');
+          assert(connector.registered&&connector.verified,'Registry-free pairing could not reconnect after the installed upgrade.');
           await invoke('begin_connection',{source:'youtube',browser:'edge'});
           const pending=await invoke('get_snapshot');
           assert(pending.accounts.some(a=>a.source==='youtube'&&a.state==='awaiting_permission'),'A verified connector could not start browser approval.');
@@ -122,7 +146,9 @@ try {
           let cancelled;
           for(let n=0;n<120;n++){cancelled=await invoke('get_snapshot');if(!cancelled.accounts.some(a=>a.state==='awaiting_permission'||a.state==='connecting'))break;await delay(100);}
           assert(!cancelled.accounts.some(a=>a.state==='awaiting_permission'||a.state==='connecting'),'Browser approval cancellation did not clear pending state within 12 seconds.');
-          await writeFile(statePath+'.connector-lifecycle.json',JSON.stringify({passed:true,externalNativeHandshake:true,approvalStarted:true,cancellation:true,accountSessionRead:false},null,2));
+          await invoke('remove_browser_connector');
+          assert(!(await invoke('get_browser_connector_status',{browser:'edge'})).registered,'Removing pairing left the local connector active.');
+          await writeFile(statePath+'.connector-lifecycle.json',JSON.stringify({passed:true,registryFreeHandshake:true,mutualAuthentication:true,replayRejected:true,pairingPersistedAcrossUpgrade:true,approvalStarted:true,cancellation:true,pairingRemoved:true,accountSessionRead:false},null,2));
 
         }
         const player=await invoke('get_player_preferences');assert(player.volume===0.37&&player.muted===true,'Upgrade lost player preferences.');

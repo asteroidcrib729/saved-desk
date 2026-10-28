@@ -5,7 +5,7 @@ from pathlib import Path
 
 REQUIRED_CHECKS={"signed-local-package-installation","installed-fixed-runtime-worker-local-transfers-connector",
  "msix-upgrade-catalog-settings-player-history-duplicates","ordinary-msix-uninstall-observed-before-manual-cleanup",
- "exported-helper-cleans-connector-after-package-removal"}
+ "registry-free-connector-and-pairing-removal"}
 STORE_IDENTITY=json.loads(Path(__file__).with_name("msix-store-identity.json").read_text(encoding="utf-8"))
 
 def evaluate(review:dict,evidence:list[dict])->dict:
@@ -22,7 +22,7 @@ def evaluate(review:dict,evidence:list[dict])->dict:
         if not entry.get("clean_machine") or entry.get("windows_product_type")!=1:
             blockers.append(f"{label}: a fresh disposable Windows client guest is required");continue
         if not REQUIRED_CHECKS.issubset(entry.get("checks",[])):
-            blockers.append(f"{label}: install, connector, upgrade, normal removal or post-uninstall cleanup evidence is missing");continue
+            blockers.append(f"{label}: install, connector, upgrade, normal removal or registry-free pairing removal evidence is missing");continue
         build=entry.get("windows_build",0)
         if not isinstance(build,int):blockers.append(f"{label}: invalid Windows build");continue
         if 19041<=build<22000:covered.add("Windows 10")

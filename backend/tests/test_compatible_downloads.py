@@ -18,6 +18,26 @@ from social_downloader.video import process_video, hardware_encoding, encode_fix
 
 
 class CompatibleDownloadsTests(unittest.TestCase):
+    def test_download_failures_have_fixed_categories_without_private_details(self):
+        from social_downloader.public_downloads import video_failure_reason
+        private = " https://example.invalid/video?token=private-secret Cookie: private-cookie"
+        for message, expected in [
+            ("CERTIFICATE_VERIFY_FAILED", "secure connection"),
+            ("HTTP Error 429", "limiting requests"),
+            ("[WinError 5] Access is denied", "Windows denied"),
+            ("Requested format is not available", "quality is unavailable"),
+            ("HTTP Error 403: Forbidden", "refused access"),
+            ("Sign in to confirm you are not a bot", "browser verification"),
+            ("Unable to download webpage", "could not be reached"),
+            ("JavaScript challenge solving failed", "bundled runtime"),
+        ]:
+            with self.subTest(message=message):
+                result = video_failure_reason(message + private)
+                self.assertIn(expected, result)
+                self.assertNotIn("private", result)
+                self.assertNotIn("example.invalid", result)
+        self.assertEqual(video_failure_reason("unrecognized error" + private), "")
+
     def test_reserved_frame_colour_metadata_is_normalized_before_encoding(self):
         encoder=find_tool("ffmpeg");flags=subprocess.CREATE_NO_WINDOW if sys.platform=="win32" else 0
         with tempfile.TemporaryDirectory() as folder:

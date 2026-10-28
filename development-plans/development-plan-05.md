@@ -1,5 +1,8 @@
 # Current follow-up: 0.2.11 Store remediation
 
+> Historical record: registry exceptions and reconsideration are superseded by [plan 09](development-plan-09.md) and the [0.2.13 reviewer procedure](store-resubmission-0.2.13.md). Do not use this older manifest or justification for the new submission.
+
+
 [Development plan 06](development-plan-06.md) supersedes the former FFmpeg exclusion and first-run/connector readiness assumptions. Gallery-dl remains a separate user acquisition; original source remains MIT. The material below retains its historical version/test scope.
 
 # Development plan 05: MSIX packaging and Microsoft Store submission

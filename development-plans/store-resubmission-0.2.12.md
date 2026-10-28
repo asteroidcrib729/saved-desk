@@ -1,5 +1,8 @@
 # SavedDesk 0.2.12 — Capability reconsideration and reviewer procedure
 
+> Historical record: registry exceptions and reconsideration are superseded by [plan 09](development-plan-09.md) and the [0.2.13 reviewer procedure](store-resubmission-0.2.13.md). Do not use this older manifest or justification for the new submission.
+
+
 Product ID: **9P60HCD8JXTX**. Responds to the **21 October 2026** report, **10.6.3 Capabilities**. The previous capability request was denied. This document describes implementation changes and identifies evidence still required; it does not claim a new approval.
 
 ## Section 01 — Expanded business justification

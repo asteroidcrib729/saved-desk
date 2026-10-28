@@ -1,23 +1,25 @@
+import { createHmac, randomUUID } from "node:crypto";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
+const fixtureToken="a".repeat(64);
 const code = await readFile(new URL("./popup.js", import.meta.url), "utf8");
-async function popup({ firefox = false, store = "0", permit = true, selected = "edge", source = "instagram", userAgent, probeFailure = false, noRequest = false, requestFailures = 0, rejectApproval = false, verification = { ok:true,state:"connected",username:"fixture_user",message:"" } } = {}) {
+async function popup({ unpaired=false, fakeApp=false, firefox = false, store = "0", permit = true, selected = "edge", source = "instagram", userAgent, probeFailure = false, noRequest = false, requestFailures = 0, rejectApproval = false, verification = { ok:true,state:"connected",username:"fixture_user",message:"" } } = {}) {
   const elements = new Map();
   const calls = [];
   const timers = new Map();
   let timerId=0;
   const selector = name => {
-    if (!elements.has(name)) elements.set(name, { disabled: true, textContent: "", addEventListener: (_, callback) => { elements.get(name).click = callback; } });
+    if (!elements.has(name)) elements.set(name, { disabled: true, textContent: "", value:"", addEventListener: (_, callback) => { elements.get(name).click = callback; } });
     return elements.get(name);
   };
   const api = {
     runtime: {
       getManifest: () => ({version:"0.2.11"}),
       ...(firefox ? { getBrowserInfo: () => ({ name: "Firefox" }) } : {}),
-      sendNativeMessage: async (host, message) => {
+      fixtureRequest: async (host, message) => {
         calls.push({ type: "native", host, message });
         if (message.command === "connector_probe") return probeFailure?{ok:false,message:"Update or reload the extension."}:{ok:true,ready:true};
         if (message.command === "connection_status") return verification;
@@ -29,6 +31,7 @@ async function popup({ firefox = false, store = "0", permit = true, selected = "
         return rejectApproval ? { ok: false, message: "The connection request expired." } : { ok: true, message: "Verifying account" };
       },
     },
+    storage:{local:{get:async()=>unpaired?{}:({pairingCode:"SD1.41000."+selected+"."+fixtureToken}),set:async value=>calls.push({type:"store",value}),remove:async key=>calls.push({type:"forget",key})}},
     permissions: { request: async value => { calls.push({ type: "permission", value }); return permit; } },
     tabs: { query: async () => [{ id: 7 }] },
     cookies: {
@@ -40,18 +43,36 @@ async function popup({ firefox = false, store = "0", permit = true, selected = "
       },
     },
   };
-  runInNewContext(code, { chrome: api, ...(firefox ? { browser: api } : {}), navigator: { userAgent: userAgent ?? (firefox ? "Firefox" : "Edg/") }, document: { querySelector: selector }, setTimeout: callback => { timers.set(++timerId,callback);return timerId; }, clearTimeout: id => timers.delete(id) });
+  runInNewContext(code, { fetch:async(url,options)=>{
+    assert.equal(url,"http://127.0.0.1:41000/connector");
+    const [prefix,authorization]=options.headers.Authorization.split(" ");
+    const [browser,nonce,signature]=authorization.split(".");
+    assert.equal(prefix,"SavedDesk");
+    assert.equal(browser,selected);
+    assert.equal(signature,createHmac("sha256",fixtureToken).update(nonce+"\n"+options.body).digest("hex"));
+    assert.equal(options.headers.Authorization.includes(fixtureToken),false);
+    assert.equal(options.redirect,"error");
+    assert.equal(options.credentials,"omit");
+    const request=JSON.parse(options.body);
+    const response=JSON.stringify(await api.runtime.fixtureRequest(url,request));
+    const proof=fakeApp&&request.command==="request"?"0".repeat(64):createHmac("sha256",fixtureToken).update(nonce+"\n"+response).digest("hex");
+    return {ok:true,text:async()=>response,headers:{get:()=>proof}};
+  },TextEncoder,crypto:{randomUUID,subtle:{
+    importKey:async(_,key)=>key,
+    sign:async(_,key,data)=>createHmac("sha256",key).update(data).digest(),
+    verify:async(_,key,signature,data)=>Buffer.from(signature).equals(createHmac("sha256",key).update(data).digest()),
+  }},AbortSignal:{timeout:()=>undefined}, chrome: api, ...(firefox ? { browser: api } : {}), navigator: { userAgent: userAgent ?? (firefox ? "Firefox" : "Edg/") }, document: { querySelector: selector }, setTimeout: callback => { timers.set(++timerId,callback);return timerId; }, clearTimeout: id => timers.delete(id) });
   // Initial request/provider uses asynchronous browser APIs.
   await new Promise(done => setImmediate(done));
   return { calls, elements, click: () => selector("#approve").click(), poll: async () => { const [id,callback]=timers.entries().next().value;timers.delete(id);await callback(); } };
 }
 
-test("approval requests one platform and sends scoped sessions only through native messaging", async () => {
+test("approval requests one platform and sends scoped sessions only through authenticated loopback", async () => {
   const view = await popup();
   assert.equal(view.elements.get("#approve").disabled, false);
   await view.click();
   const approval = view.calls.find(c => c.type === "native" && c.message.command === "authorize");
-  assert.equal(approval.host, "com.saveddesk.connector");
+  assert.equal(approval.host, "http://127.0.0.1:41000/connector");
   assert.equal(approval.message.cookies.length, 1);
   assert.equal(approval.message.cookies[0].name, "sessionid");
   assert.equal(approval.message.nonce, "test-nonce");
@@ -102,7 +123,7 @@ test("a failed host check gives repair instructions and can be checked again", a
   const view = await popup({ selected: "chrome", userAgent: "Chrome/154", requestFailures: 1 });
   assert.equal(view.elements.get("#approve").disabled, true);
   assert.equal(view.elements.get("#check").disabled, false);
-  assert.match(view.elements.get("#status").textContent, /Set up connector/);
+  assert.match(view.elements.get("#status").textContent, /Pair the updated extension/);
   assert.equal(view.calls.some(c => c.type === "cookies"), false);
   await view.elements.get("#check").click();
   assert.equal(view.elements.get("#approve").disabled, false);
@@ -169,4 +190,52 @@ test("failed extension handshake reads no cookies and requests no account approv
  assert.match(view.elements.get("#status").textContent,/Update or reload/);
  assert.equal(view.elements.get("#approve").disabled,true);
  assert.equal(view.calls.some(c=>c.message?.command==="request"||c.type==="cookies"),false);
+});
+
+test("unpaired extensions cannot fetch requests or read cookies",async()=>{
+ const view=await popup({unpaired:true});
+ assert.equal(view.calls.length,0);
+ assert.match(view.elements.get("#status").textContent,/Pair this extension/);
+ assert.equal(view.elements.get("#approve").disabled,true);
+});
+test("pairing rejects arbitrary URLs before permission or network access",async()=>{
+ const view=await popup({unpaired:true});
+ view.elements.get("#pairing-code").value="https://attacker.test/code";
+ await view.elements.get("#pair").click();
+ assert.equal(view.calls.length,0);
+ assert.match(view.elements.get("#status").textContent,/Paste the private pairing code/);
+});
+test("declining loopback permission does not persist pairing or read cookies",async()=>{
+ const view=await popup({unpaired:true,permit:false});
+ view.elements.get("#pairing-code").value="SD1.41000.edge."+fixtureToken;
+ await view.elements.get("#pair").click();
+ assert.equal(view.calls.length,1);
+ assert.equal(JSON.stringify(view.calls[0].value),'{"origins":["http://127.0.0.1/*"]}');
+ assert.match(view.elements.get("#status").textContent,/declined/);
+});
+test("pairing persists only its code after a successful probe and forgetting disables access",async()=>{
+ const view=await popup({unpaired:true});
+ view.elements.get("#pairing-code").value="SD1.41000.edge."+fixtureToken;
+ await view.elements.get("#pair").click();
+ const persisted=view.calls.find(c=>c.type==="store");
+ assert.equal(JSON.stringify(persisted.value),JSON.stringify({pairingCode:"SD1.41000.edge."+fixtureToken}));
+ assert.equal(view.calls.some(c=>c.type==="cookies"),false);
+ await view.elements.get("#forget").click();
+ assert.equal(view.elements.get("#approve").disabled,true);
+ const count=view.calls.length;
+ await view.elements.get("#check").click();
+ assert.equal(view.calls.length,count);
+});
+test("an unsuccessful handshake never saves a pairing code",async()=>{
+ const view=await popup({unpaired:true,probeFailure:true});
+ view.elements.get("#pairing-code").value="SD1.41000.edge."+fixtureToken;
+ await view.elements.get("#pair").click();
+ assert.equal(view.calls.some(c=>c.type==="store"||c.type==="cookies"),false);
+});
+
+test("an impersonating local process cannot supply a trusted account request",async()=>{
+ const view=await popup({fakeApp:true});
+ assert.equal(view.elements.get("#approve").disabled,true);
+ assert.equal(view.calls.some(c=>c.type==="cookies"||c.type==="permission"),false);
+ assert.match(view.elements.get("#status").textContent,/could not prove its identity/);
 });

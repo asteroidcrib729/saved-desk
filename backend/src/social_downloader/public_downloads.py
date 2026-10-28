@@ -19,6 +19,24 @@ class QuietLogger:
     error = debug
 
 
+def video_failure_reason(error):
+    """Return a fixed diagnostic category, never provider URLs or credentials."""
+    message = str(error).lower()
+    for terms, explanation in [
+        (("certificate_verify_failed", "certificate verify failed", "ssl:"), "The secure connection could not be verified."),
+        (("http error 429", "too many requests"), "The platform is limiting requests; retry later."),
+        (("permission denied", "access is denied", "winerror 5"), "Windows denied access to a required download resource."),
+        (("requested format is not available",), "The selected video quality is unavailable."),
+        (("http error 403", "forbidden"), "The platform refused access to the video stream."),
+        (("sign in to confirm", "not a bot"), "The platform requires a browser verification or sign-in."),
+        (("unable to download webpage", "timed out", "name resolution", "getaddrinfo"), "The platform could not be reached."),
+        (("javascript", "challenge solving"), "The video challenge could not be processed by the bundled runtime."),
+    ]:
+        if any(term in message for term in terms):
+            return " " + explanation
+    return ""
+
+
 class Transfer:
     def __init__(self, worker, command):
         self.worker, self.command = worker, command
@@ -255,12 +273,13 @@ def video_download(transfer):
                 if path is None:
                     raise MediaFailure("The downloaded video output could not be identified. Completed files are preserved.")
                 transfer.complete(detail, path)
-        except DownloadError:
+        except DownloadError as error:
+            reason = video_failure_reason(error)
             if requires_browser_session(source,target):
                 raise MediaFailure("YouTube could not read this account playlist or an included video. Reapprove your YouTube browser session, then add the playlist again. Completed files are preserved.") from None
             if source=="facebook":
                 raise MediaFailure("Facebook could not read this public video page. Some Facebook pages currently require a downloader compatibility update or sign-in. An approved Facebook browser session can supply access, but cannot fix every parser compatibility problem. Completed files are preserved.") from None
-            raise MediaFailure(f"{LABELS[source]} could not provide this public video. It may require sign-in, be unavailable, or be rate limited. Completed files are preserved.") from None
+            raise MediaFailure(f"{LABELS[source]} could not provide this public video.{reason or ' It may require sign-in, be unavailable, or be rate limited.'} Completed files are preserved.") from None
 
 
 def discord_download(transfer):

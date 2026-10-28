@@ -272,47 +272,29 @@ pub async fn connect_firefox(
 
 #[tauri::command]
 pub async fn setup_connector(
-    browser: String,
-    consent: Option<bool>,
-    app: tauri::AppHandle,
+    browser: String, consent: Option<bool>, app: tauri::AppHandle,
     state: State<'_, Arc<AppState>>,
-) -> Result<()> {
+) -> Result<Value> {
     valid_browser(&browser)?;
-    let app_state = state.inner().clone();
+    if consent!=Some(true) {return Err("Approve local browser pairing and extension export before setup.".into());}
+    let state=state.inner().clone();
     tauri::async_runtime::spawn_blocking(move|| {
-        let resources=app.path().resource_dir().map_err(|_|"App resources are unavailable.")?;
-        let mut host=resources.join("saveddesk-native-host.exe");
-        if !host.is_file() && cfg!(debug_assertions) { host=std::env::current_exe().map_err(|_|"App folder is unavailable.")?.with_file_name("saveddesk-native-host.exe"); }
-        if !host.is_file() { return Err("The browser connector host is missing. Repair the app installation.".into()); }
+        let resources=app.path().resource_dir().map_err(|_|"App resources unavailable.")?;
         let directory=resources.join("browser-connector").join(if browser=="firefox"{"firefox"}else{"chromium"});
-        if !directory.join("manifest.json").is_file() { return Err("The companion connector package is missing. Repair the app installation.".into()); }
-        let private=data(&app_state)?;
-        if crate::connector_payload::packaged() && consent!=Some(true) { return Err("Approve the shared browser connector folder and uninstall disclosure before setup.".into()); }
-        let profile=crate::connector_storage::directory(&app,private)?;
+        let profile=crate::connector_storage::directory(&app,data(&state)?)?;
         crate::connector_storage::prepare(&profile)?;
+        // Kept only for deliberate removal of older native-host installations.
         crate::connector_storage::export_cleanup(&profile,&resources)?;
-        let host=crate::connector_payload::install_host(&profile,&host)?;
-        let manifest=profile.join(format!("connector-{browser}.json"));
-        let mut value=json!({"name":"com.saveddesk.connector","description":"SavedDesk selected-platform browser connector","path":platform::shell_path(&host),"type":"stdio"});
-        if browser=="firefox" { value["allowed_extensions"]=json!([platform::FIREFOX_ID]); } else { value["allowed_origins"]=json!([platform::CHROMIUM_ORIGIN]); }
-        std::fs::write(&manifest,serde_json::to_vec(&value).map_err(|_|"Invalid connector registration.")?).map_err(|_|"Connector registration could not be written.")?;
-        platform::register(&manifest,&browser)?;
         let exported=crate::connector_extension::export(&profile,&directory,&browser)?;
-        app.opener().open_path(platform::shell_path(&exported),None::<&str>).map_err(|_|"Windows could not open the connector folder.")?;
-        Ok(())
+        state.connector.start(&state,true)?;
+        let code=state.connector.code(&browser)?;
+        app.opener().open_path(platform::shell_path(&exported),None::<&str>).map_err(|_|"Windows could not open the extension folder.")?;
+        Ok(json!({"pairingCode":code}))
     }).await.map_err(|_|"Connector setup failed.".to_string())?
 }
-
-fn connector_status(app:&tauri::AppHandle,state:&AppState,browser:&str)->Result<Value>{
+fn connector_status(_app:&tauri::AppHandle,state:&AppState,browser:&str)->Result<Value>{
     valid_browser(browser)?;
-    let profile=crate::connector_storage::directory(app,data(state)?)?;
-    let resources=app.path().resource_dir().map_err(|_|"App resources unavailable.")?;
-    let mut source=resources.join("saveddesk-native-host.exe");
-    if !source.is_file() && cfg!(debug_assertions){source=std::env::current_exe().map_err(|_|"App folder unavailable.")?.with_file_name("saveddesk-native-host.exe");}
-    let host=crate::connector_payload::expected_host(&profile,&source)?;
-    let registered=platform::connector_registered(browser,&profile.join(format!("connector-{browser}.json")),&host);
-    let verified=registered && crate::connector_presence::verified(data(state)?,browser,&host);
-    Ok(json!({"registered":registered,"verified":verified,"message":if verified{"Browser extension connection checked. Start a platform connection within five minutes."}else if registered{"Open the SavedDesk extension in the selected browser profile, choose Check connection again, then return here and check the extension connection."}else{"Set up the browser connector first. Signing in on the website alone does not connect SavedDesk."}}))
+    Ok(state.connector.status(browser))
 }
 #[tauri::command]
 pub async fn get_browser_connector_status(browser:String,app:tauri::AppHandle,state:State<'_,Arc<AppState>>)->Result<Value>{

@@ -1,5 +1,8 @@
 # SavedDesk 0.2.12 certification remediation verification
 
+> Historical record: registry exceptions and reconsideration are superseded by [plan 09](development-plan-09.md) and the [0.2.13 reviewer procedure](store-resubmission-0.2.13.md). Do not use this older manifest or justification for the new submission.
+
+
 Reviewed 21 October 2026. The implementation preserves Windows 10 2004 and Windows 11. The second certification report denied `unvirtualizedResources` under 10.6.3; [the revised justification](store-resubmission-0.2.12.md) answers its four questions. Microsoft approval remains outstanding.
 
 ## Section 01 - Delivered changes

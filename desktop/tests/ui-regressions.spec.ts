@@ -42,7 +42,7 @@ async function fixture(page: Page, options: { active?: boolean; repairBlocked?: 
         if (command === "get_browser_connector_status") return {registered:true,verified:qa.connectorVerified,message:qa.connectorVerified?"Browser extension connection checked.":"Open the extension and check the connection."};
         if (command === "install_gallery_tools"){if(!args.consent)throw new Error("Consent required");qa.authCalls.push("install_gallery_tools");qa.galleryReady=true;qa.toolSettings.galleryPython="C:\\FixtureTools\\python.exe";return {...qa.toolSettings};}
         if (command === "begin_connection"){qa.authCalls.push("begin_connection");return;}
-        if (command === "setup_connector"){qa.authCalls.push("setup_connector");return;}
+        if (command === "setup_connector"){qa.authCalls.push("setup_connector");return {pairingCode:"SD1.41000.edge."+"a".repeat(64)};}
         if (command === "get_connector_maintenance")return {directory:"C:\\Users\\Fixture\\Documents\\SavedDesk Browser Connector",packaged:true,cleanupTool:"Remove-SavedDesk-Connector.ps1"};
         if (command === "open_connector_folder"){qa.authCalls.push(command);return;}
         if (command === "remove_browser_connector"){qa.authCalls.push(command);return {message:"The owned browser connector registrations and files were removed. Your library and saved accounts are unchanged."};}
@@ -1057,9 +1057,11 @@ test("connector setup requires retention acknowledgement and removal preserves a
  await page.getByText("Set up or repair the browser connection",{exact:true}).click();
  const setup=page.getByRole("button",{name:"Prepare connector and open extension folder",exact:true});
  await expect(setup).toBeDisabled();
- await expect(page.getByText(/Browser connector files and registrations can remain after SavedDesk is uninstalled/)).toBeVisible();
- await page.getByRole("checkbox",{name:/I allow browser connector setup/}).check();await expect(setup).toBeEnabled();
+ await expect(page.getByText(/No native host or browser registry registration is installed/)).toBeVisible();
+ await page.getByRole("checkbox",{name:/I allow local browser pairing/}).check();await expect(setup).toBeEnabled();
  await setup.click();expect(await qa(page,"authCalls")).toContain("setup_connector");
+ await expect(page.locator('input[aria-label="Browser pairing code"]')).toHaveAttribute("type","password");
+ await expect(page.locator('input[aria-label="Browser pairing code"]')).toHaveValue("SD1.41000.edge."+"a".repeat(64));
  await page.getByText("Browser connector storage and removal",{exact:true}).click();
  const remove=page.getByRole("button",{name:"Remove browser connector",exact:true});await expect(remove).toBeDisabled();
  await page.getByRole("checkbox",{name:/I want to remove this app/}).check();await remove.click();

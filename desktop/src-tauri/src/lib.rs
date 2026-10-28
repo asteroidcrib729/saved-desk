@@ -1,10 +1,12 @@
 mod auth;
 mod catalog;
 mod connector_payload;
+#[cfg(test)]
 mod connector_presence;
 mod connector_extension;
 mod connector_storage;
 mod connector_status;
+mod connector_http;
 mod external_tools;
 mod deletion;
 mod live_commands;
@@ -30,6 +32,7 @@ use tauri_plugin_opener::OpenerExt;
 
 pub(crate) struct AppState {
     auth: auth::Controller,
+    connector: connector_http::Controller,
     database: PathBuf,
     pending: Mutex<HashMap<String, (Instant, usize, usize)>>,
     worker_gate: Mutex<()>,
@@ -333,6 +336,7 @@ pub fn run() {
             if let Ok(root)=storage::root(&recovery_db) { deletion::recover(&recovery_db,&root).map_err(std::io::Error::other)?; }
             let state=Arc::new(AppState {
                 auth: auth::Controller::default(),
+                connector: connector_http::Controller::default(),
                 database,
                 pending: Mutex::new(HashMap::new()),
                 worker_gate: Mutex::new(()),
@@ -343,7 +347,7 @@ pub fn run() {
                 active: Mutex::new(HashMap::new()),
             });
             #[cfg(windows)]
-            connector_status::start(app.handle().clone(),state.clone()).map_err(std::io::Error::other)?;
+            { let _ = state.connector.start(&state, false); }
             app.manage(state);
             Ok(())
         })
